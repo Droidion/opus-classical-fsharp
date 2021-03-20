@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0.103-alpine3.13-amd64 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:5.0.201-alpine3.13-amd64 AS build-env
 WORKDIR /DockerSource
 
 # Copy csproj/fsproj and restore as distinct layers
@@ -19,7 +19,7 @@ COPY Data/. ./Data
 RUN dotnet publish -c release -o /DockerOutput/Site
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0.3-alpine3.13-amd64
+FROM mcr.microsoft.com/dotnet/aspnet:5.0.4-alpine3.13-amd64
 WORKDIR /DockerOutput/Site
 COPY --from=build-env /DockerOutput/Site ./
 ENTRYPOINT ["./Site", "Site.dll"]
