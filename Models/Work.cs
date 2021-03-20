@@ -35,7 +35,7 @@ namespace Models
         /// Approximate length of the work in minutes.
         /// Summarization of several recordings, does not need to be exact, just like 30 minutes vs 2 hours.
         /// </summary>
-        public int AverageMinutes { get; init; }
+        public int? AverageMinutes { get; init; }
 
         /// <summary>
         /// Name of the catalogue of composer's works, like "BWV" for Bach or "Op." for Beethoven.

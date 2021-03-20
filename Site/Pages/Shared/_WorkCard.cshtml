@@ -1,0 +1,33 @@
+@using static Helpers.StringHelpers
+@model Models.Work
+
+<div class="card">
+    <div>
+        <span>@Model.Title</span>
+        @if (Model.No != null)
+        {
+            <span>No. @Model.No.ToString()</span>
+        }
+        @if (Model.Nickname != null)
+        {
+            <cite>@Model.Nickname</cite>
+        }
+        @if (Model.Key != null)
+        {
+            <span>in @Model.Key</span>
+        }
+    </div>
+    <div class="card__subtitle">
+        @if (Model.CatalogueName != null)
+        {
+            <span>@Model.CatalogueName @Model.CatalogueNumber.ToString()@Model.CataloguePostfix</span>
+            <span class="vertical-separator"></span>
+        }
+        <span>@formatYearsRangeLoose(Model.YearStart, Model.YearFinish)</span>
+        @if (Model.AverageMinutes != null)
+        {
+            <span class="vertical-separator"></span>
+            <span>@formatWorkLength(Model.AverageMinutes)</span>
+        }
+    </div>
+</div>

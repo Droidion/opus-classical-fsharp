@@ -36,9 +36,10 @@ module StringHelpers =
         | (_, _) -> ""
         
     /// Formats minutes into a string with hours and minutes, like "2h 35m"
-    let public formatWorkLength (lengthInMinutes : int) : string =
-        let hours = lengthInMinutes / 60
-        let minutes = lengthInMinutes % 60
+    let public formatWorkLength (lengthInMinutes : Nullable<int>) : string =
+        let length = if lengthInMinutes.HasValue then lengthInMinutes.Value else 0
+        let hours = length / 60
+        let minutes = length % 60
         match (hours, minutes) with
         | (0, 0)  -> ""
         | (h, m) when h < 0 || m < 0 -> ""

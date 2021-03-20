@@ -25,30 +25,7 @@
         @foreach (var work in genre.Works)
         {
             <a href="/composer/@Model.Composer.Slug/work/@work.Id.ToString()">
-                <div class="card">
-                    <div>
-                        <span>@work.Title</span>
-                        @if (work.No != null)
-                        {
-                            <span>No. @work.No.ToString()</span>
-                        }
-                        @if (work.Nickname != null)
-                        {
-                            <cite>@work.Nickname</cite>
-                        }
-                    </div>
-                    <div class="card__subtitle">
-                        @if (work.CatalogueName != null)
-                        {
-                            <span>@work.CatalogueName @work.CatalogueNumber.ToString()@work.CataloguePostfix</span>
-                            <span class="vertical-separator"></span>
-                        }
-                        <span>@formatYearsRangeLoose(work.YearStart, work.YearFinish)</span>
-                        <span class="vertical-separator"></span>
-                        <span>@formatWorkLength(work.AverageMinutes)</span>
-
-                    </div>
-                </div>
+                @await Html.PartialAsync("_WorkCard", work)
             </a>
         }
     </div>
