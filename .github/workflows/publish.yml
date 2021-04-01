@@ -45,11 +45,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: executing remote ssh commands using key
-        uses: appleboy/ssh-action@master
+        uses: garygrossgarten/github-action-ssh@release
         with:
+          username: ${{ secrets.SSH_USERNAME }}
           host: ${{ secrets.SSH_HOST }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
+          passphrase: ""
+          privateKey: ${{ secrets.SSH_KEY }}
+          command: |
             cd ~/traefik
             docker-compose pull
             docker-compose down
