@@ -1,5 +1,7 @@
 # Opus Classical
 
+![example workflow](https://github.com/Droidion/composers/actions/workflows/dotnet.yml/badge.svg)
+
 [https://opusclassical.net](https://opusclassical.net)
 
 ![Screenshot](Docs/screenshot.png)
