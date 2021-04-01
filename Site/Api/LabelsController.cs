@@ -5,6 +5,7 @@ using Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Sentry;
 
 namespace Site.Api
 {
@@ -42,6 +43,7 @@ namespace Site.Api
             }
             catch (Exception e)
             {
+                SentrySdk.CaptureException(e);
                 return BadRequest("DB problem");
             }
         }

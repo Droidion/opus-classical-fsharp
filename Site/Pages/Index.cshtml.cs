@@ -16,11 +16,6 @@ namespace Site.Pages
     public class IndexModel : PageModel
     {
         /// <summary>
-        /// Logger service
-        /// </summary>
-        private readonly ILogger<IndexModel> _logger;
-
-        /// <summary>
         /// Service for making database queries
         /// </summary>
         private readonly DbQuery _dbQuery;
@@ -39,7 +34,6 @@ namespace Site.Pages
         {
             Periods = Array.Empty<Period>();
             _dbQuery = dbQuery;
-            _logger = logger;
         }
 
         /// <summary>

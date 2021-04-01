@@ -13,11 +13,6 @@ namespace Site.Pages
     public class WorkModel : PageModel
     {
         /// <summary>
-        /// Logger service
-        /// </summary>
-        private readonly ILogger<WorkModel> _logger;
-        
-        /// <summary>
         /// Service for making database queries
         /// </summary>
         private readonly DbQuery _dbQuery;
@@ -47,7 +42,6 @@ namespace Site.Pages
         public WorkModel(ILogger<WorkModel> logger, DbQuery dbQuery)
         {
             _dbQuery = dbQuery;
-            _logger = logger;
         }
 
         /// <summary>

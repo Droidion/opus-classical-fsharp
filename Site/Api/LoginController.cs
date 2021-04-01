@@ -9,7 +9,7 @@ using Jose;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Models;
+using Sentry;
 
 namespace Site.Api
 {
@@ -45,7 +45,7 @@ namespace Site.Api
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Post([FromBody] User user)
+        public async Task<IActionResult> Post([FromBody] Models.User user)
         {
             try
             {
@@ -66,6 +66,7 @@ namespace Site.Api
             }
             catch (Exception e)
             {
+                SentrySdk.CaptureException(e);
                 return Unauthorized("DB problem");
             }
         }

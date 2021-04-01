@@ -17,11 +17,6 @@ namespace Site.Pages
     public class ComposerModel : PageModel
     {
         /// <summary>
-        /// Logger service
-        /// </summary>
-        private readonly ILogger<ComposerModel> _logger;
-
-        /// <summary>
         /// Service for making database queries
         /// </summary>
         private readonly DbQuery _dbQuery;
@@ -44,7 +39,6 @@ namespace Site.Pages
         public ComposerModel(ILogger<ComposerModel> logger, DbQuery dbQuery)
         {
             _dbQuery = dbQuery;
-            _logger = logger;
         }
 
         /// <summary>
