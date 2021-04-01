@@ -13,13 +13,13 @@ namespace Models
         /// </summary>
         /// <example>Herbert</example>
         public string? FirstName { get; init; }
-        
+
         /// <summary>
         /// Last name.
         /// </summary>
         /// <example>von Karajan</example>
         /// <example>London Symphony Orchestra</example>
-        public string LastName { get; init; }
+        public string LastName { get; init; } = "";
         
         /// <summary>
         /// Display priority.

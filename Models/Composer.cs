@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 
 namespace Models
@@ -12,18 +13,18 @@ namespace Models
         /// Id in the database.
         /// </summary>
         public int Id { get; init; }
-        
+
         /// <summary>
         /// First name.
         /// </summary>
         /// <example>Ludwig van</example>
-        public string FirstName { get; init; }
-        
+        public string FirstName { get; init; } = "";
+
         /// <summary>
         /// Last name.
         /// </summary>
         /// <example>Beethoven</example>
-        public string LastName { get; init; }
+        public string LastName { get; init; } = "";
         
         /// <summary>
         /// Year composer was born. 
@@ -34,17 +35,17 @@ namespace Models
         /// Year composer died, can be null for alive composers.
         /// </summary>
         public int? YearDied { get; init; }
-        
+
         /// <summary>
         /// Countries composer is associated with.
         /// </summary>
-        public string[] Countries { get; init; }
-        
+        public string[] Countries { get; init; } = Array.Empty<string>();
+
         /// <summary>
         /// Unique composer readable text id, to be used in URLs.
         /// </summary>
         /// <example>beethoven</example>
-        public string Slug { get; init; }
+        public string Slug { get; init; } = "";
         
         /// <summary>
         /// Link to composer's wikipedia page.

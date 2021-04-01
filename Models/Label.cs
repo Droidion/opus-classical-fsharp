@@ -14,11 +14,11 @@ namespace Models
         /// Label Id
         /// </summary>
         public int Id { get; init; }
-        
+
         /// <summary>
         /// Label Name
         /// </summary>
         /// <example>EMI</example>
-        public string Name { get; init; }
+        public string Name { get; init; } = "";
     }
 }

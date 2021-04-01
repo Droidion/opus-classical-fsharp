@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 
 namespace Models
@@ -12,17 +13,17 @@ namespace Models
         /// Name of the genre.
         /// </summary>
         /// <example>Late Baroque</example>
-        public string Name { get; init; }
-        
+        public string Name { get; init; } = "";
+
         /// <summary>
         /// Decorative icon.
         /// </summary>
         /// <example>🐕</example>
-        public string Icon { get; init; }
-        
+        public string Icon { get; init; } = "";
+
         /// <summary>
         /// List of the works belonging to the genre.
         /// </summary>
-        public Work[] Works { get; init; }
+        public Work[] Works { get; init; } = Array.Empty<Work>();
     }
 }

@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 
 namespace Models
 {
@@ -12,12 +13,12 @@ namespace Models
         /// Id in the database.
         /// </summary>
         public int Id { get; init; }
-        
+
         /// <summary>
         /// Name of the period.
         /// </summary>
         /// <example>Late Baroque</example>
-        public string Name { get; init; }
+        public string Name { get; init; } = "";
         
         /// <summary>
         /// Year when period roughly started.
@@ -28,16 +29,16 @@ namespace Models
         /// Year when period roughly ended. Can be null for the lasted period which is still ongoing.
         /// </summary>
         public int? YearEnd { get; init; }
-        
+
         /// <summary>
         /// Unique period readable text id, to be used in URLs.
         /// </summary>
         /// <example>late-baroque</example>
-        public string Slug { get; init; }
-        
+        public string Slug { get; init; } = "";
+
         /// <summary>
         /// Composers associated with the period.
         /// </summary>
-        public Composer[] Composers { get; init; }
+        public Composer[] Composers { get; init; } = Array.Empty<Composer>();
     };
 }

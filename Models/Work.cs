@@ -17,7 +17,7 @@ namespace Models
         /// Work title.
         /// </summary>
         /// <example>Faust Symphony</example>
-        public string Title { get; init; }
+        public string Title { get; init; } = "";
 
         /// <summary>
         /// Year when composer started the work, if known.

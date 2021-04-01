@@ -11,6 +11,6 @@ namespace Models
         /// <summary>
         /// JSON data as string
         /// </summary>
-        public string Json { get; init; }
+        public string Json { get; init; } = "";
     }
 }

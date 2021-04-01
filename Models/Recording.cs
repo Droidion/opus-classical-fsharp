@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 
 namespace Models
@@ -18,7 +19,7 @@ namespace Models
         /// It can be an album cover, or composite picture of several albums, or just some generic placeholder.
         /// </summary>
         /// <example>foo.webp</example>
-        public string CoverName { get; init; }
+        public string CoverName { get; init; } = "";
         
         /// <summary>
         /// Year when recording started. For single year either YearStart or YearFinish can be used.
@@ -29,11 +30,11 @@ namespace Models
         /// Year when recording finished. For single year either YearStart or YearFinish can be used.
         /// </summary>
         public int? YearFinish { get; init; }
-        
+
         /// <summary>
         /// List of performers associated with the recordings.
         /// </summary>
-        public Performer[] Performers { get; init; }
+        public Performer[] Performers { get; init; } = Array.Empty<Performer>();
         
         /// <summary>
         /// Label which released the recording.
@@ -45,10 +46,10 @@ namespace Models
         /// Length of the recording in minutes.
         /// </summary>
         public int Length { get; init; }
-        
+
         /// <summary>
         /// List of streaming services which can stream the recording.
         /// </summary>
-        public Streamer[] Streamers { get; init; }
+        public Streamer[] Streamers { get; init; } = Array.Empty<Streamer>();
     }
 }
