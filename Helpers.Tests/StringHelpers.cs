@@ -61,6 +61,8 @@ namespace Helpers.Tests
         {
             formatWorkLength(0).ShouldBe("");
             formatWorkLength(-1).ShouldBe("");
+            formatWorkLength(-60).ShouldBe("");
+            formatWorkLength(null).ShouldBe("");
         }
     }
 }
