@@ -47,7 +47,7 @@ jobs:
       - name: executing remote ssh commands using key
         uses: fifsky/ssh-action@master
         with:
-          username: ${{ secrets.SSH_USERNAME }}
+          user: ${{ secrets.SSH_USERNAME }}
           host: ${{ secrets.SSH_HOST }}
           key: ${{ secrets.SSH_KEY }}
           command: |
