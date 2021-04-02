@@ -45,12 +45,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: executing remote ssh commands using key
-        uses: fifsky/ssh-action@master
+        uses: appleboy/ssh-action@master
         with:
-          user: ${{ secrets.SSH_USERNAME }}
+          username: ${{ secrets.SSH_USERNAME }}
           host: ${{ secrets.SSH_HOST }}
           key: ${{ secrets.SSH_KEY }}
-          command: |
+          script: |
             cd ~/traefik
             docker-compose pull
             docker-compose down
