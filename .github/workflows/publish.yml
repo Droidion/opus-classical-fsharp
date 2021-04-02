@@ -1,4 +1,4 @@
-name: Build, Test & Publish
+name: Build → Test → Dockerize → Publish
 
 on:
   release:
@@ -6,10 +6,9 @@ on:
       - published
 
 jobs:
-  build:
-
+  # Builds .NET solution and runs unit tests
+  build_and_test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - name: Setup .NET
@@ -18,19 +17,20 @@ jobs:
           dotnet-version: 5.0.x
       - name: Restore dependencies
         run: dotnet restore
-      - name: Build
+      - name: Build solution
         run: dotnet build --no-restore
-      - name: Test
+      - name: Run unit tests
         run: dotnet test --no-build --verbosity normal
   
-  publish_to_docker:
-    needs: build
+  # Builds docker image and pushes to Docker Hub
+  push_to_docker:
+    needs: build_and_test
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
-      - name: Push to Docker Hub
+      - name: Build docker image and push to Docker Hub
         uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -40,11 +40,12 @@ jobs:
           tag_with_ref: true
           add_git_labels: true
           
-  create_new_container:
-    needs: publish_to_docker
+  # Pulls docker images from Docker Hub on production cloud instance and reruns the containers using SSH        
+  publish_to_prod:
+    needs: push_to_docker
     runs-on: ubuntu-latest
     steps:
-      - name: executing remote ssh commands using key
+      - name: SSH to remote server, pull images and rerun containers
         uses: appleboy/ssh-action@master
         with:
           username: ${{ secrets.SSH_USERNAME }}

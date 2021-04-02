@@ -1,14 +1,13 @@
-name: Build & Test
+name: Build → Test
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  build:
-
+  # Builds .NET solution and runs unit tests
+  build_and_test:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
