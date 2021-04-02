@@ -9,6 +9,7 @@ jobs:
   # Builds .NET solution and runs unit tests
   build_and_test:
     runs-on: ubuntu-latest
+    name: Build → Test 
     steps:
       - uses: actions/checkout@v2
       - name: Setup .NET
@@ -25,7 +26,7 @@ jobs:
   # Builds docker image and pushes to Docker Hub
   push_to_docker:
     needs: build_and_test
-    name: Push Docker image to Docker Hub
+    name: Dockerize
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
@@ -43,6 +44,7 @@ jobs:
   # Pulls docker images from Docker Hub on production cloud instance and reruns the containers using SSH        
   publish_to_prod:
     needs: push_to_docker
+    name: Publish
     runs-on: ubuntu-latest
     steps:
       - name: SSH to remote server, pull images and rerun containers

@@ -7,6 +7,7 @@ on:
 jobs:
   # Builds .NET solution and runs unit tests
   build_and_test:
+    name: Build → Test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
