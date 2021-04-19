@@ -28,6 +28,11 @@ module Helpers =
             use! reader =
                 conn.ExecuteReaderAsync(sql, data)
                 |> Async.AwaitTask
-
-            return mapper reader
+                
+            let mapRes = mapper reader
+            
+            reader.Close()
+            conn.Close()
+                
+            return mapRes
         }
