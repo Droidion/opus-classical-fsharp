@@ -154,6 +154,7 @@
         <PackageReference Include="FSharp.Configuration" Version="2.0.0-alpha3" />
         <PackageReference Include="FSharp.Json" Version="0.4.0" />
         <PackageReference Include="Legivel" Version="0.4.6" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Npgsql" Version="5.0.4" />
         <PackageReference Include="Saturn" Version="0.15.0-preview03" />
         <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />

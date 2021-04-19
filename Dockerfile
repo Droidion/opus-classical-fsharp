@@ -16,4 +16,4 @@ RUN dotnet publish -c release -o /DockerOutput/SiteSaturn
 FROM mcr.microsoft.com/dotnet/aspnet:5.0.5-alpine3.13-amd64
 WORKDIR /DockerOutput/SiteSaturn
 COPY --from=build-env /DockerOutput/SiteSaturn ./
-ENTRYPOINT ["./SiteSaturn", "SiteSaturn.dll"]
+ENTRYPOINT ["dotnet", "SiteSaturn.dll"]
