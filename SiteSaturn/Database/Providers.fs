@@ -1,5 +1,6 @@
 namespace SiteSaturn.Database.Providers
 
+open System
 open System.Data
 open Giraffe
 open SiteSaturn.Database
@@ -7,19 +8,10 @@ open SiteSaturn.Models
 open FSharp.Json
 
 module Helpers =
-    let extractorList<'a> (reader: IDataReader) =
+    let extractor (reader: IDataReader) =
         let hasValue = reader.Read()
         if hasValue then
-            let res = reader.GetString(0)
-            Json.deserialize<'a list> res
-        else
-            []
-            
-    let extractorSingle<'a> (reader: IDataReader) =
-        let hasValue = reader.Read()
-        if hasValue then
-            let res = reader.GetString(0)
-            res |> Json.deserialize<'a> |> Some
+            reader.GetString(0) |> Some
         else
             None
             
@@ -43,17 +35,39 @@ module Helpers =
 module Periods =
     open Helpers
     
-    let list : Async<Period list> =
+    let list : Period list =
         let sql = SqlRequests.periodsAndComposers
-        query<Period list> sql None extractorList<Period>
+        let redisKey = "opusclassical:periods"
+        let cached = Redis.retrieveRedis redisKey
+        match cached with
+        | Some c -> Json.deserialize<Period list> c
+        | None ->
+            let json = query<string option> sql None extractor |> Async.RunSynchronously
+            if json.IsSome then 
+                Redis.storeRedis redisKey json.Value (TimeSpan(1, 0, 0)) |> ignore
+                json.Value |> Json.deserialize<Period list>
+            else
+                []
+        
 
 module Composers =
     open Helpers
     
-    let list (slug: string) : Async<Composer option> =
+    let get (slug: string) : Composer option =
         let data = dict ["ComposerSlug", box slug]
         let sql = SqlRequests.composerBySlug
-        query<Composer option> sql (Some data) extractorSingle<Composer>
+        let redisKey = $"opusclassical:composer:{slug}"
+        let cached = Redis.retrieveRedis redisKey
+        match cached with
+        | Some c -> Json.deserialize<Composer> c |> Some
+        | None ->
+            let json = query<string option> sql (Some data) extractor |> Async.RunSynchronously
+            if json.IsSome then
+                Redis.storeRedis redisKey json.Value (TimeSpan(0, 1, 0)) |> ignore
+                json.Value |> Json.deserialize<Composer> |> Some
+            else
+                None
+        
         
 module Works =
     open Helpers
@@ -71,15 +85,23 @@ module Works =
 module Genres =
     open Helpers
     
-    let list (composerId: int) : Async<Genre list> =
+    let list (composerId: int) : Genre list =
         let data = dict ["ComposerId", box composerId]
         let sql = SqlRequests.genresAndWorksByComposer
-        query<Genre list> sql (Some data) extractorList<Genre>
+        let json = query<string option> sql (Some data) extractor |> Async.RunSynchronously
+        if json.IsSome then
+            json.Value |> Json.deserialize<Genre list>
+        else
+            []
         
 module Recordings =
     open Helpers
     
-    let list (workId: int) : Async<Recording list> =
+    let list (workId: int) : Recording list =
         let data = dict ["WorkId", box workId]
         let sql = SqlRequests.recordingsByWork
-        query<Recording list> sql (Some data) extractorList<Recording>
+        let json = query<string option> sql (Some data) extractor |> Async.RunSynchronously
+        if json.IsSome then
+            json.Value |> Json.deserialize<Recording list>
+        else
+            []

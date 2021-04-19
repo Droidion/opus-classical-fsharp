@@ -13,6 +13,7 @@
     <ItemGroup>
       <Content Include=".dockerignore" />
       <Content Include="Dockerfile" />
+      <Compile Include="Database\Redis.fs" />
       <Compile Include="Database\Helpers.fs" />
       <Compile Include="Database\SqlRequests.fs" />
       <Compile Include="Database\Providers.fs" />
@@ -157,6 +158,7 @@
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Npgsql" Version="5.0.4" />
         <PackageReference Include="Saturn" Version="0.15.0-preview03" />
+        <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
         <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
     </ItemGroup>
 

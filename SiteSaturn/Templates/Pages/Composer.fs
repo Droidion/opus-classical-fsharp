@@ -7,8 +7,7 @@ open SiteSaturn.Database.Providers
 
 let view (composer: Composer) =
 
-    let genres =
-        Genres.list composer.id |> Async.RunSynchronously
+    let genres = Genres.list composer.id
 
     let pageTitle = composer.lastName
     let pageDescription = $"List of important compositions by {composer.firstName} {composer.lastName}."

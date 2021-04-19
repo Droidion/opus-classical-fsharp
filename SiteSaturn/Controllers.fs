@@ -6,7 +6,7 @@ open SiteSaturn.Database.Providers
 
 let index =
     let handler ctx =
-        let periods = Periods.list |> Async.RunSynchronously
+        let periods = Periods.list
         Index.view periods |> Controller.renderHtml ctx
 
     controller { index handler }
@@ -19,16 +19,11 @@ let work composerSlug =
     let handler ctx workId =
         let composer =
             composerSlug
-            |> Composers.list
-            |> Async.RunSynchronously
+            |> Composers.get
 
-        let work =
-            workId |> Works.get |> Async.RunSynchronously
+        let work = workId |> Works.get |> Async.RunSynchronously
 
-        let recordings =
-            workId
-            |> Recordings.list
-            |> Async.RunSynchronously
+        let recordings = workId |> Recordings.list
 
         let childWorks =
             workId |> Works.getChild |> Async.RunSynchronously
@@ -44,8 +39,7 @@ let work composerSlug =
 
 let composer =
     let handler ctx slug =
-        let composer =
-            slug |> Composers.list |> Async.RunSynchronously
+        let composer = slug |> Composers.get
 
         let view =
             match composer with
