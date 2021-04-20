@@ -1,9 +1,10 @@
 module SiteSaturn.Templates.Partials
 
+open System
 open Giraffe.ViewEngine
 open SiteSaturn.Models
 
-let mutable coversUrl = ""
+let private coversUrl = Environment.GetEnvironmentVariable("StaticAssetsUrl")
 
 /// Checks if given string is a 4 digits number, like "1234" (not "-123", "123", or "12345")
 let private validDigits (str: string) : bool = str.Length = 4 && str.[0] <> '-'
@@ -32,12 +33,8 @@ let public formatYearsRangeLoose (startYear: int option) (finishYear: int option
     match (startYear, finishYear) with
     | Some start, None when string start |> validDigits -> string start
     | None, Some finish -> string finish
-    | Some start, Some finish when
-        string start |> validDigits
-        && string finish |> validDigits |> not -> string start
-    | Some start, Some finish when
-        string start |> validDigits |> not
-        && string finish |> validDigits -> string finish
+    | Some start, Some finish when string start |> validDigits && string finish |> validDigits |> not -> string start
+    | Some start, Some finish when string start |> validDigits |> not && string finish |> validDigits -> string finish
     | Some start, Some finish when centuryEqual start finish -> $"{start}–{(string finish).[2..3]}"
     | Some start, Some finish -> $"{start}–{finish}"
     | _, _ -> ""
@@ -45,10 +42,10 @@ let public formatYearsRangeLoose (startYear: int option) (finishYear: int option
 /// Formats minutes into a string with hours and minutes, like "2h 35m"
 let public formatWorkLength (lengthInMinutes: int option) : string =
     let length =
-        if lengthInMinutes.IsSome then
-            lengthInMinutes.Value
-        else
-            0
+        match lengthInMinutes with
+        | Some len -> len
+        | None -> 0
+
 
     let hours = length / 60
     let minutes = length % 60
@@ -60,6 +57,7 @@ let public formatWorkLength (lengthInMinutes: int option) : string =
     | h, 0 -> $"{h}h"
     | h, m -> $"{h}h {m}m"
 
+/// Header with menu
 let header =
     header [ _class "header" ] [
         a [ _href "/" ] [
@@ -81,6 +79,7 @@ let header =
         ]
     ]
 
+/// Footer
 let footer =
     footer [] [
         a [ _title "Github repository"
@@ -91,6 +90,7 @@ let footer =
         ]
     ]
 
+/// Composer card
 let composerCard (composer: Composer) =
     let composerDisabled =
         if composer.enabled then
@@ -111,12 +111,12 @@ let composerCard (composer: Composer) =
             ]
             span [ _class "vertical-separator" ] []
             span [] [
-                formatYearsRangeStrict composer.yearBorn composer.yearDied
-                |> str
+                formatYearsRangeStrict composer.yearBorn composer.yearDied |> str
             ]
         ]
     ]
 
+/// Work card
 let workCard (work: Work) =
     div [ _class "card" ] [
         div [] [
@@ -124,13 +124,14 @@ let workCard (work: Work) =
             if work.no.IsSome then
                 span [] [ str $" No. {work.no.Value}" ]
             if work.nickname.IsSome then
-                cite [] [ str $" {work.nickname.Value}" ]
+                cite [] [
+                    str $" {work.nickname.Value}"
+                ]
             if work.key.IsSome then
                 span [] [ str $" in {work.key.Value}" ]
         ]
         div [ _class "card__subtitle" ] [
-            if work.catalogueName.IsSome
-               && work.catalogueNumber.IsSome then
+            if work.catalogueName.IsSome && work.catalogueNumber.IsSome then
                 span [] [
                     str $"{work.catalogueName.Value} {work.catalogueNumber.Value}"
                     if work.cataloguePostfix.IsSome then
@@ -150,6 +151,7 @@ let workCard (work: Work) =
         ]
     ]
 
+/// Recording card
 let recordingCard (recording: Recording) =
     div [ _class "card illustrated" ] [
         img [ _class "cover"
@@ -170,18 +172,14 @@ let recordingCard (recording: Recording) =
                 if recording.label.IsSome then
                     span [] [ str recording.label.Value ]
                     span [ _class "vertical-separator" ] []
-                if recording.yearStart.IsSome
-                   || recording.yearFinish.IsSome then
+                if recording.yearStart.IsSome || recording.yearFinish.IsSome then
                     span [] [
                         str (formatYearsRangeLoose recording.yearStart recording.yearFinish)
                     ]
 
                     span [ _class "vertical-separator" ] []
                 span [] [
-                    recording.length
-                    |> Some
-                    |> formatWorkLength
-                    |> str
+                    recording.length |> Some |> formatWorkLength |> str
                 ]
             ]
 

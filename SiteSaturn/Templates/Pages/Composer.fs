@@ -7,10 +7,12 @@ open SiteSaturn.Database.Providers
 
 let view (composer: Composer) =
 
-    let genres = Genres.list composer.id
+    let genres = listGenres composer.id
 
     let pageTitle = composer.lastName
-    let pageDescription = $"List of important compositions by {composer.firstName} {composer.lastName}."
+
+    let pageDescription =
+        $"List of important compositions by {composer.firstName} {composer.lastName}."
 
     [ h1 [] [
         str $"{composer.firstName} {composer.lastName}"
@@ -20,7 +22,9 @@ let view (composer: Composer) =
               str (String.concat ", " composer.countries)
           ]
           span [ _class "vertical-separator" ] []
-          span [] [ str (Partials.formatYearsRangeStrict composer.yearBorn composer.yearDied) ]
+          span [] [
+              str (Partials.formatYearsRangeStrict composer.yearBorn composer.yearDied)
+          ]
           if composer.wikipediaLink.IsSome then
               span [ _class "vertical-separator" ] []
 

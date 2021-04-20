@@ -5,7 +5,9 @@ open SiteSaturn.Templates
 
 let view =
     let pageTitle = "About"
-    let pageDescription = "What is this service all about. Its current status, support, and future plans."
+
+    let pageDescription =
+        "What is this service all about. Its current status, support, and future plans."
 
     [ h1 [] [ str pageTitle ]
       p [] [

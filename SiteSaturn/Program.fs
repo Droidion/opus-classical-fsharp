@@ -5,13 +5,8 @@ open Microsoft.Extensions.Primitives
 open Saturn
 open Microsoft.Extensions.Hosting
 open Microsoft.AspNetCore.Builder
-open SiteSaturn.Database
 open Site
-open SiteSaturn.Templates
 open System
-
-Helpers.conn <- Environment.GetEnvironmentVariable("DbConnectionString")
-Partials.coversUrl <- Environment.GetEnvironmentVariable("StaticAssetsUrl")
 
 type CacheControl =
     | NoCacheControl
@@ -24,14 +19,11 @@ let useStaticFiles cache (app: IApplicationBuilder) =
         let handler (ctx: StaticFileResponseContext) =
             ctx.Context.Response.Headers.Add("Cache-Control", StringValues(value))
 
-        let action =
-            System.Action<StaticFileResponseContext>(handler)
-
+        let action = System.Action<StaticFileResponseContext>(handler)
         app.UseStaticFiles(StaticFileOptions(OnPrepareResponse = action))
 
 let setWebRootPath path (builder: IWebHostBuilder) =
-    let p =
-        Path.Combine(Directory.GetCurrentDirectory(), path)
+    let p = Path.Combine(Directory.GetCurrentDirectory(), path)
 
     builder.UseWebRoot(p)
 

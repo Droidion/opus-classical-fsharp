@@ -11,7 +11,11 @@ let view (periods: Period list) =
     [ h1 [] [ str pageTitle ]
       for period in periods do
           h2 [] [
-              let yearEnd = match period.yearEnd with | Some y -> string y | None -> ""
+              let yearEnd =
+                  match period.yearEnd with
+                  | Some y -> string y
+                  | None -> ""
+
               str $"{period.name}, {period.yearStart}–{yearEnd}"
           ]
 

@@ -1,3 +1,4 @@
+/// SQL requests as string literals
 module SiteSaturn.Database.SqlRequests
 
 /// Select users with the given login
@@ -25,7 +26,7 @@ let composerBySlug = "
     where c.slug = @ComposerSlug
     group by c.id, c.last_name, c.first_name, c.year_born, c.year_died
     order by c.last_name"
-    
+
 /// Select composers grouped by music periods
 let periodsAndComposers = "
     select json_agg(json_build_object(
@@ -71,7 +72,7 @@ let periodsAndComposers = "
                                   c.imslp_link, c.period_id
           ) c on p.id = c.period_id
           group by p.id, p.name, p.year_start, p.year_end, p.slug) p"
-          
+
 /// Select work by its id
 let workById = "
     select w.id,
@@ -89,7 +90,7 @@ let workById = "
              left join catalogues c on w.catalogue_id = c.id
              left join keys k on w.key_id = k.id
     where w.id = @Id"
-    
+
 /// Select works by their parent work Id
 let childWorks = @"
     select w.id,
@@ -108,7 +109,7 @@ let childWorks = @"
              left join keys k on w.key_id = k.id
     where w.parent_work_id = @Id
     order by year_finish, no, catalogue_number, catalogue_postfix, nickname"
-    
+
 /// Select works grouped by genres by composer Id
 let genresAndWorksByComposer = "
     select json_agg(json_build_object(
@@ -139,7 +140,7 @@ let genresAndWorksByComposer = "
           where w.composer_id = @ComposerId
           group by g.name,
                    g.icon) g"
-                   
+
 /// Select recordings of certain work
 let recordingsByWork = "
     select jsonb_agg(jsonb_build_object(

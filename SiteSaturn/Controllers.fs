@@ -3,10 +3,12 @@ module SiteSaturn.Controllers
 open Saturn
 open SiteSaturn.Templates.Pages
 open SiteSaturn.Database.Providers
+open FSharp.Json
+open SiteSaturn.Models
 
 let index =
     let handler ctx =
-        let periods = Periods.list
+        let periods = listPeriods
         Index.view periods |> Controller.renderHtml ctx
 
     controller { index handler }
@@ -17,16 +19,25 @@ let about =
 
 let work composerSlug =
     let handler ctx workId =
-        let composer =
-            composerSlug
-            |> Composers.get
+        let composer = composerSlug |> getComposer
 
-        let work = workId |> Works.get |> Async.RunSynchronously
+        let parallelData =
+            async {
+                let! work = Async.StartChild(workId |> getWorks)
+                let! recordings = Async.StartChild(workId |> listRecordings)
+                let! childWorks = Async.StartChild(workId |> getChildWorks)
+                let! workResult = work
+                let! recordingsResult = recordings
+                let! childWorksResult = childWorks
+                return workResult, recordingsResult, childWorksResult
+            }
 
-        let recordings = workId |> Recordings.list
+        let work, recordings, childWorks = parallelData |> Async.RunSynchronously
 
-        let childWorks =
-            workId |> Works.getChild |> Async.RunSynchronously
+        let recordings =
+            match recordings.IsSome with
+            | true -> recordings.Value |> Json.deserialize<Recording list>
+            | false -> []
 
         let view =
             match composer, work with
@@ -39,7 +50,7 @@ let work composerSlug =
 
 let composer =
     let handler ctx slug =
-        let composer = slug |> Composers.get
+        let composer = slug |> getComposer
 
         let view =
             match composer with

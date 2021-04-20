@@ -8,7 +8,9 @@ open SiteSaturn.Templates.Partials
 let view (composer: Composer) (work: Work) (recordings: Recording list) (childWorks: Work list) =
 
     let pageTitle = $"{work.title} - {composer.lastName}"
-    let pageDescription = $"List of good {work.title} recordings composed by {composer.firstName} {composer.lastName} with direct links to the streaming apps."
+
+    let pageDescription =
+        $"List of good {work.title} recordings composed by {composer.firstName} {composer.lastName} with direct links to the streaming apps."
 
     [ h1 [] [
         str work.title
