@@ -4,6 +4,7 @@ open Giraffe.ViewEngine
 open SiteSaturn.Models
 open SiteSaturn.Templates
 open SiteSaturn.Templates.Partials
+open SiteSaturn.Templates.Helpers
 
 let view (composer: Composer) (work: Work) (recordings: Recording list) (childWorks: Work list) =
 

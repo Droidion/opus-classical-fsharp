@@ -1,3 +1,4 @@
+/// Endpoints for retrieving data
 module SiteSaturn.Database.Providers
 
 open System
@@ -5,7 +6,7 @@ open Giraffe
 open SiteSaturn.Database
 open SiteSaturn.Models
 open FSharp.Json
-open Helpers
+open Postgres
 
 /// Returns all periods
 let listPeriods : Period list =
@@ -17,7 +18,7 @@ let listPeriods : Period list =
     | Some c -> Json.deserialize<Period list> c
     | None ->
         let json =
-            query<string option> sql None extractor |> Async.RunSynchronously
+            query<string option> sql None extractSingleCell |> Async.RunSynchronously
 
         match json.IsSome with
         | true ->
@@ -36,7 +37,7 @@ let getComposer (slug: string) : Composer option =
     | Some c -> Json.deserialize<Composer> c |> Some
     | None ->
         let json =
-            query<string option> sql (Some data) extractor
+            query<string option> sql (Some data) extractSingleCell
             |> Async.RunSynchronously
 
         match json.IsSome with
@@ -63,7 +64,7 @@ let listGenres (composerId: int) : Genre list =
     let sql = SqlRequests.genresAndWorksByComposer
 
     let json =
-        query<string option> sql (Some data) extractor
+        query<string option> sql (Some data) extractSingleCell
         |> Async.RunSynchronously
 
     match json.IsSome with
@@ -74,4 +75,4 @@ let listGenres (composerId: int) : Genre list =
 let listRecordings (workId: int) : Async<string option> =
     let data = dict [ "WorkId", box workId ]
     let sql = SqlRequests.recordingsByWork
-    query<string option> sql (Some data) extractor
+    query<string option> sql (Some data) extractSingleCell

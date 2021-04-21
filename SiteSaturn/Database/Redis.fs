@@ -3,20 +3,40 @@ module SiteSaturn.Database.Redis
 
 open System
 open StackExchange.Redis
+open SiteSaturn.Helpers
 
 /// Connection pool
-let private redis =
-    ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("RedisConnectionString"))
+let private redisPool =
+    try
+        let pool =
+            ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("RedisConnectionString"))
+
+        Some pool
+    with ex -> exToSentry ex "Problem with creating Redis connection pool"
 
 /// Single DB connection
-let private db = redis.GetDatabase()
+let private redisConn =
+    match redisPool with
+    | Some r ->
+        try
+            let db = r.GetDatabase()
+            Some db
+        with ex -> exToSentry ex "Problem with opening Redis database"
+    | None -> None
 
 /// Save key-value to Redis
 let storeRedis (key: string) (value: string) (life: TimeSpan) : bool =
-    db.StringSet(RedisKey key, RedisValue value, life)
+    match redisConn with
+    | Some db -> db.StringSet(RedisKey key, RedisValue value, life)
+    | None -> false
 
 /// Get key-value from Redis
 let retrieveRedis (key: string) : string option =
-    match db.StringGet(RedisKey key) with
-    | value when value.HasValue -> value |> string |> Some
-    | _ -> None
+    match redisConn with
+    | Some db ->
+        let value = db.StringGet(RedisKey key)
+
+        match value.HasValue with
+        | true -> value |> string |> Some
+        | false -> None
+    | None -> None

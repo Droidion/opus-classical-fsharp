@@ -7,6 +7,8 @@ open Microsoft.Extensions.Hosting
 open Microsoft.AspNetCore.Builder
 open Site
 open System
+open Sentry
+open SiteSaturn.Templates
 
 type CacheControl =
     | NoCacheControl
@@ -36,6 +38,7 @@ let app =
         webhost_config (setWebRootPath "static")
         use_gzip
         memory_cache
+        error_handler (fun _ _ -> pipeline { render_html Pages.Error.view })
 
         app_config
             (fun app ->
@@ -48,5 +51,6 @@ let app =
 
 [<EntryPoint>]
 let main _ =
+    use __ = SentrySdk.Init (Environment.GetEnvironmentVariable("SentryDsn"))
     run app
     0

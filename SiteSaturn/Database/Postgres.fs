@@ -1,5 +1,5 @@
-/// Database-related helpers
-module SiteSaturn.Database.Helpers
+/// Operations with Postgres
+module SiteSaturn.Database.Postgres
 
 open System
 open System.Data
@@ -7,24 +7,24 @@ open Dapper
 open Npgsql
 open System.Collections.Generic
 open SiteSaturn.Models
+open Sentry
 
-/// Database connection
 let private connectionString = Environment.GetEnvironmentVariable("DbConnectionString")
 
 /// Converts null string value returned from Postgres to option
-let private extractNullableString (reader: IDataReader) (index: int) =
+let private extractNullableString (reader: IDataReader) (index: int) : string option =
     match reader.IsDBNull(index) with
     | true -> None
     | false -> reader.GetString(index) |> Some
 
 /// Converts null int value returned from Postgres to option
-let private extractNullableInt (reader: IDataReader) (index: int) =
+let private extractNullableInt (reader: IDataReader) (index: int) : int option =
     match reader.IsDBNull(index) with
     | true -> None
     | false -> reader.GetInt32(index) |> Some
 
 /// Extracts json as single returned string cell
-let extractor (reader: IDataReader) =
+let extractSingleCell (reader: IDataReader) : string option =
     match reader.Read() with
     | true -> reader.GetString(0) |> Some
     | false -> None
@@ -48,15 +48,20 @@ let workMapper (reader: IDataReader) : Work list =
 /// Makes simple SELECT to the database
 let query<'a> (sql: string) (parameters: IDictionary<string, obj> option) (mapper: IDataReader -> 'a) : Async<'a> =
     async {
-        use conn = new NpgsqlConnection(connectionString)
+        try
+            use conn = new NpgsqlConnection(connectionString)
 
-        let data =
-            match parameters with
-            | Some d -> d
-            | None -> null
+            let data =
+                match parameters with
+                | Some d -> d
+                | None -> null
 
-        use! reader = conn.ExecuteReaderAsync(sql, data) |> Async.AwaitTask
+            use! reader = conn.ExecuteReaderAsync(sql, data) |> Async.AwaitTask
 
-        let mapRes = mapper reader
-        return mapRes
+            let mapRes = mapper reader
+            return mapRes
+        with ex ->
+            SentrySdk.AddBreadcrumb "Problem with making Postgres request"
+            SentrySdk.CaptureException(ex) |> ignore
+            return raise ex
     }

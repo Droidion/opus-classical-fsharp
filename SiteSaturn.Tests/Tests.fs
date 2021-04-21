@@ -2,7 +2,7 @@
 
 open Shouldly
 open Xunit
-open SiteSaturn.Templates.Partials
+open SiteSaturn.Templates.Helpers
 
 [<Fact>]
 let formatYearsRangeStrict_FormatsAsExpected () =

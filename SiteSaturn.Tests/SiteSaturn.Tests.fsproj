@@ -6,6 +6,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="Tests.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Update="FSharp.Core" Version="5.0.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
         <PackageReference Include="Shouldly" Version="4.0.3" />

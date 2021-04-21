@@ -4,6 +4,7 @@ open Giraffe.ViewEngine
 open SiteSaturn.Models
 open SiteSaturn.Templates
 open SiteSaturn.Database.Providers
+open SiteSaturn.Templates.Helpers
 
 let view (composer: Composer) =
 
@@ -23,7 +24,7 @@ let view (composer: Composer) =
           ]
           span [ _class "vertical-separator" ] []
           span [] [
-              str (Partials.formatYearsRangeStrict composer.yearBorn composer.yearDied)
+              str (formatYearsRangeStrict composer.yearBorn composer.yearDied)
           ]
           if composer.wikipediaLink.IsSome then
               span [ _class "vertical-separator" ] []

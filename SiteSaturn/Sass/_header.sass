@@ -15,10 +15,13 @@
     background-color: white
     height: 6rem
     position: sticky
-  
+
+.logo-link:hover
+  text-decoration: none
+    
 .brand
   @include mixins.centered-flex()
-  
+
   &__logo
     height: 36px
     width: 36px
@@ -27,15 +30,29 @@
       height: 72px
       width: 72px
   
-  &__name
-    font-family: 'Domine', serif
-    font-size: 1rem
-    font-weight: 600
+  &__title
     margin-left: 0.5rem
 
     @include mixins.mq('desktop')
-      font-size: 2rem
       margin-left: 1rem
+      
+  &__name
+    font-family: 'Domine', serif
+    font-size: 1rem
+    line-height: 1.4rem
+    font-weight: 600
+
+    @include mixins.mq('desktop')
+      line-height: 2rem
+      font-size: 2rem
+  
+  &__description
+    font-size: 0.7rem
+    line-height: 0.8rem
+
+    @include mixins.mq('desktop')
+      line-height: 1.4rem
+      font-size: 1rem
 
 .menu
   @include mixins.centered-flex()

@@ -4,6 +4,13 @@ open Giraffe.ViewEngine
 
 /// Top-level layout template
 module App =
+    
+    let private fontLink name =
+        link [ _rel "preload"
+               attr "as" "font"
+               _type "font/woff2"
+               _href $"/fonts/{name}.woff2"
+               _crossorigin "true" ]
 
     /// Renders HTML
     let view (pageTitle: string, pageDescription: string) (content: XmlNode list) =
@@ -42,26 +49,10 @@ module App =
                        _color "#5bbad5" ]
                 link [ _rel "stylesheet"
                        _href "/css/site.css" ]
-                link [ _rel "preload"
-                       attr "as" "font"
-                       _type "font/woff2"
-                       _href "/fonts/domine-v11-latin-600.woff2"
-                       _crossorigin "true" ]
-                link [ _rel "preload"
-                       attr "as" "font"
-                       _type "font/woff2"
-                       _href "/fonts/roboto-v20-latin-regular.woff2"
-                       _crossorigin "true" ]
-                link [ _rel "preload"
-                       attr "as" "font"
-                       _type "font/woff2"
-                       _href "/fonts/roboto-v20-latin-italic.woff2"
-                       _crossorigin "true" ]
-                link [ _rel "preload"
-                       attr "as" "font"
-                       _type "font/woff2"
-                       _href "/fonts/roboto-v20-latin-300.woff2"
-                       _crossorigin "true" ]
+                fontLink "domine-v11-latin-600"
+                fontLink "roboto-v20-latin-regular"
+                fontLink "roboto-v20-latin-italic"
+                fontLink "roboto-v20-latin-300"
             ]
             body [] [
                 Partials.header

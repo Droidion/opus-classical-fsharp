@@ -13,10 +13,12 @@
     <ItemGroup>
       <Content Include=".dockerignore" />
       <Content Include="Dockerfile" />
+      <Compile Include="Helpers.fs" />
       <Compile Include="Database\Redis.fs" />
-      <Compile Include="Database\Helpers.fs" />
+      <Compile Include="Database\Postgres.fs" />
       <Compile Include="Database\SqlRequests.fs" />
       <Compile Include="Database\Providers.fs" />
+      <Compile Include="Templates\Helpers.fs" />
       <Compile Include="Templates\Partials.fs" />
       <Compile Include="Templates\App.fs" />
       <Compile Include="Templates\Pages\Index.fs" />
@@ -24,6 +26,7 @@
       <Compile Include="Templates\Pages\Work.fs" />
       <Compile Include="Templates\Pages\Composer.fs" />
       <Compile Include="Templates\Pages\NotFound.fs" />
+      <Compile Include="Templates\Pages\Error.fs" />
       <Compile Include="Controllers.fs" />
       <Compile Include="Router.fs" />
       <Compile Include="Program.fs" />
@@ -132,6 +135,11 @@
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <Content Include="static\img\composers-logo-white.webp">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <Content Include="static\img\github-logo.svg">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -158,6 +166,7 @@
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Npgsql" Version="5.0.4" />
         <PackageReference Include="Saturn" Version="0.15.0-preview03" />
+        <PackageReference Include="Sentry" Version="3.3.1" />
         <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
         <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
     </ItemGroup>
