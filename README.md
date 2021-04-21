@@ -2,8 +2,6 @@
 
 ![example workflow](https://github.com/Droidion/composers/actions/workflows/dotnet.yml/badge.svg)
 
-[https://opusclassical.net](https://opusclassical.net)
-
 ![Screenshot](Docs/screenshot.png)
 
 Curated catalogue of classical music with quick links to streaming services.
