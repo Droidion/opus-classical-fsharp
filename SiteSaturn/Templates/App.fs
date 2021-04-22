@@ -1,10 +1,23 @@
 namespace SiteSaturn.Templates
 
+open System
+open System.IO
+open System.Security.Cryptography
+open System.Text
+open FSharpPlus
 open Giraffe.ViewEngine
 
 /// Top-level layout template
 module App =
-    
+    let computeFileHash (path: string) : string =
+        File.ReadAllText(path)
+        |> Encoding.UTF8.GetBytes
+        |> (new SHA256Managed()).ComputeHash
+        |> BitConverter.ToString
+        |> String.replace "-" ""
+
+    let cssHash = computeFileHash "static/css/site.css"
+
     let private fontLink name =
         link [ _rel "preload"
                attr "as" "font"
@@ -48,7 +61,7 @@ module App =
                        _href "safari-pinned-tab.svg"
                        _color "#5bbad5" ]
                 link [ _rel "stylesheet"
-                       _href "/css/site.css" ]
+                       _href $"/css/site.css?v={cssHash}" ]
                 fontLink "domine-v11-latin-600"
                 fontLink "roboto-v20-latin-regular"
                 fontLink "roboto-v20-latin-italic"
