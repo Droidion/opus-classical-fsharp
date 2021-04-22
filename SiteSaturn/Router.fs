@@ -9,7 +9,7 @@ let addHeaders =
     pipeline {
         set_header "Strict-Transport-Security" "max-age=31536000; includeSubDomains"
         plug putSecureBrowserHeaders
-        plug (publicResponseCaching 600 None)
+        // plug (publicResponseCaching 600 None)
     }
 
 let main =
