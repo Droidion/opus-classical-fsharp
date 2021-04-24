@@ -108,7 +108,7 @@ let childWorks = @"
              left join catalogues c on w.catalogue_id = c.id
              left join keys k on w.key_id = k.id
     where w.parent_work_id = @Id
-    order by year_finish, no, catalogue_number, catalogue_postfix, nickname"
+    order by sort, year_finish, no, catalogue_number, catalogue_postfix, nickname"
 
 /// Select works grouped by genres by composer Id
 let genresAndWorksByComposer = "
@@ -131,7 +131,7 @@ let genresAndWorksByComposer = "
                                   'key', k.name,
                                   'no', w.no,
                                   'nickname', w.nickname
-                              ) order by w.year_finish, w.no, w.catalogue_number, w.nickname) works
+                              ) order by w.sort, w.year_finish, w.no, w.catalogue_number, w.nickname) works
           from works w
                    join works_genres wg on w.id = wg.work_id
                    join genres g on wg.genre_id = g.id
