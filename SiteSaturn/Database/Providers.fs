@@ -9,7 +9,7 @@ open FSharp.Json
 open Postgres
 
 /// Returns all periods
-let listPeriods : Period list =
+let listPeriods () : Period list =
     let sql = SqlRequests.periodsAndComposers
     let redisKey = "opusclassical:periods"
     let cached = Redis.retrieveRedis redisKey
@@ -18,7 +18,8 @@ let listPeriods : Period list =
     | Some c -> Json.deserialize<Period list> c
     | None ->
         let json =
-            query<string option> sql None extractSingleCell |> Async.RunSynchronously
+            query<string option> sql None extractSingleCell
+            |> Async.RunSynchronously
 
         match json.IsSome with
         | true ->

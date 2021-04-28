@@ -27,7 +27,6 @@ let useStaticFiles cache (app: IApplicationBuilder) =
 
 let setWebRootPath path (builder: IWebHostBuilder) =
     let p = Path.Combine(Directory.GetCurrentDirectory(), path)
-
     builder.UseWebRoot(p)
 
 /// Saturn app
@@ -40,13 +39,13 @@ let app =
         use_gzip
         memory_cache
         error_handler (fun _ _ -> pipeline { render_html Pages.Error.view })
-
         service_config (fun serv -> serv.AddETag())
-        
+
         app_config
             (fun app ->
                 let env = Environment.getWebHostEnvironment app
                 app.UseETag() |> ignore
+
                 if (env.IsDevelopment()) then
                     app.UseDeveloperExceptionPage()
                 else
@@ -55,6 +54,8 @@ let app =
 
 [<EntryPoint>]
 let main _ =
-    use __ = SentrySdk.Init (Environment.GetEnvironmentVariable("SentryDsn"))
+    use __ =
+        SentrySdk.Init(Environment.GetEnvironmentVariable("SentryDsn"))
+
     run app
     0

@@ -8,7 +8,7 @@ open SiteSaturn.Models
 
 let index =
     let handler ctx =
-        let periods = listPeriods
+        let periods = listPeriods ()
         Index.view periods |> Controller.renderHtml ctx
 
     controller { index handler }
