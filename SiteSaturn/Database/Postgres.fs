@@ -44,6 +44,14 @@ let workMapper (reader: IDataReader) : Work list =
                 key = extractNullableString reader 8
                 no = extractNullableInt reader 9
                 nickname = extractNullableString reader 10 } ]
+    
+/// Maps composers search results returned from Dapper to F# model
+let composerSearchResultMapper (reader: IDataReader) : ComposerSearchResult list =
+    [ while reader.Read() do
+          yield
+              { id = reader.GetInt32 0
+                lastName = reader.GetString 1
+                rating = reader.GetDouble 2 } ]
 
 /// Makes simple SELECT to the database
 let query<'a> (sql: string) (parameters: IDictionary<string, obj> option) (mapper: IDataReader -> 'a) : Async<'a> =

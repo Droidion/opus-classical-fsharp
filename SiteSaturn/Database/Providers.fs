@@ -47,6 +47,15 @@ let getComposer (slug: string) : Composer option =
             json.Value |> Json.deserialize<Composer> |> Some
         | false -> None
 
+/// Searches for composers by last name
+let searchComposers (searchQuery: string) (limit: int) : Async<ComposerSearchResult list> =
+    let data =
+        dict [ "SearchQuery", box searchQuery
+               "Limit", box limit ]
+
+    let sql = SqlRequests.searchComposersByLastName
+    query<ComposerSearchResult list> sql (Some data) composerSearchResultMapper
+
 /// Returns works by work id
 let getWorks (id: int) : Async<Work list> =
     let data = dict [ "Id", box id ]

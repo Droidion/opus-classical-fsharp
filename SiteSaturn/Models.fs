@@ -13,6 +13,11 @@ type Composer =
       imslpLink: string option
       enabled: bool } // Show this composer on the main page
 
+type ComposerSearchResult =
+    { id: int
+      lastName: string
+      rating: float }
+
 /// Musical work, like Symphony No. 9 by Beethoven
 type Work = {
     id: int

@@ -27,6 +27,14 @@ let composerBySlug = "
     group by c.id, c.last_name, c.first_name, c.year_born, c.year_died
     order by c.last_name"
 
+/// Fuzzy search composers by last name with limiting results
+let searchComposersByLastName = "
+    select id, last_name, similarity(last_name, @SearchQuery) as last_name_score
+    from composers
+    where last_name % @SearchQuery
+    order by last_name_score desc
+    limit @Limit"
+
 /// Select composers grouped by music periods
 let periodsAndComposers = "
     select json_agg(json_build_object(
