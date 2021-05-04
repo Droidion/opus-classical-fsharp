@@ -21,8 +21,7 @@ let search =
         | true, x ->
             searchComposers (x.ToString()) 5
             |> Async.RunSynchronously
-            |> Json.serialize
-            |> Controller.text ctx
+            |> Controller.json ctx
         | _ ->
             ctx.SetStatusCode 400
             Controller.text ctx ""
