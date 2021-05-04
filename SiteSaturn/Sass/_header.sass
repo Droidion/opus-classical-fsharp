@@ -54,9 +54,24 @@
       line-height: 1.4rem
       font-size: 1rem
 
+.search 
+  position: relative
+ 
+  &__field
+    height: 2rem 
+    padding: 1rem
+    border-radius: 1rem 
+    border: 1px solid colors.$black
+      
+  &__results 
+    position: absolute
+    top: 2.5rem
+    left: 1rem
+      
 .menu
   @include mixins.centered-flex()
   display: flex
+  
 
   &__item
     margin: 0 0.5rem
@@ -64,8 +79,3 @@
     @include mixins.mq('desktop')
       margin: 0 2rem
       
-.search
-  height: 2rem
-  padding: 1rem
-  border-radius: 1rem
-  border: 1px solid colors.$black

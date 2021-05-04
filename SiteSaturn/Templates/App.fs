@@ -62,6 +62,9 @@ module App =
                        _color "#5bbad5" ]
                 link [ _rel "stylesheet"
                        _href $"/css/site.css?v={cssHash}" ]
+                script [ _src $"/js/bundle.js?v={cssHash}"
+                         _type "module"
+                         _defer ] []
                 fontLink "domine-v11-latin-600"
                 fontLink "roboto-v20-latin-regular"
                 fontLink "roboto-v20-latin-italic"

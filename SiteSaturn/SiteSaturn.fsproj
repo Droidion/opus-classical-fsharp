@@ -178,6 +178,13 @@
       <None Include="Sass\_mixins.sass" />
       <None Include="Sass\_reset.sass" />
       <None Include="Sass\site.sass" />
+      <Content Include="rollup.config.js" />
+      <Content Include="Scripts\main.ts" />
+      <Content Include="Scripts\App.svelte" />
+      <Content Include="static\js\bundle.js">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="tsconfig.json" />
     </ItemGroup>
 
 </Project>
