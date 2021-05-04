@@ -1,15 +1,31 @@
 module SiteSaturn.Controllers
 
+open Microsoft.AspNetCore.Http
 open Saturn
 open SiteSaturn.Templates.Pages
 open SiteSaturn.Database.Providers
 open FSharp.Json
 open SiteSaturn.Models
+open Giraffe
 
 let index =
     let handler ctx =
         let periods = listPeriods ()
         Index.view periods |> Controller.renderHtml ctx
+
+    controller { index handler }
+
+let search =
+    let handler (ctx: HttpContext) =
+        match ctx.Request.Query.TryGetValue "q" with
+        | true, x ->
+            searchComposers (x.ToString()) 5
+            |> Async.RunSynchronously
+            |> Json.serialize
+            |> Controller.text ctx
+        | _ ->
+            ctx.SetStatusCode 400
+            Controller.text ctx ""
 
     controller { index handler }
 

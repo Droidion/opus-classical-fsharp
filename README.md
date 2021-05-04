@@ -2,9 +2,11 @@
 
 ![example workflow](https://github.com/Droidion/composers/actions/workflows/dotnet.yml/badge.svg)
 
-![Screenshot](Docs/screenshot.png)
-
 Curated catalogue of classical music with quick links to streaming services.
+
+[API Docs](Docs/api.md)
+
+![Screenshot](Docs/screenshot.png)
 
 - Select composer
 - Select work
