@@ -12,11 +12,19 @@
     // Tuples with search queries: the currently being requested from API, and the last inputted
     let queryStack: [ string?, string? ] = [ undefined, undefined ]
     
-    /** Sends queries to API */
+    /**
+     * Performs request to API
+     * @param query Search query
+     */
+    async function getFromApi(query: string): Promise<SearchResult[]> {
+        const response = await fetch(`/api/search?q=${query}`)
+        return await response.json()
+    }
+    
+    /** Sends queries to API. Implements throttling so that no more than one parallel search request can be executed at each given moment. */
     async function queryApi() {
         if (queryStack[0] !== undefined) {
-            const response = await fetch(`/api/search?q=${queryStack[0]}`)
-            composers = await response.json()
+            composers = await getFromApi(queryStack[0])
             if (queryStack[1] !== undefined) {
                 // Send the latest query to the API after the current one is done
                 queryStack[0] = queryStack[1]

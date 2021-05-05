@@ -264,18 +264,18 @@ class SvelteComponent {
 
 function get_each_context(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[5] = list[i];
+	child_ctx[6] = list[i];
 	return child_ctx;
 }
 
-// (58:8) {#each composers as composer}
+// (67:8) {#each composers as composer}
 function create_each_block(ctx) {
 	let div;
 	let a;
-	let t0_value = /*composer*/ ctx[5].lastName + "";
+	let t0_value = /*composer*/ ctx[6].lastName + "";
 	let t0;
 	let t1;
-	let t2_value = /*composer*/ ctx[5].firstName + "";
+	let t2_value = /*composer*/ ctx[6].firstName + "";
 	let t2;
 	let a_href_value;
 
@@ -286,7 +286,7 @@ function create_each_block(ctx) {
 			t0 = text(t0_value);
 			t1 = text(", ");
 			t2 = text(t2_value);
-			attr(a, "href", a_href_value = "/composer/" + /*composer*/ ctx[5].slug);
+			attr(a, "href", a_href_value = "/composer/" + /*composer*/ ctx[6].slug);
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
@@ -296,10 +296,10 @@ function create_each_block(ctx) {
 			append(a, t2);
 		},
 		p(ctx, dirty) {
-			if (dirty & /*composers*/ 1 && t0_value !== (t0_value = /*composer*/ ctx[5].lastName + "")) set_data(t0, t0_value);
-			if (dirty & /*composers*/ 1 && t2_value !== (t2_value = /*composer*/ ctx[5].firstName + "")) set_data(t2, t2_value);
+			if (dirty & /*composers*/ 1 && t0_value !== (t0_value = /*composer*/ ctx[6].lastName + "")) set_data(t0, t0_value);
+			if (dirty & /*composers*/ 1 && t2_value !== (t2_value = /*composer*/ ctx[6].firstName + "")) set_data(t2, t2_value);
 
-			if (dirty & /*composers*/ 1 && a_href_value !== (a_href_value = "/composer/" + /*composer*/ ctx[5].slug)) {
+			if (dirty & /*composers*/ 1 && a_href_value !== (a_href_value = "/composer/" + /*composer*/ ctx[6].slug)) {
 				attr(a, "href", a_href_value);
 			}
 		},
@@ -432,12 +432,22 @@ function instance($$self, $$props, $$invalidate) {
 	// Tuples with search queries: the currently being requested from API, and the last inputted
 	let queryStack = [undefined, undefined];
 
-	/** Sends queries to API */
+	/**
+ * Performs request to API
+ * @param query Search query
+ */
+	function getFromApi(query) {
+		return __awaiter(this, void 0, void 0, function* () {
+			const response = yield fetch(`/api/search?q=${query}`);
+			return yield response.json();
+		});
+	}
+
+	/** Sends queries to API. Implements throttling so that no more than one parallel search request can be executed at each given moment. */
 	function queryApi() {
 		return __awaiter(this, void 0, void 0, function* () {
 			if (queryStack[0] !== undefined) {
-				const response = yield fetch(`/api/search?q=${queryStack[0]}`);
-				$$invalidate(0, composers = yield response.json());
+				$$invalidate(0, composers = yield getFromApi(queryStack[0]));
 
 				if (queryStack[1] !== undefined) {
 					// Send the latest query to the API after the current one is done
