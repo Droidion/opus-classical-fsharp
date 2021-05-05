@@ -50,8 +50,10 @@ let composerSearchResultMapper (reader: IDataReader) : ComposerSearchResult list
     [ while reader.Read() do
           yield
               { id = reader.GetInt32 0
-                lastName = reader.GetString 1
-                rating = reader.GetDouble 2 } ]
+                firstName = reader.GetString 1
+                lastName = reader.GetString 2
+                slug = reader.GetString 3
+                rating = reader.GetDouble 4 } ]
 
 /// Makes simple SELECT to the database
 let query<'a> (sql: string) (parameters: IDictionary<string, obj> option) (mapper: IDataReader -> 'a) : Async<'a> =

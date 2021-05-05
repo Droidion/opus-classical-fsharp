@@ -1,4 +1,5 @@
 ﻿open System.IO
+open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.StaticFiles
 open Microsoft.Extensions.Primitives
@@ -14,6 +15,13 @@ open BLun.ETagMiddleware
 type CacheControl =
     | NoCacheControl
     | CacheControl of string
+
+let configureCors (builder: CorsPolicyBuilder) =
+    builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+    |> ignore
 
 let useStaticFiles cache (app: IApplicationBuilder) =
     match cache with
@@ -38,9 +46,10 @@ let app =
         webhost_config (setWebRootPath "static")
         use_gzip
         memory_cache
+        use_cors "All" configureCors
         error_handler (fun _ _ -> pipeline { render_html Pages.Error.view })
         service_config (fun serv -> serv.AddETag())
-
+        
         app_config
             (fun app ->
                 let env = Environment.getWebHostEnvironment app
@@ -50,6 +59,7 @@ let app =
                     app.UseDeveloperExceptionPage()
                 else
                     app)
+
     }
 
 [<EntryPoint>]

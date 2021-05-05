@@ -15,7 +15,9 @@ type Composer =
 
 type ComposerSearchResult =
     { id: int
+      firstName: string
       lastName: string
+      slug: string
       rating: float }
 
 /// Musical work, like Symphony No. 9 by Beethoven

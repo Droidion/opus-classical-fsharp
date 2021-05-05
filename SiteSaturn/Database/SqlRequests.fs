@@ -29,9 +29,9 @@ let composerBySlug = "
 
 /// Fuzzy search composers by last name with limiting results
 let searchComposersByLastName = "
-    select id, last_name, similarity(last_name, @SearchQuery) as last_name_score
+    select id, first_name, last_name, slug, similarity(last_name, @SearchQuery) as last_name_score
     from composers
-    where last_name % @SearchQuery
+    where last_name % @SearchQuery and enabled = true
     order by last_name_score desc
     limit @Limit"
 

@@ -264,27 +264,44 @@ class SvelteComponent {
 
 function get_each_context(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[3] = list[i];
+	child_ctx[5] = list[i];
 	return child_ctx;
 }
 
-// (23:8) {#each names as name}
+// (58:8) {#each composers as composer}
 function create_each_block(ctx) {
 	let div;
-	let t_value = /*name*/ ctx[3].lastName + "";
-	let t;
+	let a;
+	let t0_value = /*composer*/ ctx[5].lastName + "";
+	let t0;
+	let t1;
+	let t2_value = /*composer*/ ctx[5].firstName + "";
+	let t2;
+	let a_href_value;
 
 	return {
 		c() {
 			div = element("div");
-			t = text(t_value);
+			a = element("a");
+			t0 = text(t0_value);
+			t1 = text(", ");
+			t2 = text(t2_value);
+			attr(a, "href", a_href_value = "/composer/" + /*composer*/ ctx[5].slug);
 		},
 		m(target, anchor) {
 			insert(target, div, anchor);
-			append(div, t);
+			append(div, a);
+			append(a, t0);
+			append(a, t1);
+			append(a, t2);
 		},
 		p(ctx, dirty) {
-			if (dirty & /*names*/ 1 && t_value !== (t_value = /*name*/ ctx[3].lastName + "")) set_data(t, t_value);
+			if (dirty & /*composers*/ 1 && t0_value !== (t0_value = /*composer*/ ctx[5].lastName + "")) set_data(t0, t0_value);
+			if (dirty & /*composers*/ 1 && t2_value !== (t2_value = /*composer*/ ctx[5].firstName + "")) set_data(t2, t2_value);
+
+			if (dirty & /*composers*/ 1 && a_href_value !== (a_href_value = "/composer/" + /*composer*/ ctx[5].slug)) {
+				attr(a, "href", a_href_value);
+			}
 		},
 		d(detaching) {
 			if (detaching) detach(div);
@@ -299,7 +316,7 @@ function create_fragment(ctx) {
 	let div0;
 	let mounted;
 	let dispose;
-	let each_value = /*names*/ ctx[0];
+	let each_value = /*composers*/ ctx[0];
 	let each_blocks = [];
 
 	for (let i = 0; i < each_value.length; i += 1) {
@@ -338,8 +355,8 @@ function create_fragment(ctx) {
 			}
 		},
 		p(ctx, [dirty]) {
-			if (dirty & /*names*/ 1) {
-				each_value = /*names*/ ctx[0];
+			if (dirty & /*composers*/ 1) {
+				each_value = /*composers*/ ctx[0];
 				let i;
 
 				for (i = 0; i < each_value.length; i += 1) {
@@ -409,17 +426,55 @@ function instance($$self, $$props, $$invalidate) {
 			});
 	};
 
-	let names = [];
+	// Composers found
+	let composers = [];
 
-	function handleSearch(event) {
+	// Tuples with search queries: the currently being requested from API, and the last inputted
+	let queryStack = [undefined, undefined];
+
+	/** Sends queries to API */
+	function queryApi() {
 		return __awaiter(this, void 0, void 0, function* () {
-			const response = yield fetch(`http://localhost:5000/api/search?q=${event.target.value}`);
-			const composers = yield response.json();
-			$$invalidate(0, names = composers);
+			if (queryStack[0] !== undefined) {
+				const response = yield fetch(`/api/search?q=${queryStack[0]}`);
+				$$invalidate(0, composers = yield response.json());
+
+				if (queryStack[1] !== undefined) {
+					// Send the latest query to the API after the current one is done
+					queryStack[0] = queryStack[1];
+
+					queryStack[1] = undefined;
+					yield queryApi();
+				} else {
+					queryStack[0] = undefined;
+				}
+			} else {
+				// Clean up results when there are no more queries
+				$$invalidate(0, composers = []);
+			}
 		});
 	}
 
-	return [names, handleSearch];
+	/**
+ * Saves user input into search field and sends requests to API
+ * @param event User input
+ */
+	function handleSearch(event) {
+		// Convert empty string to undefined so it's more clear
+		const inputEvent = event.target.value || undefined;
+
+		if (queryStack[0] === undefined) {
+			// If no current searches, start the search
+			queryStack[0] = inputEvent;
+
+			queryApi();
+		} else {
+			// If there is active search, save current input for the next search to run
+			queryStack[1] = inputEvent;
+		}
+	}
+
+	return [composers, handleSearch];
 }
 
 class App extends SvelteComponent {
