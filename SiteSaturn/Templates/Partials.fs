@@ -26,7 +26,7 @@ let header =
             ]
         ]
         nav [ _class "menu" ] [
-            div [ _class "menu__item search"
+            div [ _class "menu__item"
                   _id "searchBlock" ] []
             div [ _class "menu__item" ] [
                 a [ _href "/about" ] [ str "About" ]

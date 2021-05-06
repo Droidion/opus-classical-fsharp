@@ -54,19 +54,50 @@
       line-height: 1.4rem
       font-size: 1rem
 
+.search-wrapper
+  position: fixed
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  backdrop-filter: blur(2px)
+  background: rgba(0, 0, 0, 0.35)
+
+.search-button
+  cursor: pointer
+  
+  img
+    width: 18px
+    height: 18px
+
+    @include mixins.mq('desktop')
+      width: 24px
+      height: 24px
+  
 .search 
-  position: relative
- 
+  background: white
+  position: absolute
+  top: 8rem
+  width: 20rem
+  left: calc(50% - 10rem)
+  border: colors.$black-80
+  border-radius: 4px
+  box-shadow: 0 0 0.6rem rgba(0, 0, 0, 0.4)
+  
+  &__result
+    margin: 0 0.4rem 0.4rem 0.4rem
+  
   &__field
+    margin: 0.4rem
     height: 2rem 
-    padding: 1rem
-    border-radius: 1rem 
-    border: 1px solid colors.$black
-      
-  &__results 
-    position: absolute
-    top: 2.5rem
-    left: 1rem
+    padding: 1rem 0.4rem
+    border-radius: 2px 
+    background: colors.$black-10
+    border: 0
+    width: calc(100% - 0.8rem)
+    
+    &:focus
+      outline: none
       
 .menu
   @include mixins.centered-flex()
@@ -77,5 +108,5 @@
     margin: 0 0.5rem
 
     @include mixins.mq('desktop')
-      margin: 0 2rem
+      margin: 0 1rem
       

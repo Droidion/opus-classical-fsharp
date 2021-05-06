@@ -1,7 +1,6 @@
 import App from './App.svelte';
 
-const app = new App({
-    target: document.getElementById('searchBlock'),
-});
+const target = document.getElementById('searchBlock')
+const app = target ? new App({ target }) : undefined;
 
 export default app;

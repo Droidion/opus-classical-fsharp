@@ -1,26 +1,28 @@
 <script lang="ts">
-    type SearchResult = { 
+    type SearchResult = {
         id: number
         firstName: string
         lastName: string
         slug: string
-        rating: number 
+        rating: number
     }
-    
+
     // Composers found
     let composers: SearchResult[] = [];
     // Tuples with search queries: the currently being requested from API, and the last inputted
-    let queryStack: [ string?, string? ] = [ undefined, undefined ]
-    
+    let queryStack: [string | undefined, string | undefined] = [undefined, undefined]
+    // Should search be shown
+    let searchVisible = false;
+
     /**
      * Performs request to API
      * @param query Search query
      */
-    async function getFromApi(query: string): Promise<SearchResult[]> {
+    async function getFromApi(query: string | undefined): Promise<SearchResult[]> {
         const response = await fetch(`/api/search?q=${query}`)
         return await response.json()
     }
-    
+
     /** Sends queries to API. Implements throttling so that no more than one parallel search request can be executed at each given moment. */
     async function queryApi() {
         if (queryStack[0] !== undefined) {
@@ -37,6 +39,53 @@
             // Clean up results when there are no more queries
             composers = []
         }
+    }
+
+    /** Shows search input and results */
+    function showSearch(): void {
+        searchVisible = true
+    }
+
+    /** Hides search input and results */
+    function hideSearch(): void {
+        composers = []
+        searchVisible = false
+    }
+
+    /** Focuses on given element */
+    function focus(el: HTMLElement): void {
+        el.focus()
+    }
+
+    /** Dispatches actions based on keys pressed inside search input */
+    function handleKeydown(event: KeyboardEvent) {
+        if (event.code === 'Escape') {
+            hideSearch()
+        }
+
+        if (event.code === 'Enter' && composers.length > 0) {
+            location.pathname = `/composer/${composers[0].slug}`
+        }
+    }
+
+    /** Executes given handler when user clicked outside given element */
+    function clickOutside(
+        node: HTMLElement,
+        handler: () => void
+    ): { destroy: () => void } {
+        const onClick = (event: MouseEvent) =>
+            node &&
+            !node.contains(event.target as HTMLElement) &&
+            !event.defaultPrevented &&
+            handler();
+
+        document.addEventListener('click', onClick, true);
+
+        return {
+            destroy() {
+                document.removeEventListener('click', onClick, true);
+            },
+        };
     }
 
     /**
@@ -57,11 +106,25 @@
     }
 </script>
 
-<div>
-    <input class="search__field" type="search" placeholder="Search composers" on:input={handleSearch} />
-    <div class="search__results">
-        {#each composers as composer}
-            <div><a href="/composer/{composer.slug}">{composer.lastName}, {composer.firstName}</a></div>
-        {/each}
-    </div>
+
+<div class="search-button" on:click={showSearch}>
+    <img src="/img/search-icon.svg" alt="Search"/>
 </div>
+
+{#if searchVisible}
+    <div class="search-wrapper">
+        <div class="search"
+             use:clickOutside={hideSearch}>
+            <input class="search__field" 
+                   type="search" 
+                   placeholder="Search composers by last name" 
+                   on:input={handleSearch} 
+                   on:keydown={handleKeydown} use:focus/>
+            {#each composers as composer}
+                <div class="search__result">
+                    <a href="/composer/{composer.slug}">{composer.lastName}, {composer.firstName}</a>
+                </div>
+            {/each}
+        </div>
+    </div>
+{/if}

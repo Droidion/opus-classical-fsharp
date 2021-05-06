@@ -17,6 +17,9 @@ function safe_not_equal(a, b) {
 function is_empty(obj) {
     return Object.keys(obj).length === 0;
 }
+function action_destroyer(action_result) {
+    return action_result && is_function(action_result.destroy) ? action_result.destroy : noop;
+}
 
 function append(target, node) {
     target.appendChild(node);
@@ -41,6 +44,9 @@ function text(data) {
 }
 function space() {
     return text(' ');
+}
+function empty() {
+    return text('');
 }
 function listen(node, event, handler, options) {
     node.addEventListener(event, handler, options);
@@ -264,56 +270,16 @@ class SvelteComponent {
 
 function get_each_context(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[6] = list[i];
+	child_ctx[10] = list[i];
 	return child_ctx;
 }
 
-// (67:8) {#each composers as composer}
-function create_each_block(ctx) {
-	let div;
-	let a;
-	let t0_value = /*composer*/ ctx[6].lastName + "";
-	let t0;
-	let t1;
-	let t2_value = /*composer*/ ctx[6].firstName + "";
-	let t2;
-	let a_href_value;
-
-	return {
-		c() {
-			div = element("div");
-			a = element("a");
-			t0 = text(t0_value);
-			t1 = text(", ");
-			t2 = text(t2_value);
-			attr(a, "href", a_href_value = "/composer/" + /*composer*/ ctx[6].slug);
-		},
-		m(target, anchor) {
-			insert(target, div, anchor);
-			append(div, a);
-			append(a, t0);
-			append(a, t1);
-			append(a, t2);
-		},
-		p(ctx, dirty) {
-			if (dirty & /*composers*/ 1 && t0_value !== (t0_value = /*composer*/ ctx[6].lastName + "")) set_data(t0, t0_value);
-			if (dirty & /*composers*/ 1 && t2_value !== (t2_value = /*composer*/ ctx[6].firstName + "")) set_data(t2, t2_value);
-
-			if (dirty & /*composers*/ 1 && a_href_value !== (a_href_value = "/composer/" + /*composer*/ ctx[6].slug)) {
-				attr(a, "href", a_href_value);
-			}
-		},
-		d(detaching) {
-			if (detaching) detach(div);
-		}
-	};
-}
-
-function create_fragment(ctx) {
+// (107:0) {#if searchVisible}
+function create_if_block(ctx) {
 	let div1;
+	let div0;
 	let input;
 	let t;
-	let div0;
 	let mounted;
 	let dispose;
 	let each_value = /*composers*/ ctx[0];
@@ -326,9 +292,9 @@ function create_fragment(ctx) {
 	return {
 		c() {
 			div1 = element("div");
+			div0 = element("div");
 			input = element("input");
 			t = space();
-			div0 = element("div");
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].c();
@@ -336,25 +302,32 @@ function create_fragment(ctx) {
 
 			attr(input, "class", "search__field");
 			attr(input, "type", "search");
-			attr(input, "placeholder", "Search composers");
-			attr(div0, "class", "search__results");
+			attr(input, "placeholder", "Search composers by last name");
+			attr(div0, "class", "search");
+			attr(div1, "class", "search-wrapper");
 		},
 		m(target, anchor) {
 			insert(target, div1, anchor);
-			append(div1, input);
-			append(div1, t);
 			append(div1, div0);
+			append(div0, input);
+			append(div0, t);
 
 			for (let i = 0; i < each_blocks.length; i += 1) {
 				each_blocks[i].m(div0, null);
 			}
 
 			if (!mounted) {
-				dispose = listen(input, "input", /*handleSearch*/ ctx[1]);
+				dispose = [
+					listen(input, "input", /*handleSearch*/ ctx[5]),
+					listen(input, "keydown", /*handleKeydown*/ ctx[4]),
+					action_destroyer(focus.call(null, input)),
+					action_destroyer(clickOutside.call(null, div0, /*hideSearch*/ ctx[3]))
+				];
+
 				mounted = true;
 			}
 		},
-		p(ctx, [dirty]) {
+		p(ctx, dirty) {
 			if (dirty & /*composers*/ 1) {
 				each_value = /*composers*/ ctx[0];
 				let i;
@@ -378,18 +351,133 @@ function create_fragment(ctx) {
 				each_blocks.length = each_value.length;
 			}
 		},
-		i: noop,
-		o: noop,
 		d(detaching) {
 			if (detaching) detach(div1);
 			destroy_each(each_blocks, detaching);
+			mounted = false;
+			run_all(dispose);
+		}
+	};
+}
+
+// (116:12) {#each composers as composer}
+function create_each_block(ctx) {
+	let div;
+	let a;
+	let t0_value = /*composer*/ ctx[10].lastName + "";
+	let t0;
+	let t1;
+	let t2_value = /*composer*/ ctx[10].firstName + "";
+	let t2;
+	let a_href_value;
+	let t3;
+
+	return {
+		c() {
+			div = element("div");
+			a = element("a");
+			t0 = text(t0_value);
+			t1 = text(", ");
+			t2 = text(t2_value);
+			t3 = space();
+			attr(a, "href", a_href_value = "/composer/" + /*composer*/ ctx[10].slug);
+			attr(div, "class", "search__result");
+		},
+		m(target, anchor) {
+			insert(target, div, anchor);
+			append(div, a);
+			append(a, t0);
+			append(a, t1);
+			append(a, t2);
+			append(div, t3);
+		},
+		p(ctx, dirty) {
+			if (dirty & /*composers*/ 1 && t0_value !== (t0_value = /*composer*/ ctx[10].lastName + "")) set_data(t0, t0_value);
+			if (dirty & /*composers*/ 1 && t2_value !== (t2_value = /*composer*/ ctx[10].firstName + "")) set_data(t2, t2_value);
+
+			if (dirty & /*composers*/ 1 && a_href_value !== (a_href_value = "/composer/" + /*composer*/ ctx[10].slug)) {
+				attr(a, "href", a_href_value);
+			}
+		},
+		d(detaching) {
+			if (detaching) detach(div);
+		}
+	};
+}
+
+function create_fragment(ctx) {
+	let div;
+	let t;
+	let if_block_anchor;
+	let mounted;
+	let dispose;
+	let if_block = /*searchVisible*/ ctx[1] && create_if_block(ctx);
+
+	return {
+		c() {
+			div = element("div");
+			div.innerHTML = `<img src="/img/search-icon.svg" alt="Search"/>`;
+			t = space();
+			if (if_block) if_block.c();
+			if_block_anchor = empty();
+			attr(div, "class", "search-button");
+		},
+		m(target, anchor) {
+			insert(target, div, anchor);
+			insert(target, t, anchor);
+			if (if_block) if_block.m(target, anchor);
+			insert(target, if_block_anchor, anchor);
+
+			if (!mounted) {
+				dispose = listen(div, "click", /*showSearch*/ ctx[2]);
+				mounted = true;
+			}
+		},
+		p(ctx, [dirty]) {
+			if (/*searchVisible*/ ctx[1]) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+				} else {
+					if_block = create_if_block(ctx);
+					if_block.c();
+					if_block.m(if_block_anchor.parentNode, if_block_anchor);
+				}
+			} else if (if_block) {
+				if_block.d(1);
+				if_block = null;
+			}
+		},
+		i: noop,
+		o: noop,
+		d(detaching) {
+			if (detaching) detach(div);
+			if (detaching) detach(t);
+			if (if_block) if_block.d(detaching);
+			if (detaching) detach(if_block_anchor);
 			mounted = false;
 			dispose();
 		}
 	};
 }
 
+function focus(el) {
+	el.focus();
+}
+
+/** Executes given handler when user clicked outside given element */
+function clickOutside(node, handler) {
+	const onClick = event => node && !node.contains(event.target) && !event.defaultPrevented && handler();
+	document.addEventListener("click", onClick, true);
+
+	return {
+		destroy() {
+			document.removeEventListener("click", onClick, true);
+		}
+	};
+}
+
 function instance($$self, $$props, $$invalidate) {
+
 	var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
 		function adopt(value) {
 			return value instanceof P
@@ -432,6 +520,9 @@ function instance($$self, $$props, $$invalidate) {
 	// Tuples with search queries: the currently being requested from API, and the last inputted
 	let queryStack = [undefined, undefined];
 
+	// Should search be shown
+	let searchVisible = false;
+
 	/**
  * Performs request to API
  * @param query Search query
@@ -465,6 +556,28 @@ function instance($$self, $$props, $$invalidate) {
 		});
 	}
 
+	/** Shows search input and results */
+	function showSearch() {
+		$$invalidate(1, searchVisible = true);
+	}
+
+	/** Hides search input and results */
+	function hideSearch() {
+		$$invalidate(0, composers = []);
+		$$invalidate(1, searchVisible = false);
+	}
+
+	/** Dispatches actions based on keys pressed inside search input */
+	function handleKeydown(event) {
+		if (event.code === "Escape") {
+			hideSearch();
+		}
+
+		if (event.code === "Enter" && composers.length > 0) {
+			location.pathname = `/composer/${composers[0].slug}`;
+		}
+	}
+
 	/**
  * Saves user input into search field and sends requests to API
  * @param event User input
@@ -484,7 +597,7 @@ function instance($$self, $$props, $$invalidate) {
 		}
 	}
 
-	return [composers, handleSearch];
+	return [composers, searchVisible, showSearch, hideSearch, handleKeydown, handleSearch];
 }
 
 class App extends SvelteComponent {
@@ -494,8 +607,7 @@ class App extends SvelteComponent {
 	}
 }
 
-const app = new App({
-    target: document.getElementById('searchBlock'),
-});
+const target = document.getElementById('searchBlock');
+const app = target ? new App({ target }) : undefined;
 
 export default app;
