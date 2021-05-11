@@ -10,7 +10,6 @@ open Site
 open System
 open Sentry
 open SiteSaturn.Templates
-open BLun.ETagMiddleware
 
 type CacheControl =
     | NoCacheControl
@@ -48,12 +47,9 @@ let app =
         memory_cache
         use_cors "All" configureCors
         error_handler (fun _ _ -> pipeline { render_html Pages.Error.view })
-        service_config (fun serv -> serv.AddETag())
-        
         app_config
             (fun app ->
                 let env = Environment.getWebHostEnvironment app
-                app.UseETag() |> ignore
 
                 if (env.IsDevelopment()) then
                     app.UseDeveloperExceptionPage()

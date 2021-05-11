@@ -6,7 +6,7 @@ open StackExchange.Redis
 open SiteSaturn.Helpers
 
 /// Connection pool
-let private redisPool =
+let private redisPool : ConnectionMultiplexer option =
     try
         let pool =
             ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("RedisConnectionString"))
@@ -15,7 +15,7 @@ let private redisPool =
     with ex -> exToSentry ex "Problem with creating Redis connection pool"
 
 /// Single DB connection
-let private redisConn =
+let private redisConn : IDatabase option =
     match redisPool with
     | Some r ->
         try
