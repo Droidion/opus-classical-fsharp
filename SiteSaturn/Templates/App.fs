@@ -18,13 +18,6 @@ module App =
 
     let cssHash = computeFileHash "static/css/site.css"
 
-    let private fontLink name =
-        link [ _rel "preload"
-               attr "as" "font"
-               _type "font/woff2"
-               _href $"/fonts/{name}.woff2"
-               _crossorigin "true" ]
-
     /// Renders HTML
     let view (pageTitle: string, pageDescription: string) (content: XmlNode list) =
         html [ _lang "en" ] [
@@ -65,10 +58,6 @@ module App =
                 script [ _src $"/js/bundle.js?v={cssHash}"
                          _type "module"
                          _defer ] []
-                fontLink "domine-v11-latin-600"
-                fontLink "roboto-v20-latin-regular"
-                fontLink "roboto-v20-latin-italic"
-                fontLink "roboto-v20-latin-300"
             ]
             body [] [
                 Partials.header
