@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectTasksOptions">
     <TaskOptions isEnabled="true">
-      <option name="arguments" value="--style=compressed $ContentRoot$/SiteSaturn/Sass/site.sass:$ContentRoot$/SiteSaturn/static/css/site.css" />
+      <option name="arguments" value="--style=compressed $ContentRoot$/Site/Sass/site.sass:$ContentRoot$/Site/static/css/site.css" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" />
       <option name="exitCodeBehavior" value="ERROR" />

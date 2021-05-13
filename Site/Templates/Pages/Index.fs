@@ -1,8 +1,8 @@
-module SiteSaturn.Templates.Pages.Index
+module Site.Templates.Pages.Index
 
 open Giraffe.ViewEngine
-open SiteSaturn.Models
-open SiteSaturn.Templates
+open Site.Models
+open Site.Templates
 
 let view (periods: Period list) =
     let pageTitle = "Composers"

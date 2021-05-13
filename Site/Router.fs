@@ -2,8 +2,8 @@
 module Site.Router
 
 open Saturn
-open SiteSaturn.Controllers
-open SiteSaturn.Templates.Pages
+open Site.Controllers
+open Site.Templates.Pages
 open Giraffe
 
 /// Adds headers to the responses

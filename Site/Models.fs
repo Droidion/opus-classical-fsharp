@@ -1,4 +1,4 @@
-module SiteSaturn.Models
+module Site.Models
 
 /// Composer, like Bach or Beethoven
 type Composer =

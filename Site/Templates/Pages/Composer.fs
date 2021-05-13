@@ -1,10 +1,10 @@
-module SiteSaturn.Templates.Pages.Composer
+module Site.Templates.Pages.Composer
 
 open Giraffe.ViewEngine
-open SiteSaturn.Models
-open SiteSaturn.Templates
-open SiteSaturn.Database.Providers
-open SiteSaturn.Templates.Helpers
+open Site.Models
+open Site.Templates
+open Site.Database.Providers
+open Site.Templates.Helpers
 
 let view (composer: Composer) =
 

@@ -1,12 +1,12 @@
 /// Saturn controllers for web pages and API endpoints
-module SiteSaturn.Controllers
+module Site.Controllers
 
 open Microsoft.AspNetCore.Http
 open Saturn
-open SiteSaturn.Templates.Pages
-open SiteSaturn.Database.Providers
+open Site.Templates.Pages
+open Site.Database.Providers
 open FSharp.Json
-open SiteSaturn.Models
+open Site.Models
 open Giraffe
 
 /// Index page controller

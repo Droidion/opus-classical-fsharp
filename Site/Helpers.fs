@@ -1,5 +1,5 @@
 /// Generic system-wide helpers
-module SiteSaturn.Helpers
+module Site.Helpers
 
 open System.Collections.Generic
 open Sentry

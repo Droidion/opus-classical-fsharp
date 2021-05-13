@@ -1,9 +1,9 @@
 /// HTML snippets
-module SiteSaturn.Templates.Partials
+module Site.Templates.Partials
 
 open Giraffe.ViewEngine
-open SiteSaturn.Models
-open SiteSaturn.Templates.Helpers
+open Site.Models
+open Site.Templates.Helpers
 
 /// Header with menu
 let header =

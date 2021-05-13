@@ -1,7 +1,7 @@
-module SiteSaturn.Templates.Pages.NotFound
+module Site.Templates.Pages.NotFound
 
 open Giraffe.ViewEngine
-open SiteSaturn.Templates
+open Site.Templates
 
 let view =
     let pageTitle = "Not Found"

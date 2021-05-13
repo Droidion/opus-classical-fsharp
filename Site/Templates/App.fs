@@ -1,4 +1,4 @@
-namespace SiteSaturn.Templates
+namespace Site.Templates
 
 open System
 open System.IO

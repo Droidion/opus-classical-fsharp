@@ -1,11 +1,11 @@
 /// Endpoints for retrieving data
-module SiteSaturn.Database.Providers
+module Site.Database.Providers
 
 open System
 open Giraffe
-open SiteSaturn.Database
-open SiteSaturn.Models
-open SiteSaturn.Helpers
+open Site.Database
+open Site.Models
+open Site.Helpers
 open FSharp.Json
 open Postgres
 

@@ -3,17 +3,17 @@ WORKDIR /DockerSource
 
 # Copy csproj/fsproj and restore as distinct layers
 COPY *.sln .
-COPY SiteSaturn/*.fsproj ./SiteSaturn/
-COPY SiteSaturn.Tests/*.fsproj ./SiteSaturn.Tests/
+COPY Site/*.fsproj ./Site/
+COPY Site.Tests/*.fsproj ./Site.Tests/
 RUN dotnet restore
 
 # Copy everything else and build
-COPY SiteSaturn/. ./SiteSaturn
-COPY SiteSaturn.Tests/. ./SiteSaturn.Tests
-RUN dotnet publish -c release -o /DockerOutput/SiteSaturn
+COPY Site/. ./Site
+COPY Site.Tests/. ./Site.Tests
+RUN dotnet publish -c release -o /DockerOutput/Site
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:5.0.5-alpine3.13-amd64
-WORKDIR /DockerOutput/SiteSaturn
-COPY --from=build-env /DockerOutput/SiteSaturn ./
-ENTRYPOINT ["dotnet", "SiteSaturn.dll"]
+WORKDIR /DockerOutput/Site
+COPY --from=build-env /DockerOutput/Site ./
+ENTRYPOINT ["dotnet", "Site.dll"]

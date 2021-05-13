@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SiteSaturn", "SiteSaturn\SiteSaturn.fsproj", "{F1311314-938A-4820-88B4-993D9EFFD601}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Site", "Site\Site.fsproj", "{F1311314-938A-4820-88B4-993D9EFFD601}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SiteSaturn.Tests", "SiteSaturn.Tests\SiteSaturn.Tests.fsproj", "{77BC095A-C6FA-46D6-AFE4-0C4B847B34C3}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Site.Tests", "Site.Tests\Site.Tests.fsproj", "{77BC095A-C6FA-46D6-AFE4-0C4B847B34C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

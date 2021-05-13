@@ -1,9 +1,9 @@
 /// Operations with Redis
-module SiteSaturn.Database.Redis
+module Site.Database.Redis
 
 open System
 open StackExchange.Redis
-open SiteSaturn.Helpers
+open Site.Helpers
 
 /// Connection pool
 let private redisPool : ConnectionMultiplexer option =

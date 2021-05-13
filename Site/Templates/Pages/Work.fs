@@ -1,10 +1,10 @@
-module SiteSaturn.Templates.Pages.Work
+module Site.Templates.Pages.Work
 
 open Giraffe.ViewEngine
-open SiteSaturn.Models
-open SiteSaturn.Templates
-open SiteSaturn.Templates.Partials
-open SiteSaturn.Templates.Helpers
+open Site.Models
+open Site.Templates
+open Site.Templates.Partials
+open Site.Templates.Helpers
 
 let view (composer: Composer) (work: Work) (recordings: Recording list) (childWorks: Work list) =
 

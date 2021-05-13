@@ -1,7 +1,7 @@
-module SiteSaturn.Templates.Pages.Error
+module Site.Templates.Pages.Error
 
 open Giraffe.ViewEngine
-open SiteSaturn.Templates
+open Site.Templates
 
 let view =
     let pageTitle = "Error"

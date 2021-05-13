@@ -1,5 +1,5 @@
 /// Helpers for HTML templates
-module SiteSaturn.Templates.Helpers
+module Site.Templates.Helpers
 
 open System
 let coversUrl = Environment.GetEnvironmentVariable("StaticAssetsUrl")

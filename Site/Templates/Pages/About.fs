@@ -1,7 +1,7 @@
-module SiteSaturn.Templates.Pages.About
+module Site.Templates.Pages.About
 
 open Giraffe.ViewEngine
-open SiteSaturn.Templates
+open Site.Templates
 
 let view =
     let pageTitle = "About"

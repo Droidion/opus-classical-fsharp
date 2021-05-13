@@ -9,7 +9,7 @@ open Microsoft.AspNetCore.Builder
 open Site
 open System
 open Sentry
-open SiteSaturn.Templates
+open Site.Templates
 
 type private CacheControl =
     | NoCacheControl

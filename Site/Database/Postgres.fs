@@ -1,12 +1,12 @@
 /// Operations with Postgres
-module SiteSaturn.Database.Postgres
+module Site.Database.Postgres
 
 open System
 open System.Data
 open Dapper
 open Npgsql
-open SiteSaturn.Models
-open SiteSaturn.Helpers
+open Site.Models
+open Site.Helpers
 open Sentry
 
 let private connectionString = Environment.GetEnvironmentVariable("DbConnectionString")

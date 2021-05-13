@@ -1,5 +1,5 @@
 /// SQL requests as string literals
-module SiteSaturn.Database.SqlRequests
+module Site.Database.SqlRequests
 
 /// Select users with the given login
 let userByLogin = "select login, password from users where login = @Login"
