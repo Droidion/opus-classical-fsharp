@@ -1,8 +1,8 @@
-﻿module SiteSaturn.Tests
+﻿module Site.Tests
 
 open Shouldly
 open Xunit
-open SiteSaturn.Templates.Helpers
+open Site.Templates.Helpers
 
 [<Fact>]
 let formatYearsRangeStrict_FormatsAsExpected () =

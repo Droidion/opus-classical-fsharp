@@ -1,9 +1,9 @@
 {
   "sdk": {
-    "version": "5.0.202",
+    "version": "5.0.203",
     "rollForward": "minor"
   },
   "tools": {
-    "dotnet": "5.0.202"
+    "dotnet": "5.0.203"
   }
 }

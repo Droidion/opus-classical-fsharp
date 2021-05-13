@@ -3,16 +3,16 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0.202-alpine3.13-amd64 AS build
 WORKDIR /src
-COPY ["SiteSaturn/SiteSaturn.fsproj", "SiteSaturn/"]
-RUN dotnet restore "SiteSaturn/SiteSaturn.fsproj"
+COPY ["Site/Site.fsproj", "Site/"]
+RUN dotnet restore "Site/Site.fsproj"
 COPY . .
-WORKDIR "/src/SiteSaturn"
-RUN dotnet build "SiteSaturn.fsproj" -c Release -o /app/build
+WORKDIR "/src/Site"
+RUN dotnet build "Site.fsproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "SiteSaturn.fsproj" -c Release -o /app/publish
+RUN dotnet publish "Site.fsproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "SiteSaturn.dll"]
+ENTRYPOINT ["dotnet", "Site.dll"]
