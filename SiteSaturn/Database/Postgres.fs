@@ -7,6 +7,7 @@ open Dapper
 open Npgsql
 open System.Collections.Generic
 open SiteSaturn.Models
+open SiteSaturn.Helpers
 open Sentry
 
 let private connectionString = Environment.GetEnvironmentVariable("DbConnectionString")
@@ -60,16 +61,9 @@ let query<'a> (sql: string) (parameters: IDictionary<string, obj> option) (mappe
     async {
         try
             use conn = new NpgsqlConnection(connectionString)
-
-            let data =
-                match parameters with
-                | Some d -> d
-                | None -> null
-
-            use! reader = conn.ExecuteReaderAsync(sql, data) |> Async.AwaitTask
-
-            let mapRes = mapper reader
-            return mapRes
+            let parameters = optionalToNullable parameters
+            use! reader = conn.ExecuteReaderAsync(sql, parameters) |> Async.AwaitTask
+            return mapper reader
         with ex ->
             SentrySdk.AddBreadcrumb "Problem with making Postgres request"
             SentrySdk.CaptureException(ex) |> ignore
