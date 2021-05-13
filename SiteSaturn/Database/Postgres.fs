@@ -5,7 +5,6 @@ open System
 open System.Data
 open Dapper
 open Npgsql
-open System.Collections.Generic
 open SiteSaturn.Models
 open SiteSaturn.Helpers
 open Sentry
@@ -57,13 +56,13 @@ let composerSearchResultMapper (reader: IDataReader) : ComposerSearchResult list
                 rating = reader.GetDouble 4 } ]
 
 /// Makes simple SELECT to the database
-let query<'a> (sql: string) (parameters: IDictionary<string, obj> option) (mapper: IDataReader -> 'a) : Async<'a> =
+let query<'a> (request: PgRequest) (resultMapper: IDataReader -> 'a) : Async<'a> =
     async {
         try
             use conn = new NpgsqlConnection(connectionString)
-            let parameters = optionalToNullable parameters
-            use! reader = conn.ExecuteReaderAsync(sql, parameters) |> Async.AwaitTask
-            return mapper reader
+            let parameters = optionalToNullable request.Parameters
+            use! reader = conn.ExecuteReaderAsync(request.Sql, parameters) |> Async.AwaitTask
+            return resultMapper reader
         with ex ->
             SentrySdk.AddBreadcrumb "Problem with making Postgres request"
             SentrySdk.CaptureException(ex) |> ignore

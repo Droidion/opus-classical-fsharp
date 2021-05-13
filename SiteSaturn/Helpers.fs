@@ -1,6 +1,7 @@
 /// Generic system-wide helpers
 module SiteSaturn.Helpers
 
+open System.Collections.Generic
 open Sentry
 
 /// Sends exception to Sentry
@@ -26,3 +27,8 @@ let optionalToNullable<'T, 'N when 'T: null> (opt: 'T option) =
     match opt with
     | Some d -> d
     | None -> null
+    
+type PgRequest = {
+    Sql: string
+    Parameters: IDictionary<string, obj> option
+}
