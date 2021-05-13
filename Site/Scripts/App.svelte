@@ -8,11 +8,13 @@
     }
 
     // Composers found
-    let composers: SearchResult[] = [];
+    let composers: SearchResult[] = []
     // Tuples with search queries: the currently being requested from API, and the last inputted
     let queryStack: [string | undefined, string | undefined] = [undefined, undefined]
     // Should search be shown
-    let searchVisible = false;
+    let searchVisible = false
+    // Selected search result
+    let selectedResult = 0
 
     /**
      * Performs request to API
@@ -59,12 +61,22 @@
 
     /** Dispatches actions based on keys pressed inside search input */
     function handleKeydown(event: KeyboardEvent) {
-        if (event.code === 'Escape') {
+        if (event.code === 'ArrowUp' && composers.length > 0) {
+            if (selectedResult > 0) {
+                selectedResult = selectedResult - 1
+            } else {
+                selectedResult = composers.length - 1
+            }
+        } else if (event.code === 'ArrowDown') {
+            if (selectedResult < composers.length - 1) {
+                selectedResult = selectedResult + 1
+            } else {
+                selectedResult = 0
+            }
+        } else if (event.code === 'Escape') {
             hideSearch()
-        }
-
-        if (event.code === 'Enter' && composers.length > 0) {
-            location.pathname = `/composer/${composers[0].slug}`
+        } else if (event.code === 'Enter' && composers.length > 0) {
+            location.pathname = `/composer/${composers[selectedResult].slug}`
         }
     }
 
@@ -104,6 +116,11 @@
             queryStack[1] = inputEvent
         }
     }
+
+    function handleResultHover(ind: number): void {
+        console.log(ind)
+        selectedResult = ind
+    }
 </script>
 
 
@@ -112,18 +129,20 @@
 </div>
 
 {#if searchVisible}
-    <div class="search-wrapper">
+    <div class="search-wrapper" on:keydown={handleKeydown}>
         <div class="search"
              use:clickOutside={hideSearch}>
-            <input class="search__field" 
-                   type="search" 
-                   placeholder="Search composers by last name" 
-                   on:input={handleSearch} 
-                   on:keydown={handleKeydown} use:focus/>
-            {#each composers as composer}
-                <div class="search__result">
-                    <a href="/composer/{composer.slug}">{composer.lastName}, {composer.firstName}</a>
-                </div>
+            <input class="search__field"
+                   type="search"
+                   placeholder="Search composers by last name"
+                   on:input={handleSearch}
+                   use:focus/>
+            {#each composers as composer, i}
+                <a href="/composer/{composer.slug}" on:mouseenter={() => handleResultHover(i)}>
+                    <div class:search__result_selected="{selectedResult === i}" class="search__result">
+                        {composer.lastName}, {composer.firstName}
+                    </div>
+                </a>
             {/each}
         </div>
     </div>

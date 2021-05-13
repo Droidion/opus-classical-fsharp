@@ -66,6 +66,9 @@ function set_data(text, data) {
     if (text.wholeText !== data)
         text.data = data;
 }
+function toggle_class(element, name, toggle) {
+    element.classList[toggle ? 'add' : 'remove'](name);
+}
 
 let current_component;
 function set_current_component(component) {
@@ -270,11 +273,12 @@ class SvelteComponent {
 
 function get_each_context(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[10] = list[i];
+	child_ctx[13] = list[i];
+	child_ctx[15] = i;
 	return child_ctx;
 }
 
-// (107:0) {#if searchVisible}
+// (129:0) {#if searchVisible}
 function create_if_block(ctx) {
 	let div1;
 	let div0;
@@ -318,17 +322,17 @@ function create_if_block(ctx) {
 
 			if (!mounted) {
 				dispose = [
-					listen(input, "input", /*handleSearch*/ ctx[5]),
-					listen(input, "keydown", /*handleKeydown*/ ctx[4]),
+					listen(input, "input", /*handleSearch*/ ctx[6]),
 					action_destroyer(focus.call(null, input)),
-					action_destroyer(clickOutside.call(null, div0, /*hideSearch*/ ctx[3]))
+					action_destroyer(clickOutside.call(null, div0, /*hideSearch*/ ctx[4])),
+					listen(div1, "keydown", /*handleKeydown*/ ctx[5])
 				];
 
 				mounted = true;
 			}
 		},
 		p(ctx, dirty) {
-			if (dirty & /*composers*/ 1) {
+			if (dirty & /*composers, handleResultHover, selectedResult*/ 133) {
 				each_value = /*composers*/ ctx[0];
 				let i;
 
@@ -360,47 +364,66 @@ function create_if_block(ctx) {
 	};
 }
 
-// (116:12) {#each composers as composer}
+// (138:12) {#each composers as composer, i}
 function create_each_block(ctx) {
-	let div;
 	let a;
-	let t0_value = /*composer*/ ctx[10].lastName + "";
+	let div;
+	let t0_value = /*composer*/ ctx[13].lastName + "";
 	let t0;
 	let t1;
-	let t2_value = /*composer*/ ctx[10].firstName + "";
+	let t2_value = /*composer*/ ctx[13].firstName + "";
 	let t2;
-	let a_href_value;
 	let t3;
+	let a_href_value;
+	let mounted;
+	let dispose;
+
+	function mouseenter_handler() {
+		return /*mouseenter_handler*/ ctx[8](/*i*/ ctx[15]);
+	}
 
 	return {
 		c() {
-			div = element("div");
 			a = element("a");
+			div = element("div");
 			t0 = text(t0_value);
 			t1 = text(", ");
 			t2 = text(t2_value);
 			t3 = space();
-			attr(a, "href", a_href_value = "/composer/" + /*composer*/ ctx[10].slug);
 			attr(div, "class", "search__result");
+			toggle_class(div, "search__result_selected", /*selectedResult*/ ctx[2] === /*i*/ ctx[15]);
+			attr(a, "href", a_href_value = "/composer/" + /*composer*/ ctx[13].slug);
 		},
 		m(target, anchor) {
-			insert(target, div, anchor);
-			append(div, a);
-			append(a, t0);
-			append(a, t1);
-			append(a, t2);
-			append(div, t3);
-		},
-		p(ctx, dirty) {
-			if (dirty & /*composers*/ 1 && t0_value !== (t0_value = /*composer*/ ctx[10].lastName + "")) set_data(t0, t0_value);
-			if (dirty & /*composers*/ 1 && t2_value !== (t2_value = /*composer*/ ctx[10].firstName + "")) set_data(t2, t2_value);
+			insert(target, a, anchor);
+			append(a, div);
+			append(div, t0);
+			append(div, t1);
+			append(div, t2);
+			append(a, t3);
 
-			if (dirty & /*composers*/ 1 && a_href_value !== (a_href_value = "/composer/" + /*composer*/ ctx[10].slug)) {
+			if (!mounted) {
+				dispose = listen(a, "mouseenter", mouseenter_handler);
+				mounted = true;
+			}
+		},
+		p(new_ctx, dirty) {
+			ctx = new_ctx;
+			if (dirty & /*composers*/ 1 && t0_value !== (t0_value = /*composer*/ ctx[13].lastName + "")) set_data(t0, t0_value);
+			if (dirty & /*composers*/ 1 && t2_value !== (t2_value = /*composer*/ ctx[13].firstName + "")) set_data(t2, t2_value);
+
+			if (dirty & /*selectedResult*/ 4) {
+				toggle_class(div, "search__result_selected", /*selectedResult*/ ctx[2] === /*i*/ ctx[15]);
+			}
+
+			if (dirty & /*composers*/ 1 && a_href_value !== (a_href_value = "/composer/" + /*composer*/ ctx[13].slug)) {
 				attr(a, "href", a_href_value);
 			}
 		},
 		d(detaching) {
-			if (detaching) detach(div);
+			if (detaching) detach(a);
+			mounted = false;
+			dispose();
 		}
 	};
 }
@@ -429,7 +452,7 @@ function create_fragment(ctx) {
 			insert(target, if_block_anchor, anchor);
 
 			if (!mounted) {
-				dispose = listen(div, "click", /*showSearch*/ ctx[2]);
+				dispose = listen(div, "click", /*showSearch*/ ctx[3]);
 				mounted = true;
 			}
 		},
@@ -523,6 +546,9 @@ function instance($$self, $$props, $$invalidate) {
 	// Should search be shown
 	let searchVisible = false;
 
+	// Selected search result
+	let selectedResult = 0;
+
 	/**
  * Performs request to API
  * @param query Search query
@@ -569,12 +595,22 @@ function instance($$self, $$props, $$invalidate) {
 
 	/** Dispatches actions based on keys pressed inside search input */
 	function handleKeydown(event) {
-		if (event.code === "Escape") {
+		if (event.code === "ArrowUp" && composers.length > 0) {
+			if (selectedResult > 0) {
+				$$invalidate(2, selectedResult = selectedResult - 1);
+			} else {
+				$$invalidate(2, selectedResult = composers.length - 1);
+			}
+		} else if (event.code === "ArrowDown") {
+			if (selectedResult < composers.length - 1) {
+				$$invalidate(2, selectedResult = selectedResult + 1);
+			} else {
+				$$invalidate(2, selectedResult = 0);
+			}
+		} else if (event.code === "Escape") {
 			hideSearch();
-		}
-
-		if (event.code === "Enter" && composers.length > 0) {
-			location.pathname = `/composer/${composers[0].slug}`;
+		} else if (event.code === "Enter" && composers.length > 0) {
+			location.pathname = `/composer/${composers[selectedResult].slug}`;
 		}
 	}
 
@@ -597,7 +633,24 @@ function instance($$self, $$props, $$invalidate) {
 		}
 	}
 
-	return [composers, searchVisible, showSearch, hideSearch, handleKeydown, handleSearch];
+	function handleResultHover(ind) {
+		console.log(ind);
+		$$invalidate(2, selectedResult = ind);
+	}
+
+	const mouseenter_handler = i => handleResultHover(i);
+
+	return [
+		composers,
+		searchVisible,
+		selectedResult,
+		showSearch,
+		hideSearch,
+		handleKeydown,
+		handleSearch,
+		handleResultHover,
+		mouseenter_handler
+	];
 }
 
 class App extends SvelteComponent {
