@@ -12,8 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include=".dockerignore" />
-      <Content Include="Dockerfile" />
       <Compile Include="Helpers.fs" />
       <Compile Include="Database\Redis.fs" />
       <Compile Include="Database\Postgres.fs" />
