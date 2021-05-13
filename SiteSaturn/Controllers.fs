@@ -1,3 +1,4 @@
+/// Saturn controllers for web pages and API endpoints
 module SiteSaturn.Controllers
 
 open Microsoft.AspNetCore.Http
@@ -8,14 +9,16 @@ open FSharp.Json
 open SiteSaturn.Models
 open Giraffe
 
-let index =
+/// Index page controller
+let indexPageController: HttpHandler =
     let handler ctx =
         let periods = listPeriods ()
         Index.view periods |> Controller.renderHtml ctx
 
     controller { index handler }
 
-let search =
+/// Search API controller
+let searchApiController: HttpHandler =
     let handler (ctx: HttpContext) =
         match ctx.Request.Query.TryGetValue "q" with
         | true, x ->
@@ -28,11 +31,13 @@ let search =
 
     controller { index handler }
 
-let about =
+/// About page controller
+let aboutPageController: HttpHandler =
     let handler ctx = About.view |> Controller.renderHtml ctx
     controller { index handler }
 
-let work composerSlug =
+/// Controller for the Musical Work page 
+let workPageController (composerSlug: string): HttpHandler =
     let handler ctx workId =
         let composer = composerSlug |> getComposer
 
@@ -63,7 +68,8 @@ let work composerSlug =
 
     controller { show handler }
 
-let composer =
+/// Composer page controller
+let composerPageController: HttpHandler =
     let handler ctx slug =
         let composer = slug |> getComposer
 
@@ -75,6 +81,6 @@ let composer =
         Controller.renderHtml ctx view
 
     controller {
-        subController "/work" work
+        subController "/work" workPageController
         show handler
     }

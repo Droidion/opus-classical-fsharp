@@ -11,18 +11,18 @@ open System
 open Sentry
 open SiteSaturn.Templates
 
-type CacheControl =
+type private CacheControl =
     | NoCacheControl
     | CacheControl of string
 
-let configureCors (builder: CorsPolicyBuilder) =
+let private configureCors (builder: CorsPolicyBuilder) =
     builder
         .AllowAnyOrigin()
         .AllowAnyMethod()
         .AllowAnyHeader()
     |> ignore
 
-let useStaticFiles cache (app: IApplicationBuilder) =
+let private useStaticFiles cache (app: IApplicationBuilder) =
     match cache with
     | NoCacheControl -> app.UseStaticFiles()
     | CacheControl value ->
@@ -32,14 +32,14 @@ let useStaticFiles cache (app: IApplicationBuilder) =
         let action = System.Action<StaticFileResponseContext>(handler)
         app.UseStaticFiles(StaticFileOptions(OnPrepareResponse = action))
 
-let setWebRootPath path (builder: IWebHostBuilder) =
+let private setWebRootPath path (builder: IWebHostBuilder) =
     let p = Path.Combine(Directory.GetCurrentDirectory(), path)
     builder.UseWebRoot(p)
 
 /// Saturn app
-let app =
+let private app =
     application {
-        use_router Router.main
+        use_router Router.topRouter
         url "http://0.0.0.0:5000"
         app_config (useStaticFiles (CacheControl "public, max-age=604800"))
         webhost_config (setWebRootPath "static")
