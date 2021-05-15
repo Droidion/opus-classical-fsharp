@@ -42,7 +42,7 @@
         <PackageReference Include="FSharpPlus" Version="1.1.7" />
         <PackageReference Include="Legivel" Version="0.4.6" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="Npgsql" Version="5.0.4" />
+        <PackageReference Include="Npgsql" Version="5.0.5" />
         <PackageReference Include="Saturn" Version="0.15.0-preview03" />
         <PackageReference Include="Sentry" Version="3.3.4" />
         <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
