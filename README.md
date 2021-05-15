@@ -58,6 +58,7 @@ $ docker-compose up -d
 
 ### Without Docker
 
+- Have the lasted .NET 5 installed.
 - Have Node.js 14 installed.
 - Have SASS compiler installed.
 - Compile static assets:
