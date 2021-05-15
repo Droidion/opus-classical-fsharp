@@ -16,7 +16,8 @@ module App =
         |> BitConverter.ToString
         |> String.replace "-" ""
 
-    let cssHash = computeFileHash "static/css/site.css"
+    let cssHash = computeFileHash "static/bundle.css"
+    let jsHash = computeFileHash "static/bundle.js"
 
     /// Renders HTML
     let view (pageTitle: string, pageDescription: string) (content: XmlNode list) =
@@ -54,8 +55,8 @@ module App =
                        _href "safari-pinned-tab.svg"
                        _color "#5bbad5" ]
                 link [ _rel "stylesheet"
-                       _href $"/css/site.css?v={cssHash}" ]
-                script [ _src $"/js/bundle.js?v={cssHash}"
+                       _href $"/bundle.css?v={cssHash}" ]
+                script [ _src $"/bundle.js?v={jsHash}"
                          _type "module"
                          _defer ] []
             ]

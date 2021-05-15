@@ -61,9 +61,6 @@
       <Content Include="rollup.config.js" />
       <Content Include="Scripts\main.ts" />
       <Content Include="Scripts\Search.svelte" />
-      <Content Include="static\js\bundle.js">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
       <Content Include="tsconfig.json" />
       <Content Include="static\robots.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
