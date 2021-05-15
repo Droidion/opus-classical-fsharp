@@ -60,7 +60,7 @@
       <None Include="Sass\site.sass" />
       <Content Include="rollup.config.js" />
       <Content Include="Scripts\main.ts" />
-      <Content Include="Scripts\App.svelte" />
+      <Content Include="Scripts\Search.svelte" />
       <Content Include="static\js\bundle.js">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>

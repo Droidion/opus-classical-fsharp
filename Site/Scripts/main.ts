@@ -1,6 +1,6 @@
-import App from './App.svelte';
+import Search from './Search.svelte'
 
 const target = document.getElementById('searchBlock')
-const app = target ? new App({ target }) : undefined;
+const app = target ? new Search({ target }) : undefined
 
-export default app;
+export default app
