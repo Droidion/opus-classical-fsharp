@@ -21,7 +21,7 @@ RUN dotnet restore
 COPY Site/. ./Site
 COPY Site.Tests/. ./Site.Tests
 RUN dotnet publish -c release -o /DockerOutput/Site
-COPY --from=build-node /usr/src/app/bundle.css /DockerOutput/Site/static/bundle.css
+COPY --from=build-node /usr/src/app/static/bundle.css /DockerOutput/Site/static/bundle.css
 COPY --from=build-node /usr/src/app/static/bundle.js /DockerOutput/Site/static/bundle.js
 
 # Build runtime image
