@@ -10,10 +10,13 @@ open Giraffe
 let private addHeaders =
     pipeline {
         set_header "Strict-Transport-Security" "max-age=31536000; includeSubDomains"
+        set_header "Content-Security-Policy" "default-src 'none'; connect-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://static.zunh.dev"
+        set_header "Referrer-Policy" "no-referrer"
+        set_header "Permissions-Policy" "geolocation=(), microphone=()"
         plug putSecureBrowserHeaders
         // plug (publicResponseCaching 600 None)
     }
-
+    
 /// API router
 let private apiRouter =
     router {

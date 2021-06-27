@@ -118,7 +118,6 @@
     }
 
     function handleResultHover(ind: number): void {
-        console.log(ind)
         selectedResult = ind
     }
 </script>
