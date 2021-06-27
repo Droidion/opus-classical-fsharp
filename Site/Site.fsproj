@@ -35,7 +35,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Update="FSharp.Core" Version="5.0.1" />
+        <PackageReference Update="FSharp.Core" Version="5.0.2" />
         <PackageReference Include="Dapper" Version="2.0.90" />
         <PackageReference Include="FSharp.Configuration" Version="2.0.0-alpha3" />
         <PackageReference Include="FSharp.Json" Version="0.4.0" />
