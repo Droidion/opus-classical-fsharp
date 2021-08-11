@@ -37,15 +37,15 @@
     <ItemGroup>
         <PackageReference Update="FSharp.Core" Version="5.0.2" />
         <PackageReference Include="Dapper" Version="2.0.90" />
-        <PackageReference Include="FSharp.Configuration" Version="2.0.0-alpha3" />
+        <PackageReference Include="FSharp.Configuration" Version="2.0.0" />
         <PackageReference Include="FSharp.Json" Version="0.4.0" />
-        <PackageReference Include="FSharpPlus" Version="1.2.0" />
+        <PackageReference Include="FSharpPlus" Version="1.2.1" />
         <PackageReference Include="Legivel" Version="0.4.6" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Npgsql" Version="5.0.7" />
         <PackageReference Include="Saturn" Version="0.15.0" />
-        <PackageReference Include="Sentry" Version="3.6.0" />
-        <PackageReference Include="StackExchange.Redis" Version="2.2.50" />
+        <PackageReference Include="Sentry" Version="3.8.3" />
+        <PackageReference Include="StackExchange.Redis" Version="2.2.62" />
         <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
     </ItemGroup>
 
