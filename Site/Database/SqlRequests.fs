@@ -187,7 +187,7 @@ let recordingsByWork = "
                                                'prefix', s.app_prefix) order by s.name) streamers
              from recordings r
                       left join labels l on r.label_id = l.id
-                      join recordings_streamers rs on r.id = rs.recording_id
+                      join recordings_streamers rs on r.id = rs.recording_id and rs.is_show = true
                       join streamers s on rs.streamer_id = s.id
              where r.work_id = @WorkId
              group by r.id,
