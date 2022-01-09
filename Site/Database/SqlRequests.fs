@@ -36,50 +36,7 @@ let searchComposersByLastName = "
     limit @Limit"
 
 /// Select composers grouped by music periods
-let periodsAndComposers = "
-    select json_agg(json_build_object(
-                            'id', p.id,
-                            'name', p.name,
-                            'yearStart', p.year_start,
-                            'yearEnd', p.year_end,
-                            'slug', p.slug,
-                            'composers', p.composers
-                        ) order by p.year_start) as Json
-    from (select p.id,
-                 p.name,
-                 p.year_start,
-                 p.year_end,
-                 p.slug,
-                 json_agg(json_build_object(
-                                  'id', c.id,
-                                  'lastName', c.last_name,
-                                  'firstName', c.first_name,
-                                  'yearBorn', c.year_born,
-                                  'yearDied', c.year_died,
-                                  'countries', c.countries,
-                                  'slug', c.slug,
-                                  'enabled', c.enabled,
-                                  'wikipediaLink', c.wikipedia_link,
-                                  'imslpLink', c.imslp_link) order by c.last_name) composers
-          from periods p
-                   join (select c.id,
-                                c.last_name,
-                                c.first_name,
-                                json_agg(c2.name) countries,
-                                c.year_born,
-                                c.year_died,
-                                c.slug,
-                                c.enabled,
-                                c.wikipedia_link,
-                                c.imslp_link,
-                                c.period_id
-                         from composers c
-                                  join composers_countries cc on c.id = cc.composer_id
-                                  join countries c2 on cc.country_id = c2.id
-                         group by c.id, c.last_name, c.first_name, c.year_born, c.year_died, c.slug, c.wikipedia_link,
-                                  c.imslp_link, c.period_id
-          ) c on p.id = c.period_id
-          group by p.id, p.name, p.year_start, p.year_end, p.slug) p"
+let periodsAndComposers = "select Json from periods_composers"
 
 /// Select work by its id
 let workById = "
