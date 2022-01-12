@@ -92,14 +92,13 @@ let workCard (work: Work) =
                     if work.cataloguePostfix.IsSome then
                         str work.cataloguePostfix.Value
                 ]
-
                 span [ _class "vertical-separator" ] []
-            span [] [
-                str (formatYearsRangeLoose work.yearStart work.yearFinish)
-            ]
+            if work.yearStart.IsSome || work.yearFinish.IsSome then
+                span [] [
+                    str (formatYearsRangeLoose work.yearStart work.yearFinish)
+                ]
+                span [ _class "vertical-separator" ] []
             if work.averageMinutes.IsSome then
-                span [ _class "vertical-separator" ] []
-
                 span [] [
                     work.averageMinutes |> formatWorkLength |> str
                 ]
