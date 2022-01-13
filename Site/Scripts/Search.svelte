@@ -62,17 +62,13 @@
     /** Dispatches actions based on keys pressed inside search input */
     function handleKeydown(event: KeyboardEvent) {
         if (event.code === 'ArrowUp' && composers.length > 0) {
-            if (selectedResult > 0) {
-                selectedResult = selectedResult - 1
-            } else {
-                selectedResult = composers.length - 1
-            }
+            selectedResult = selectedResult > 0
+                ? selectedResult - 1
+                : composers.length - 1
         } else if (event.code === 'ArrowDown') {
-            if (selectedResult < composers.length - 1) {
-                selectedResult = selectedResult + 1
-            } else {
-                selectedResult = 0
-            }
+            selectedResult = selectedResult < composers.length - 1
+                ? selectedResult + 1
+                : selectedResult = 0
         } else if (event.code === 'Escape') {
             hideSearch()
         } else if (event.code === 'Enter' && composers.length > 0) {
