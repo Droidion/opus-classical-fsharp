@@ -18,6 +18,7 @@ module App =
 
     let cssHash = computeFileHash "static/bundle.css"
     let jsHash = computeFileHash "static/bundle.js"
+    let logsId = "571bc95e-5d08-489f-b649-6f475f772b00"
 
     /// Renders HTML
     let view (pageTitle: string, pageDescription: string) (content: XmlNode list) =
@@ -56,6 +57,10 @@ module App =
                        _color "#5bbad5" ]
                 link [ _rel "stylesheet"
                        _href $"/bundle.css?v={cssHash}" ]
+                script [ _async
+                         _defer
+                         attr "data-website-id" logsId
+                         _src "https://logs.opusclassical.net/umami.js" ] []
                 script [ _src $"/bundle.js?v={jsHash}"
                          _type "module"
                          _defer ] []
