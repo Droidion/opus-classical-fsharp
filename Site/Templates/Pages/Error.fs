@@ -3,9 +3,13 @@ module Site.Templates.Pages.Error
 open Giraffe.ViewEngine
 open Site.Templates
 
-let view =
+let private errorPage (pageTitle: string) : XmlNode list =
+    [ h1 [] [ str pageTitle ]
+      p [] [
+          str "Error happened. I am sorry."
+      ] ]
+
+let view: XmlNode =
     let pageTitle = "Error"
     let pageDescription = "There was an error"
-
-    [ h1 [] [ str pageTitle ]; p [] [ str "Error happened. I am sorry." ] ]
-    |> App.view (pageTitle, pageDescription)
+    errorPage pageTitle |> App.view (pageTitle, pageDescription)
