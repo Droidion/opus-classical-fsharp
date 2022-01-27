@@ -6,6 +6,43 @@ open Site.Templates
 open Site.Templates.Partials
 open Site.Templates.Helpers
 
+let private performerTitle (performer: Performer) : XmlNode =
+    div [ _class "card__title" ] [
+        span [] [
+            str $"""{performer.firstName |> Option.defaultValue ""} {performer.lastName} """
+        ]
+        if performer.instrument.IsSome then
+            span [ _class "card__instrument" ] [
+                str performer.instrument.Value
+            ]
+    ]
+
+let private performerSubtitle (recording: Recording) : XmlNode =
+    div [ _class "card__subtitle" ] [
+        if recording.label.IsSome then
+            span [] [ str recording.label.Value ]
+            span [ _class "vertical-separator" ] []
+        if recording.yearStart.IsSome || recording.yearFinish.IsSome then
+            span [] [
+                str (formatYearsRangeLoose recording.yearStart recording.yearFinish)
+            ]
+
+            span [ _class "vertical-separator" ] []
+        span [] [
+            recording.length |> Some |> formatWorkLength |> str
+        ]
+    ]
+
+let private streamerCard (streamer: Streamer) : XmlNode =
+    div [ _class "card__streamer-el" ] [
+        a [ _href $"{streamer.prefix}{streamer.link}" ] [
+            img [ _src $"/img/{streamer.icon}"
+                  _height "24"
+                  _width "24"
+                  _alt "Streaming service logo" ]
+        ]
+    ]
+
 let private recordingCard (recording: Recording) =
     div [ _class "card illustrated" ] [
         img [ _class "cover"
@@ -13,40 +50,12 @@ let private recordingCard (recording: Recording) =
               _alt "Cover" ]
         div [] [
             for performer in recording.performers do
-                div [ _class "card__title" ] [
-                    span [] [
-                        str $"""{performer.firstName |> Option.defaultValue ""} {performer.lastName} """
-                    ]
-                    if performer.instrument.IsSome then
-                        span [ _class "card__instrument" ] [
-                            str performer.instrument.Value
-                        ]
-                ]
-            div [ _class "card__subtitle" ] [
-                if recording.label.IsSome then
-                    span [] [ str recording.label.Value ]
-                    span [ _class "vertical-separator" ] []
-                if recording.yearStart.IsSome || recording.yearFinish.IsSome then
-                    span [] [
-                        str (formatYearsRangeLoose recording.yearStart recording.yearFinish)
-                    ]
-
-                    span [ _class "vertical-separator" ] []
-                span [] [
-                    recording.length |> Some |> formatWorkLength |> str
-                ]
-            ]
+                performerTitle performer
+            performerSubtitle recording
 
             div [ _class "card__streamers" ] [
                 for streamer in recording.streamers do
-                    div [ _class "card__streamer-el" ] [
-                        a [ _href $"{streamer.prefix}{streamer.link}" ] [
-                            img [ _src $"/img/{streamer.icon}"
-                                  _height "24"
-                                  _width "24"
-                                  _alt "Streaming service logo" ]
-                        ]
-                    ]
+                    streamerCard streamer
             ]
         ]
     ]
