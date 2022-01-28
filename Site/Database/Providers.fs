@@ -3,7 +3,7 @@ module Site.Database.Providers
 
 open System
 open Giraffe
-open Site.Database
+open Site
 open Site.Models
 open Site.Helpers
 open FSharp.Json
@@ -25,14 +25,14 @@ let private querySingleTextCell (request: PgRequest) : string option =
 
 /// Returns all periods
 let listPeriods () : Period list =
-    match Redis.retrieveRedis redisKeys.Periods with
+    match Redis.getStringValueByKey redisKeys.Periods with
     | Some c -> Json.deserialize<Period list> c
     | None ->
         let request = { Sql = SqlRequests.periodsAndComposers; Parameters = None }
 
         match querySingleTextCell request with
         | Some json ->
-            Redis.storeRedis redisKeys.Periods json expire.Long |> ignore
+            Redis.setStringValueByKey redisKeys.Periods json expire.Long |> ignore
             json |> Json.deserialize<Period list>
         | None -> []
 
@@ -40,7 +40,7 @@ let listPeriods () : Period list =
 let getComposer (slug: string) : Composer option =
     let redisKey = redisKeys.Composer + slug
 
-    match Redis.retrieveRedis redisKey with
+    match Redis.getStringValueByKey redisKey with
     | Some c -> Json.deserialize<Composer> c |> Some
     | None ->
         let request =
@@ -49,7 +49,7 @@ let getComposer (slug: string) : Composer option =
 
         match querySingleTextCell request with
         | Some json ->
-            Redis.storeRedis redisKey json expire.Soon |> ignore
+            Redis.setStringValueByKey redisKey json expire.Soon |> ignore
             json |> Json.deserialize<Composer> |> Some
         | None -> None
 

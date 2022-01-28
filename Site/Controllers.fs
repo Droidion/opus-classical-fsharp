@@ -11,9 +11,7 @@ open Giraffe
 
 /// Index page controller
 let indexPageController: HttpHandler =
-    let handler ctx =
-        let periods = listPeriods ()
-        Index.view periods |> Controller.renderHtml ctx
+    let handler (ctx: HttpContext) = listPeriods () |> Index.view |> Controller.renderHtml ctx
 
     controller { index handler }
 
@@ -33,31 +31,28 @@ let searchApiController: HttpHandler =
 
 /// About page controller
 let aboutPageController: HttpHandler =
-    let handler ctx = About.view |> Controller.renderHtml ctx
+    let handler (ctx: HttpContext) = About.view |> Controller.renderHtml ctx
     controller { index handler }
 
-/// Controller for the Musical Work page 
-let workPageController (composerSlug: string): HttpHandler =
-    let handler ctx workId =
+/// Controller for the Musical Work page
+let workPageController (composerSlug: string) : HttpHandler =
+    let handler (ctx: HttpContext) (workId: int) =
         let composer = composerSlug |> getComposer
 
-        let parallelData =
+        let work, recordings, childWorks =
             async {
-                let! work = Async.StartChild(workId |> getWorks)
-                let! recordings = Async.StartChild(workId |> listRecordings)
-                let! childWorks = Async.StartChild(workId |> getChildWorks)
-                let! workResult = work
-                let! recordingsResult = recordings
-                let! childWorksResult = childWorks
-                return workResult, recordingsResult, childWorksResult
+                let! work = workId |> getWorks
+                let! recordings = workId |> listRecordings
+                let! childWorks = workId |> getChildWorks
+
+                let recordingsParsed =
+                    recordings
+                    |> Option.defaultValue "[]"
+                    |> Json.deserialize<Recording list>
+
+                return work, recordingsParsed, childWorks
             }
-
-        let work, recordings, childWorks = parallelData |> Async.RunSynchronously
-
-        let recordings =
-            match recordings.IsSome with
-            | true -> recordings.Value |> Json.deserialize<Recording list>
-            | false -> []
+            |> Async.RunSynchronously
 
         let view =
             match composer, work with
@@ -70,7 +65,7 @@ let workPageController (composerSlug: string): HttpHandler =
 
 /// Composer page controller
 let composerPageController: HttpHandler =
-    let handler ctx slug =
+    let handler (ctx: HttpContext) (slug: string) =
         let composer = slug |> getComposer
 
         let view =

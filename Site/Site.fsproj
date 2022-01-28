@@ -13,7 +13,7 @@
 
     <ItemGroup>
       <Compile Include="Helpers.fs" />
-      <Compile Include="Database\Redis.fs" />
+      <Compile Include="Redis.fs" />
       <Compile Include="Database\Postgres.fs" />
       <Compile Include="Database\SqlRequests.fs" />
       <Compile Include="Database\Providers.fs" />
