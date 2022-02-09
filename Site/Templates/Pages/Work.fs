@@ -1,7 +1,11 @@
 module Site.Templates.Pages.Work
 
 open Giraffe.ViewEngine
-open Site.Models
+open Site.Domain.Performer
+open Site.Domain.Recording
+open Site.Domain.Streamer
+open Site.Domain.Work
+open Site.Domain.Composer
 open Site.Templates
 open Site.Templates.Partials
 open Site.Templates.Helpers

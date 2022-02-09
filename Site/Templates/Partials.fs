@@ -2,7 +2,7 @@
 module Site.Templates.Partials
 
 open Giraffe.ViewEngine
-open Site.Models
+open Site.Domain.Work
 open Site.Templates.Helpers
 
 let private title (work: Work) : XmlNode =

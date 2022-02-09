@@ -8,30 +8,51 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Models.fs" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Include="Helpers.fs" />
-      <Compile Include="Database\Redis.fs" />
-      <Compile Include="Database\Postgres.fs" />
-      <Compile Include="Database\SqlRequests.fs" />
-      <Compile Include="Database\Providers.fs" />
-      <Compile Include="Templates\Helpers.fs" />
-      <Compile Include="Templates\Partials.fs" />
-      <Compile Include="Templates\App.fs" />
-      <Compile Include="Templates\Pages\Index.fs" />
-      <Compile Include="Templates\Pages\About.fs" />
-      <Compile Include="Templates\Pages\Work.fs" />
-      <Compile Include="Templates\Pages\Composer.fs" />
-      <Compile Include="Templates\Pages\NotFound.fs" />
-      <Compile Include="Templates\Pages\Error.fs" />
-      <Compile Include="Controllers.fs" />
-      <Compile Include="Router.fs" />
-      <Compile Include="Program.fs" />
+      
       <Content Include="static\**">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+        <Content Include="static\robots.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <None Include="Sass\_blocks.sass" />
+        <None Include="Sass\_colors.sass" />
+        <None Include="Sass\_footer.sass" />
+        <None Include="Sass\_header.sass" />
+        <None Include="Sass\_main.sass" />
+        <None Include="Sass\_mixins.sass" />
+        <None Include="Sass\_reset.sass" />
+        <None Include="Sass\site.sass" />
+        <None Include="Scripts\main.ts" />
+        <None Include="Scripts\Search.svelte" />
+        <Compile Include="Helpers.fs" />
+        <Compile Include="Redis.fs" />
+        <Compile Include="Postgres.fs" />
+        <Compile Include="Domain\Streamer.fs" />
+        <Compile Include="Domain\Performer.fs" />
+        <Compile Include="Domain\Recording.fs" />
+        <Compile Include="Domain\Composer.fs" />
+        <Compile Include="Domain\ComposerSearchResult.fs" />
+        <Compile Include="Domain\Label.fs" />
+        <Compile Include="Domain\Work.fs" />
+        <Compile Include="Domain\Genre.fs" />
+        <Compile Include="Domain\Period.fs" />
+        <Compile Include="Templates\Helpers.fs" />
+        <Compile Include="Templates\Partials.fs" />
+        <Compile Include="Templates\App.fs" />
+        <Compile Include="Templates\Pages\Index.fs" />
+        <Compile Include="Templates\Pages\About.fs" />
+        <Compile Include="Templates\Pages\Work.fs" />
+        <Compile Include="Templates\Pages\Composer.fs" />
+        <Compile Include="Templates\Pages\NotFound.fs" />
+        <Compile Include="Templates\Pages\Error.fs" />
+        <Compile Include="Controller.fs" />
+        <Compile Include="Router.fs" />
+        <Compile Include="Program.fs" />
+        <None Include="package.json" />
+        <None Include="rollup.config.js" />
+        <None Include="tsconfig.json" />
+        
     </ItemGroup>
 
     <ItemGroup>
@@ -41,31 +62,13 @@
         <PackageReference Include="FSharpPlus" Version="1.2.2" />
         <PackageReference Include="Legivel" Version="0.4.6" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="Npgsql" Version="6.0.2" />
+        <PackageReference Include="Npgsql" Version="6.0.3" />
         <PackageReference Include="Npgsql.FSharp" Version="4.1.0" />
         <PackageReference Include="Saturn" Version="0.15.0" />
         <PackageReference Include="Sentry" Version="3.13.0" />
         <PackageReference Include="StackExchange.Redis" Version="2.2.88" />
         <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
-        <PackageReference Update="FSharp.Core" Version="6.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Include="Sass\_blocks.sass" />
-      <None Include="Sass\_colors.sass" />
-      <None Include="Sass\_footer.sass" />
-      <None Include="Sass\_header.sass" />
-      <None Include="Sass\_main.sass" />
-      <None Include="Sass\_mixins.sass" />
-      <None Include="Sass\_reset.sass" />
-      <None Include="Sass\site.sass" />
-      <Content Include="rollup.config.js" />
-      <Content Include="Scripts\main.ts" />
-      <Content Include="Scripts\Search.svelte" />
-      <Content Include="tsconfig.json" />
-      <Content Include="static\robots.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
+        <PackageReference Update="FSharp.Core" Version="6.0.3" />
     </ItemGroup>
 
 </Project>

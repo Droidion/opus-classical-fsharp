@@ -1,7 +1,8 @@
 module Site.Templates.Pages.Index
 
 open Giraffe.ViewEngine
-open Site.Models
+open Site.Domain.Composer
+open Site.Domain.Period
 open Site.Templates
 open Site.Templates.Helpers
 

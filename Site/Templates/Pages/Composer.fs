@@ -1,9 +1,9 @@
 module Site.Templates.Pages.Composer
 
 open Giraffe.ViewEngine
-open Site.Models
+open Site.Domain.Composer
+open Site.Domain.Genre
 open Site.Templates
-open Site.Database.Providers
 open Site.Templates.Helpers
 
 let private composerHeaderSubtitle (composer: Composer) : XmlNode =

@@ -1,9 +1,12 @@
 /// Operations with Redis
-module Site.Database.Redis
+module Site.Redis
 
 open System
 open StackExchange.Redis
 open Site.Helpers
+
+type RedisExpiration = { Soon: TimeSpan; Long: TimeSpan }
+let expire : RedisExpiration = { Soon = TimeSpan(0, 1, 0); Long = TimeSpan(1, 0, 0) }
 
 /// Connection pool
 let private redisPool : ConnectionMultiplexer option =
@@ -25,7 +28,7 @@ let private redisConn : IDatabase option =
     | None -> None
 
 /// Save key-value to Redis
-let storeRedis (key: string) (value: string) (life: TimeSpan) : bool =
+let storeRedis (key: string, value: string, life: TimeSpan) : bool =
     match redisConn with
     | Some db -> db.StringSet(RedisKey key, RedisValue value, life)
     | None -> false
