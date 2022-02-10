@@ -46,7 +46,7 @@
         <Compile Include="Templates\Pages\Composer.fs" />
         <Compile Include="Templates\Pages\NotFound.fs" />
         <Compile Include="Templates\Pages\Error.fs" />
-        <Compile Include="Controller.fs" />
+        <Compile Include="Controllers.fs" />
         <Compile Include="Router.fs" />
         <Compile Include="Program.fs" />
         <None Include="package.json" />

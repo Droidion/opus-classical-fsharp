@@ -1,15 +1,16 @@
-module Site.Controller
+module Site.Controllers
 
-open Microsoft.AspNetCore.Http
-open Giraffe
-open Saturn
-open Site.Domain.Period
-open Site.Domain.Work
-open Site.Domain.Composer
-open Site.Domain.Recording
-open Site.Domain.ComposerSearchResult
-open Site.Templates.Pages
 open FSharp.Json
+open Giraffe
+open Microsoft.AspNetCore.Http
+open Saturn
+open Site.Domain.Composer
+open Site.Domain.ComposerSearchResult
+open Site.Domain.Period
+open Site.Domain.Recording
+open Site.Domain.Work
+open Site.Helpers
+open Site.Templates.Pages
 
 /// Index page controller
 let periodsController =
@@ -38,7 +39,7 @@ let workController composerSlug =
 
         let recordings =
             match recordings.IsSome with
-            | true -> recordings.Value |> Json.deserialize<Recording list>
+            | true -> recordings.Value |> Json.deserializeEx<Recording list> jsonConfig
             | false -> []
 
         match composer, work with
@@ -77,5 +78,5 @@ let searchController =
         | _ ->
             ctx.SetStatusCode 400
             Controller.text ctx ""
-            
+
     controller { index handler }

@@ -1,11 +1,11 @@
 module Site.Domain.Composer
 
-open Microsoft.AspNetCore.Http
-open Site.Helpers
-open Site.Redis
-open Site.Postgres
 open FSharp.Json
 open Giraffe
+open Microsoft.AspNetCore.Http
+open Site.Helpers
+open Site.Postgres
+open Site.Redis
 
 /// Composer, like Bach or Beethoven
 type Composer =
@@ -28,7 +28,7 @@ let getComposer (slug: string) : Composer option =
     let redisKey = "opusclassical:composer:" + slug
 
     match retrieveRedis redisKey with
-    | Some c -> Json.deserialize<Composer> c |> Some
+    | Some c -> Json.deserializeEx<Composer> jsonConfig c |> Some
     | None ->
         let request =
             { Sql = composerBySlug
@@ -37,7 +37,7 @@ let getComposer (slug: string) : Composer option =
         match querySingleTextCell request with
         | Some json ->
             storeRedis (redisKey, json, expire.Soon) |> ignore
-            json |> Json.deserialize<Composer> |> Some
+            json |> Json.deserializeEx<Composer> jsonConfig |> Some
         | None -> None
 
 

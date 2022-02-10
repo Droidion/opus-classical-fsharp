@@ -1,11 +1,11 @@
 module Site.Templates.App
 
+open FSharpPlus
+open Giraffe.ViewEngine
 open System
 open System.IO
 open System.Security.Cryptography
 open System.Text
-open FSharpPlus
-open Giraffe.ViewEngine
 
 /// Top-level layout template
 let private computeFileHash (path: string) : string =

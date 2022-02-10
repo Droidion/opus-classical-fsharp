@@ -1,11 +1,11 @@
 module Site.Domain.Period
 
-open Site.Helpers
-open Site.Postgres
-open Site.Domain.Composer
-open Site.Redis
 open FSharp.Json
 open Giraffe
+open Site.Domain.Composer
+open Site.Helpers
+open Site.Postgres
+open Site.Redis
 
 /// Period when composer lived and worked, e.g. Late Baroque or Romanticism. 
 type Period = {
@@ -25,13 +25,13 @@ let private redisKey = "opusclassical:periods"
 /// Returns all periods
 let listPeriods () : Period list =
     match retrieveRedis redisKey with
-    | Some c -> Json.deserialize<Period list> c
+    | Some c -> Json.deserializeEx<Period list> jsonConfig c
     | None ->
         let request = { Sql = periodsAndComposers; Parameters = None }
 
         match querySingleTextCell request with
         | Some json ->
             storeRedis(redisKey, json, expire.Long) |> ignore
-            json |> Json.deserialize<Period list>
+            json |> Json.deserializeEx<Period list> jsonConfig
         | None -> []
         

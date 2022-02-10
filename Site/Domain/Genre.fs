@@ -1,9 +1,9 @@
 module Site.Domain.Genre
 
+open FSharp.Json
+open Site.Domain.Work
 open Site.Helpers
 open Site.Postgres
-open Site.Domain.Work
-open FSharp.Json
 
 /// Genre of the work, like Symphony, or String Quartet, or Choral music.
 type Genre = {
@@ -22,5 +22,5 @@ let listGenres (composerId: int) : Genre list =
           Parameters = dict [ "ComposerId", box composerId ] |> Some }
 
     match querySingleTextCell request with
-    | Some json -> Json.deserialize<Genre list> json
+    | Some json -> Json.deserializeEx<Genre list> jsonConfig json 
     | None -> []

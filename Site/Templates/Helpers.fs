@@ -2,6 +2,7 @@
 module Site.Templates.Helpers
 
 open System
+
 let coversUrl = Environment.GetEnvironmentVariable("StaticAssetsUrl")
 
 /// Checks if given string is a 4 digits number, like "1234" (not "-123", "123", or "12345")

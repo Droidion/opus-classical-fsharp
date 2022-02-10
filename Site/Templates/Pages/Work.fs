@@ -1,14 +1,14 @@
 module Site.Templates.Pages.Work
 
 open Giraffe.ViewEngine
+open Site.Domain.Composer
 open Site.Domain.Performer
 open Site.Domain.Recording
 open Site.Domain.Streamer
 open Site.Domain.Work
-open Site.Domain.Composer
 open Site.Templates
-open Site.Templates.Partials
 open Site.Templates.Helpers
+open Site.Templates.Partials
 
 let private performerTitle (performer: Performer) : XmlNode =
     div [ _class "card__title" ] [

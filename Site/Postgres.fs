@@ -1,12 +1,23 @@
 /// Operations with Postgres
 module Site.Postgres
 
-open System
-open System.Data
 open Dapper
 open Npgsql
-open Site.Helpers
 open Sentry
+open System
+open System.Collections.Generic
+open System.Data
+
+type PgRequest = {
+    Sql: string
+    Parameters: IDictionary<string, obj> option
+}
+
+/// Converts F# option to C# nullable
+let optionalToNullable<'T, 'N when 'T: null> (opt: 'T option) =
+    match opt with
+    | Some d -> d
+    | None -> null
 
 let private connectionString = Environment.GetEnvironmentVariable("DbConnectionString")
 

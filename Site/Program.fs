@@ -1,15 +1,15 @@
-﻿open System.IO
+﻿open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.StaticFiles
+open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Primitives
 open Saturn
-open Microsoft.Extensions.Hosting
-open Microsoft.AspNetCore.Builder
-open Site
-open System
 open Sentry
+open Site
 open Site.Templates
+open System
+open System.IO
 
 type private CacheControl =
     | NoCacheControl
@@ -40,7 +40,7 @@ let private setWebRootPath path (builder: IWebHostBuilder) =
 let private app =
     application {
         use_router Router.topRouter
-        url "http://0.0.0.0:5000"
+        url "http://0.0.0.0:5002"
         app_config (useStaticFiles (CacheControl "public, max-age=604800"))
         webhost_config (setWebRootPath "static")
         use_gzip

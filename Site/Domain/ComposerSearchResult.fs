@@ -1,11 +1,11 @@
 module Site.Domain.ComposerSearchResult
 
-open System.Data
+open Giraffe
 open Microsoft.AspNetCore.Http
+open Saturn
 open Site.Helpers
 open Site.Postgres
-open Giraffe
-open Saturn
+open System.Data
 
 type ComposerSearchResult =
     { id: int

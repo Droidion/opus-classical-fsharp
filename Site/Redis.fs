@@ -1,9 +1,9 @@
 /// Operations with Redis
 module Site.Redis
 
-open System
-open StackExchange.Redis
 open Site.Helpers
+open StackExchange.Redis
+open System
 
 type RedisExpiration = { Soon: TimeSpan; Long: TimeSpan }
 let expire : RedisExpiration = { Soon = TimeSpan(0, 1, 0); Long = TimeSpan(1, 0, 0) }

@@ -1,10 +1,10 @@
 /// Saturn router
 module Site.Router
 
-open Saturn
-open Site.Templates.Pages
 open Giraffe
-open Site.Controller
+open Saturn
+open Site.Controllers
+open Site.Templates.Pages
 
 /// Adds headers to the responses
 let private addHeaders =

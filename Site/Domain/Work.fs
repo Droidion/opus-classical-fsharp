@@ -1,8 +1,8 @@
 module Site.Domain.Work
 
-open System.Data
 open Site.Helpers
 open Site.Postgres
+open System.Data
 
 /// Musical work, like Symphony No. 9 by Beethoven
 type Work =
