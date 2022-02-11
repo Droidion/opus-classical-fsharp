@@ -18,7 +18,7 @@ let private computeFileHash (path: string) : string =
 
 let private cssHash = computeFileHash "static/bundle.css"
 let private jsHash = computeFileHash "static/bundle.js"
-let private logsId = "571bc95e-5d08-489f-b649-6f475f772b00"
+let private logsId = Environment.GetEnvironmentVariable("UmamiId")
 
 let private headerLogo: XmlNode =
     a [ _class "logo-link"; _href "/" ] [

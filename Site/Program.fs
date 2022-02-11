@@ -14,6 +14,8 @@ type private CacheControl =
     | NoCacheControl
     | CacheControl of string
 
+let private port = Environment.GetEnvironmentVariable("Port")
+
 let private useStaticFiles cache (app: IApplicationBuilder) =
     match cache with
     | NoCacheControl -> app.UseStaticFiles()
@@ -32,7 +34,7 @@ let private setWebRootPath path (builder: IWebHostBuilder) =
 let private app =
     application {
         use_router Router.topRouter
-        url "http://0.0.0.0:5000"
+        url $"http://0.0.0.0:{port}"
         app_config (useStaticFiles (CacheControl "public, max-age=604800"))
         webhost_config (setWebRootPath "static")
         use_gzip

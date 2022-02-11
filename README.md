@@ -38,6 +38,8 @@ ASPNETCORE_URLS=http://+:5000
 DbConnectionString=Host=host.docker.internal;Username=your-user;Database=composers;Minimum Pool Size=10
 StaticAssetsUrl=https://static.zunh.dev/composers/covers/
 RedisConnectionString=redis:6379
+Port=5000
+UmamiId=1234-abcd
 ```
 
 - `Sentry` is URL for reporting events and exceptions to Sentry.io
@@ -45,6 +47,8 @@ RedisConnectionString=redis:6379
 - `DbConnectionString` is Postgres connection string
 - `StaticAssetsUrl` is the path to static images storage
 - `RedisConnectionString` is Redis connection string
+- `Port` is port for web server
+- `UmamiId` is Umami Id for gathering usage statistics
 
 ### Using Docker
 
