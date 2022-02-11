@@ -12,7 +12,7 @@ open System.Text
 let private computeFileHash (path: string) : string =
     File.ReadAllText(path)
     |> Encoding.UTF8.GetBytes
-    |> (new SHA256Managed()).ComputeHash
+    |> (SHA256.Create()).ComputeHash
     |> BitConverter.ToString
     |> String.replace "-" ""
 
