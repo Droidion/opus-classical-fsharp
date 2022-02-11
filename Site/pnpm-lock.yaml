@@ -7,7 +7,9 @@ specifiers:
   '@tsconfig/svelte': ^3.0.0
   '@types/dom-inputevent': ^1.0.7
   rollup: ^2.67.2
+  rollup-plugin-brotli: ^3.1.0
   rollup-plugin-css-only: ^3.1.0
+  rollup-plugin-gzip: ^3.0.0
   rollup-plugin-svelte: ^7.1.0
   rollup-plugin-terser: ^7.0.2
   svelte: ^3.46.4
@@ -22,7 +24,9 @@ devDependencies:
   '@tsconfig/svelte': 3.0.0
   '@types/dom-inputevent': 1.0.7
   rollup: 2.67.2
+  rollup-plugin-brotli: 3.1.0
   rollup-plugin-css-only: 3.1.0_rollup@2.67.2
+  rollup-plugin-gzip: 3.0.0_rollup@2.67.2
   rollup-plugin-svelte: 7.1.0_rollup@2.67.2+svelte@3.46.4
   rollup-plugin-terser: 7.0.2_rollup@2.67.2
   svelte: 3.46.4
@@ -411,6 +415,11 @@ packages:
       glob: 7.1.6
     dev: true
 
+  /rollup-plugin-brotli/3.1.0:
+    resolution: {integrity: sha512-vXRPVd9B1x+aaXeBdmLKNNsai9AH3o0Qikf4u0m1icKqgi3qVA4UhOfwGaPYoAHML1GLMUnR//PDhiMHXN/M6g==}
+    engines: {node: '>=11.7.0'}
+    dev: true
+
   /rollup-plugin-css-only/3.1.0_rollup@2.67.2:
     resolution: {integrity: sha512-TYMOE5uoD76vpj+RTkQLzC9cQtbnJNktHPB507FzRWBVaofg7KhIqq1kGbcVOadARSozWF883Ho9KpSPKH8gqA==}
     engines: {node: '>=10.12.0'}
@@ -418,6 +427,15 @@ packages:
       rollup: 1 || 2
     dependencies:
       '@rollup/pluginutils': 4.1.0_rollup@2.67.2
+      rollup: 2.67.2
+    dev: true
+
+  /rollup-plugin-gzip/3.0.0_rollup@2.67.2:
+    resolution: {integrity: sha512-xvyKihEdKygVk0vJt0tKytVw/WgLEMghX1uWhNc7ANuTpXw46fhvdTTDGC1OHxFBSEwUQ1I34b7S3iD8l+L30g==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      rollup: '>=2.0.0'
+    dependencies:
       rollup: 2.67.2
     dev: true
 

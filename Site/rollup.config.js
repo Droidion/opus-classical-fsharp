@@ -4,6 +4,8 @@ import sveltePreprocess from 'svelte-preprocess';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
+import gzipPlugin from 'rollup-plugin-gzip';
+import brotli from "rollup-plugin-brotli";
 
 export default {
     input: 'Scripts/main.ts',
@@ -22,6 +24,12 @@ export default {
         }),
         commonjs(),
         typescript(),
-        terser()
+        terser(),
+        gzipPlugin({
+            additionalFiles: ['static/bundle.css']
+        }),
+        brotli({
+            additional: ['static/bundle.css']
+        })
     ],
 };
