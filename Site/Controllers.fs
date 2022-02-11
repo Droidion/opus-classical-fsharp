@@ -1,3 +1,4 @@
+/// Saturn controllers.
 module Site.Controllers
 
 open FSharp.Json
@@ -12,7 +13,7 @@ open Site.Domain.Work
 open Site.Helpers
 open Site.Templates.Pages
 
-/// Index page controller
+/// Index page controller.
 let periodsController =
     let handler ctx =
         let periods = listPeriods ()
@@ -20,6 +21,7 @@ let periodsController =
 
     controller { index handler }
 
+/// Work page controller.
 let workController composerSlug =
     let handler ctx workId =
         let composer = composerSlug |> getComposer
@@ -37,10 +39,7 @@ let workController composerSlug =
 
         let work, recordings, childWorks = parallelData |> Async.RunSynchronously
 
-        let recordings =
-            match recordings.IsSome with
-            | true -> recordings.Value |> Json.deserializeEx<Recording list> jsonConfig
-            | false -> []
+        let recordings = recordings.Head |> Json.deserializeEx<Recording list> jsonConfig
 
         match composer, work with
         | Some c, work when work.Length >= 1 -> Work.view c (List.head work) recordings childWorks
@@ -49,7 +48,7 @@ let workController composerSlug =
 
     controller { show handler }
 
-/// Composer page controller
+/// Composer page controller.
 let composerController =
     let handler ctx slug =
         let composer = slug |> getComposer
@@ -64,15 +63,16 @@ let composerController =
         show handler
     }
 
+/// About page controller.
 let aboutController =
     controller { index (fun ctx -> About.view |> Controller.renderHtml ctx) }
 
-/// Search API controller
+/// Search API controller.
 let searchController =
     let handler (ctx: HttpContext) =
         match ctx.Request.Query.TryGetValue "q" with
         | true, x ->
-            searchComposers (x.ToString()) 5
+            searchComposers(x.ToString(), 5)
             |> Async.RunSynchronously
             |> Controller.json ctx
         | _ ->

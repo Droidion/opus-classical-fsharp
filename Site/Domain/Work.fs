@@ -1,6 +1,6 @@
+/// Business logic for Work.
 module Site.Domain.Work
 
-open Site.Helpers
 open Site.Postgres
 open System.Data
 
@@ -19,7 +19,7 @@ type Work =
       nickname: string option } // e.g. Great in Beethoven's Symphony No. 9 Great
 
 /// Select work by its id
-let workById =
+let private workById =
     "
     select w.id,
            w.title,
@@ -38,7 +38,7 @@ let workById =
     where w.id = @Id"
 
 /// Select works by their parent work Id
-let childWorks =
+let private childWorks =
     @"
     select w.id,
            w.title,
@@ -57,34 +57,24 @@ let childWorks =
     where w.parent_work_id = @Id
     order by sort, year_finish, no, catalogue_number, catalogue_postfix, nickname"
 
-/// Maps musical work data returned from Dapper to F# model
-let workMapper (reader: IDataReader) : Work list =
-    [ while reader.Read() do
-          yield
-              { id = reader.GetInt32 0
-                title = reader.GetString 1
-                yearStart = extractNullableInt reader 2
-                yearFinish = extractNullableInt reader 3
-                averageMinutes = extractNullableInt reader 4
-                catalogueName = extractNullableString reader 5
-                catalogueNumber = extractNullableInt reader 6
-                cataloguePostfix = extractNullableString reader 7
-                key = extractNullableString reader 8
-                no = extractNullableInt reader 9
-                nickname = extractNullableString reader 10 } ]
+/// Maps Postgres response to F# type
+let private mapper (read: RowReader) : Work =
+    { id = read.int "id"
+      title = read.text "title"
+      yearStart = read.intOrNone "year_start"
+      yearFinish = read.intOrNone "year_finish"
+      averageMinutes = read.intOrNone "average_minutes"
+      catalogueName = read.textOrNone "catalogue_name"
+      catalogueNumber = read.intOrNone "catalogue_number"
+      cataloguePostfix = read.textOrNone "catalogue_postfix"
+      key = read.textOrNone "key"
+      no = read.intOrNone "no"
+      nickname = read.textOrNone "nickname" }
 
 /// Returns works by work id
 let getWorks (id: int) : Async<Work list> =
-    let request =
-        { Sql = workById
-          Parameters = dict [ "Id", box id ] |> Some }
-
-    query<Work list> request workMapper
+    query<Work> (workById, [ "Id", Sql.int id ] |> Some, mapper)
 
 /// Returns child works by its parent id
 let getChildWorks (idParent: int) : Async<Work list> =
-    let request =
-        { Sql = childWorks
-          Parameters = dict [ "Id", box idParent ] |> Some }
-
-    query<Work list> request workMapper
+    query<Work>(childWorks, [ "Id", Sql.int idParent ] |> Some, mapper)

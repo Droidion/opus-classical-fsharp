@@ -1,3 +1,4 @@
+/// Business logic for Streamer.
 module Site.Domain.Streamer
 
 /// Streaming service, e.g. Spotify, Tidal, or Apple Music.

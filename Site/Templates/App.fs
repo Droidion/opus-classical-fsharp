@@ -1,3 +1,4 @@
+/// Top-level HTML layout.
 module Site.Templates.App
 
 open FSharpPlus

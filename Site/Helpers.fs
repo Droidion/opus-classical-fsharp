@@ -10,5 +10,5 @@ let exToSentry (ex: exn) (comment: string) =
     SentrySdk.CaptureException(ex) |> ignore
     None
 
-// create config with JSON field naming setting
+// Creates config with JSON field naming setting.
 let jsonConfig = JsonConfig.create(jsonFieldNaming = Json.snakeCase)

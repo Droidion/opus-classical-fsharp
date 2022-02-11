@@ -1,8 +1,8 @@
+/// Business logic for Recordings.
 module Site.Domain.Recording
 
 open Site.Domain.Performer
 open Site.Domain.Streamer
-open Site.Helpers
 open Site.Postgres
 
 /// Recording of a musical work.
@@ -16,13 +16,10 @@ type Recording =
       length: int
       streamers: Streamer list }
 
-/// Select recordings of certain work
-let recordingsByWork = "select recordings_by_work(@WorkId) as json"
+/// Returns recordings of a given work.
+let listRecordings (workId: int) : Async<string list> =
+    let sql = "SELECT recordings_by_work(@WorkId) AS json"
+    let parameters = [ "WorkId", Sql.int workId ] |> Some
+    query(sql, parameters, jsonMapper)
+    
 
-/// Returns recordings
-let listRecordings (workId: int) : Async<string option> =
-    let request =
-        { Sql = recordingsByWork
-          Parameters = dict [ "WorkId", box workId ] |> Some }
-
-    query<string option> request extractSingleCell

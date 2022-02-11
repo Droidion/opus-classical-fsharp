@@ -1,3 +1,4 @@
+/// HTML for About page.
 module Site.Templates.Pages.About
 
 open Giraffe.ViewEngine

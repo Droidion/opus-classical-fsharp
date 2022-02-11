@@ -1,3 +1,4 @@
+/// HTML for Work page.
 module Site.Templates.Pages.Work
 
 open Giraffe.ViewEngine

@@ -1,12 +1,10 @@
+/// Business logic for searching for composers.
 module Site.Domain.ComposerSearchResult
 
-open Giraffe
-open Microsoft.AspNetCore.Http
-open Saturn
-open Site.Helpers
 open Site.Postgres
 open System.Data
 
+/// Search result for a composer.
 type ComposerSearchResult =
     { id: int
       firstName: string
@@ -15,41 +13,23 @@ type ComposerSearchResult =
       rating: float }
 
 /// Fuzzy search composers by last name with limiting results
-let searchComposersByLastName =
+let private searchComposersByLastName =
     "select id, first_name, last_name, slug, last_name_score from search_composers_by_last_name(@SearchQuery, @Limit)"
 
-/// Maps composers search results returned from Dapper to F# model
-let composerSearchResultMapper (reader: IDataReader) : ComposerSearchResult list =
-    [ while reader.Read() do
-          yield
-              { id = reader.GetInt32 0
-                firstName = reader.GetString 1
-                lastName = reader.GetString 2
-                slug = reader.GetString 3
-                rating = reader.GetDouble 4 } ]
+/// Maps Postgres response to F# type
+let private mapper (read: RowReader) : ComposerSearchResult =
+    { id = read.int "id"
+      firstName = read.text "first_name"
+      lastName = read.text "last_name"
+      slug = read.text "slug"
+      rating = read.double "last_name_score" }
 
-/// Searches for composers by last name
-let searchComposers (searchQuery: string) (limit: int) : Async<ComposerSearchResult list> =
-    let request =
-        { Sql = searchComposersByLastName
-          Parameters =
-              dict [ "SearchQuery", box searchQuery
-                     "Limit", box limit ]
-              |> Some }
+/// Searches for composers by last name and output items limit
+let searchComposers (searchQuery: string, limit: int) : Async<ComposerSearchResult list> =
+    let parameters =
+        [ "SearchQuery", Sql.text searchQuery
+          "Limit", Sql.int limit ]
+        |> Some
 
-    query<ComposerSearchResult list> request composerSearchResultMapper
-
-
-/// Search API controller
-let searchApiController: HttpFunc =
-    let handler (ctx: HttpContext) =
-        match ctx.Request.Query.TryGetValue "q" with
-        | true, x ->
-            searchComposers (x.ToString()) 5
-            |> Async.RunSynchronously
-            |> Controller.json ctx
-        | _ ->
-            ctx.SetStatusCode 400
-            Controller.text ctx ""
-
-    handler
+    query<ComposerSearchResult>(searchComposersByLastName, parameters, mapper)
+    

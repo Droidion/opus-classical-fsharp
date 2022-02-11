@@ -1,3 +1,4 @@
+/// Business logic for Composer.
 module Site.Domain.Composer
 
 open FSharp.Json
@@ -20,24 +21,18 @@ type Composer =
       imslpLink: string option
       enabled: bool } // Show this composer on the main page
 
-/// Select Composer by its slug name
-let private composerBySlug = "select composer_by_slug(@ComposerSlug) as json"
-
-/// Returns composer
+/// Returns composer by URL slug.
 let getComposer (slug: string) : Composer option =
     let redisKey = "opusclassical:composer:" + slug
 
     match retrieveRedis redisKey with
     | Some c -> Json.deserializeEx<Composer> jsonConfig c |> Some
     | None ->
-        let request =
-            { Sql = composerBySlug
-              Parameters = dict [ "ComposerSlug", box slug ] |> Some }
+        let sql = "select composer_by_slug(@ComposerSlug) as json"
+        let parameters = [ "ComposerSlug", Sql.text slug ] |> Some
 
-        match querySingleTextCell request with
-        | Some json ->
-            storeRedis (redisKey, json, expire.Soon) |> ignore
-            json |> Json.deserializeEx<Composer> jsonConfig |> Some
-        | None -> None
+        let json =
+            query (sql, parameters, jsonMapper) |> Async.RunSynchronously
 
-
+        storeRedis (redisKey, json.Head, expire.Long) |> ignore
+        json.Head |> Json.deserializeEx<Composer> jsonConfig |> Some

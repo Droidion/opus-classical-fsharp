@@ -1,3 +1,4 @@
+/// HTML for Not Found page.
 module Site.Templates.Pages.NotFound
 
 open Giraffe.ViewEngine

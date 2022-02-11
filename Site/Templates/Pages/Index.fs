@@ -1,3 +1,4 @@
+/// HTML for index page.
 module Site.Templates.Pages.Index
 
 open Giraffe.ViewEngine

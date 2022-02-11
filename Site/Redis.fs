@@ -1,4 +1,4 @@
-/// Operations with Redis
+/// Operations with Redis.
 module Site.Redis
 
 open Site.Helpers
@@ -8,7 +8,7 @@ open System
 type RedisExpiration = { Soon: TimeSpan; Long: TimeSpan }
 let expire : RedisExpiration = { Soon = TimeSpan(0, 1, 0); Long = TimeSpan(1, 0, 0) }
 
-/// Connection pool
+/// Connection pool.
 let private redisPool : ConnectionMultiplexer option =
     try
         let pool =
@@ -17,7 +17,7 @@ let private redisPool : ConnectionMultiplexer option =
         Some pool
     with ex -> exToSentry ex "Problem with creating Redis connection pool"
 
-/// Single DB connection
+/// Single DB connection.
 let private redisConn : IDatabase option =
     match redisPool with
     | Some r ->
@@ -27,13 +27,13 @@ let private redisConn : IDatabase option =
         with ex -> exToSentry ex "Problem with opening Redis database"
     | None -> None
 
-/// Save key-value to Redis
+/// Save key-value to Redis.
 let storeRedis (key: string, value: string, life: TimeSpan) : bool =
     match redisConn with
     | Some db -> db.StringSet(RedisKey key, RedisValue value, life)
     | None -> false
 
-/// Get key-value from Redis
+/// Get key-value from Redis.
 let retrieveRedis (key: string) : string option =
     match redisConn with
     | Some db ->

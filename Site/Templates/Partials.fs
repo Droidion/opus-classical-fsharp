@@ -1,4 +1,4 @@
-/// HTML snippets
+/// HTML snippets.
 module Site.Templates.Partials
 
 open Giraffe.ViewEngine

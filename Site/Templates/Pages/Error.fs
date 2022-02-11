@@ -1,3 +1,4 @@
+/// HTML for Error page.
 module Site.Templates.Pages.Error
 
 open Giraffe.ViewEngine

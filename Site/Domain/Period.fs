@@ -1,3 +1,4 @@
+/// Business logic for Period.
 module Site.Domain.Period
 
 open FSharp.Json
@@ -17,21 +18,15 @@ type Period = {
     composers: Composer list
 }
 
-/// Select composers grouped by music periods
-let private periodsAndComposers = "select json from periods_composers"
-
-let private redisKey = "opusclassical:periods"
-
 /// Returns all periods
 let listPeriods () : Period list =
+    let redisKey = "opusclassical:periods"
     match retrieveRedis redisKey with
     | Some c -> Json.deserializeEx<Period list> jsonConfig c
     | None ->
-        let request = { Sql = periodsAndComposers; Parameters = None }
-
-        match querySingleTextCell request with
-        | Some json ->
-            storeRedis(redisKey, json, expire.Long) |> ignore
-            json |> Json.deserializeEx<Period list> jsonConfig
-        | None -> []
+        let sql = "select json from periods_composers"
+        let parameters = None
+        let json = query(sql, parameters, jsonMapper) |> Async.RunSynchronously
+        storeRedis(redisKey, json.Head, expire.Long) |> ignore
+        json.Head |> Json.deserializeEx<Period list> jsonConfig
         

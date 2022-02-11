@@ -1,3 +1,4 @@
+/// HTML for Composer page.
 module Site.Templates.Pages.Composer
 
 open Giraffe.ViewEngine

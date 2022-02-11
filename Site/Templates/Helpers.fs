@@ -1,4 +1,4 @@
-/// Helpers for HTML templates
+/// Helpers for HTML templates.
 module Site.Templates.Helpers
 
 open System

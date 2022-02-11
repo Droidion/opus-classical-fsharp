@@ -56,13 +56,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Dapper" Version="2.0.123" />
         <PackageReference Include="FSharp.Configuration" Version="2.0.0" />
         <PackageReference Include="FSharp.Json" Version="0.4.1" />
         <PackageReference Include="FSharpPlus" Version="1.2.2" />
         <PackageReference Include="Legivel" Version="0.4.6" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="Npgsql" Version="6.0.3" />
         <PackageReference Include="Npgsql.FSharp" Version="4.1.0" />
         <PackageReference Include="Saturn" Version="0.15.0" />
         <PackageReference Include="Sentry" Version="3.13.0" />

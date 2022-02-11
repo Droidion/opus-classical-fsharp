@@ -1,3 +1,4 @@
+/// Business logic for Genre.
 module Site.Domain.Genre
 
 open FSharp.Json
@@ -12,15 +13,9 @@ type Genre = {
     works: Work list // List of the works belonging to the genre.
 }
 
-/// Select works grouped by genres by composer Id
-let genresAndWorksByComposer = "select genres_and_works_by_composer(@ComposerId) as json"
-
 /// Returns all genres
 let listGenres (composerId: int) : Genre list =
-    let request =
-        { Sql = genresAndWorksByComposer
-          Parameters = dict [ "ComposerId", box composerId ] |> Some }
-
-    match querySingleTextCell request with
-    | Some json -> Json.deserializeEx<Genre list> jsonConfig json 
-    | None -> []
+    let sql = "select genres_and_works_by_composer(@ComposerId) as json"
+    let parameters = [ "ComposerId", Sql.int composerId ] |> Some
+    let json = query(sql, parameters, jsonMapper) |> Async.RunSynchronously
+    json.Head |> Json.deserializeEx<Genre list> jsonConfig
