@@ -15,11 +15,11 @@ Curated catalogue of classical music with quick links to streaming services.
 - Streaming service app opens
 - Listen right away
 
-Tidal and Spotify supported.
+Apple Music and Spotify supported.
 
 Works on desktop and mobile. Fast links to streaming apps tested on macOS, Linux, iOS.
 
-Stack: F#, Saturn, .NET 5, Postgres, Dapper, SASS, Docker.
+Stack: F#, Saturn, .NET 6, Postgres, SASS, Docker.
 
 F# is ❤️.
 
@@ -27,7 +27,7 @@ F# is ❤️.
 
 ### Requirements
 
-- Have PostgreSQL 13 installed and available.
+- Have PostgreSQL 14 installed and available.
 - Have Redis 6 installed and available.
 - Restore Postgres database from a dump in `Migrations` folder.
 - Prepare environment variables:
@@ -58,7 +58,7 @@ $ docker-compose up -d
 
 ### Without Docker
 
-- Have the lasted .NET 5 installed.
+- Have the latest .NET 6 installed.
 - Have Node.js 14 installed.
 - Have SASS compiler installed.
 - Compile static assets:
