@@ -1,5 +1,4 @@
 ﻿open Microsoft.AspNetCore.Builder
-open Microsoft.AspNetCore.Cors.Infrastructure
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.StaticFiles
 open Microsoft.Extensions.Hosting
@@ -14,13 +13,6 @@ open System.IO
 type private CacheControl =
     | NoCacheControl
     | CacheControl of string
-
-let private configureCors (builder: CorsPolicyBuilder) =
-    builder
-        .AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-    |> ignore
 
 let private useStaticFiles cache (app: IApplicationBuilder) =
     match cache with
@@ -45,7 +37,6 @@ let private app =
         webhost_config (setWebRootPath "static")
         use_gzip
         memory_cache
-        use_cors "All" configureCors
         error_handler (fun _ _ -> pipeline { render_html Pages.Error.view })
         app_config
             (fun app ->
