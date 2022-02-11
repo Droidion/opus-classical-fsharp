@@ -18,4 +18,4 @@ let listGenres (composerId: int) : Genre list =
     let sql = "select genres_and_works_by_composer(@ComposerId) as json"
     let parameters = [ "ComposerId", Sql.int composerId ] |> Some
     let json = query(sql, parameters, jsonMapper) |> Async.RunSynchronously
-    json.Head |> Json.deserializeEx<Genre list> jsonConfig
+    json.Head |> Json.deserialize<Genre list>

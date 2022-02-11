@@ -26,7 +26,7 @@ let getComposer (slug: string) : Composer option =
     let redisKey = "opusclassical:composer:" + slug
 
     match retrieveRedis redisKey with
-    | Some c -> Json.deserializeEx<Composer> jsonConfig c |> Some
+    | Some c -> Json.deserialize<Composer> c |> Some
     | None ->
         let sql = "select composer_by_slug(@ComposerSlug) as json"
         let parameters = [ "ComposerSlug", Sql.text slug ] |> Some
@@ -35,4 +35,4 @@ let getComposer (slug: string) : Composer option =
             query (sql, parameters, jsonMapper) |> Async.RunSynchronously
 
         storeRedis (redisKey, json.Head, expire.Long) |> ignore
-        json.Head |> Json.deserializeEx<Composer> jsonConfig |> Some
+        json.Head |> Json.deserialize<Composer> |> Some

@@ -39,7 +39,7 @@ let workController composerSlug =
 
         let work, recordings, childWorks = parallelData |> Async.RunSynchronously
 
-        let recordings = recordings.Head |> Json.deserializeEx<Recording list> jsonConfig
+        let recordings = recordings.Head |> Json.deserialize<Recording list>
 
         match composer, work with
         | Some c, work when work.Length >= 1 -> Work.view c (List.head work) recordings childWorks

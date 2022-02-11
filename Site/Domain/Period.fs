@@ -22,11 +22,11 @@ type Period = {
 let listPeriods () : Period list =
     let redisKey = "opusclassical:periods"
     match retrieveRedis redisKey with
-    | Some c -> Json.deserializeEx<Period list> jsonConfig c
+    | Some c -> Json.deserialize<Period list> c
     | None ->
         let sql = "select json from periods_composers"
         let parameters = None
         let json = query(sql, parameters, jsonMapper) |> Async.RunSynchronously
         storeRedis(redisKey, json.Head, expire.Long) |> ignore
-        json.Head |> Json.deserializeEx<Period list> jsonConfig
+        json.Head |> Json.deserialize<Period list>
         
