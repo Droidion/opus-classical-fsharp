@@ -19,7 +19,7 @@ Apple Music and Spotify supported.
 
 Works on desktop and mobile. Fast links to streaming apps tested on macOS, Linux, iOS.
 
-Stack: F#, Saturn, .NET 6, Postgres, SASS, Docker.
+Stack: F#, Falco, .NET 6, Postgres, SASS, Docker.
 
 F# is ❤️.
 
@@ -38,7 +38,6 @@ ASPNETCORE_URLS=http://+:5000
 DbConnectionString=Host=host.docker.internal;Username=your-user;Database=composers;Minimum Pool Size=10
 StaticAssetsUrl=https://static.zunh.dev/composers/covers/
 RedisConnectionString=redis:6379
-Port=5000
 UmamiId=1234-abcd
 ```
 
@@ -47,7 +46,6 @@ UmamiId=1234-abcd
 - `DbConnectionString` is Postgres connection string
 - `StaticAssetsUrl` is the path to static images storage
 - `RedisConnectionString` is Redis connection string
-- `Port` is port for web server
 - `UmamiId` is Umami Id for gathering usage statistics
 
 ### Using Docker
