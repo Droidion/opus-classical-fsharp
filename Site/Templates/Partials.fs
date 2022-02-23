@@ -1,49 +1,49 @@
 /// HTML snippets.
 module Site.Templates.Partials
 
-open Giraffe.ViewEngine
 open Site.Domain.Work
 open Site.Templates.Helpers
+open Falco.Markup
 
 let private title (work: Work) : XmlNode =
-    div [] [
-        span [] [ str work.title ]
+    Elem.div [] [
+        Elem.span [] [ Text.raw work.title ]
         if work.no.IsSome then
-            span [] [ str $" No. {work.no.Value}" ]
+            Elem.span [] [ Text.raw $" No. {work.no.Value}" ]
         if work.nickname.IsSome then
-            cite [] [
-                str $" {work.nickname.Value}"
+            Elem.tag "cite" [] [
+                Text.raw $" {work.nickname.Value}"
             ]
         if work.key.IsSome then
-            span [] [ str $" in {work.key.Value}" ]
+            Elem.span [] [ Text.raw $" in {work.key.Value}" ]
     ]
 
 let private subtitle (work: Work) : XmlNode =
-    div [ _class "card__subtitle" ] [
+    Elem.div [ Attr.class' "card__subtitle" ] [
         if work.catalogueName.IsSome && work.catalogueNumber.IsSome then
-            span [] [
-                str $"{work.catalogueName.Value} {work.catalogueNumber.Value}"
+            Elem.span [] [
+                Text.raw $"{work.catalogueName.Value} {work.catalogueNumber.Value}"
                 if work.cataloguePostfix.IsSome then
-                    str work.cataloguePostfix.Value
+                    Text.raw work.cataloguePostfix.Value
             ]
 
-            span [ _class "vertical-separator" ] []
+            Elem.span [ Attr.class' "vertical-separator" ] []
         if work.yearStart.IsSome || work.yearFinish.IsSome then
-            span [] [
-                str (formatYearsRangeLoose work.yearStart work.yearFinish)
+            Elem.span [] [
+                Text.raw (formatYearsRangeLoose work.yearStart work.yearFinish)
             ]
 
-            span [ _class "vertical-separator" ] []
+            Elem.span [ Attr.class' "vertical-separator" ] []
         if work.averageMinutes.IsSome then
-            span [] [
-                work.averageMinutes |> formatWorkLength |> str
+            Elem.span [] [
+                work.averageMinutes |> formatWorkLength |> Text.raw
             ]
     ]
 
 
 /// Work card
 let workCard (work: Work) =
-    div [ _class "card" ] [
+    Elem.div [ Attr.class' "card" ] [
         title work
         subtitle work
     ]

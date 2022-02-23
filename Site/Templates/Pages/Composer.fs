@@ -1,60 +1,60 @@
 /// HTML for Composer page.
 module Site.Templates.Pages.Composer
 
-open Giraffe.ViewEngine
+open Falco.Markup
 open Site.Domain.Composer
 open Site.Domain.Genre
 open Site.Templates
 open Site.Templates.Helpers
 
 let private composerHeaderSubtitle (composer: Composer) : XmlNode =
-    div [ _class "header-subtitle" ] [
+    Elem.div [ Attr.class' "header-subtitle" ] [
         // Countries
-        span [] [
-            str (String.concat ", " composer.countries)
+        Elem.span [] [
+            Text.raw (String.concat ", " composer.countries)
         ]
-        span [ _class "vertical-separator" ] []
+        Elem.span [ Attr.class' "vertical-separator" ] []
         // Life years
-        span [] [
-            str (formatYearsRangeStrict composer.yearBorn composer.yearDied)
+        Elem.span [] [
+            Text.raw (formatYearsRangeStrict composer.yearBorn composer.yearDied)
         ]
         // Wikipedia link
         if composer.wikipediaLink.IsSome then
-            span [ _class "vertical-separator" ] []
+            Elem.span [ Attr.class' "vertical-separator" ] []
 
-            a [ _href composer.wikipediaLink.Value ] [
-                str "Wikipedia"
+            Elem.a [ Attr.href composer.wikipediaLink.Value ] [
+                Text.raw "Wikipedia"
             ]
         // IMSLP Link
         if composer.imslpLink.IsSome then
-            span [ _class "vertical-separator" ] []
+            Elem.span [ Attr.class' "vertical-separator" ] []
 
-            a [ _href composer.imslpLink.Value ] [
-                str "IMSLP"
+            Elem.a [ Attr.href composer.imslpLink.Value ] [
+                Text.raw "IMSLP"
             ]
     ]
 
 let private works (composer: Composer) (genre: Genre): XmlNode =
-    div [ _class "card-list" ] [
+    Elem.div [ Attr.class' "card-list" ] [
         for work in genre.works do
-            a [ _href $"/composer/{composer.slug}/work/{work.id}" ] [
+            Elem.a [ Attr.href $"/composer/{composer.slug}/work/{work.id}" ] [
                 Partials.workCard work
             ]
     ]
 
 let private composerPage (composer: Composer) (genres: Genre list) : XmlNode list =
-    [ h1 [] [
-        str $"{composer.firstName} {composer.lastName}"
+    [ Elem.h1 [] [
+        Text.raw $"{composer.firstName} {composer.lastName}"
       ]
 
       composerHeaderSubtitle composer
 
       for genre in genres do
-          h2 [] [
-              str $"{genre.icon} {genre.name}"
+          Elem.h2 [] [
+              Text.raw $"{genre.icon} {genre.name}"
           ]
 
-          hr []
+          Elem.hr []
 
           works composer genre ]
 

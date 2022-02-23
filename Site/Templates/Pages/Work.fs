@@ -1,7 +1,7 @@
 /// HTML for Work page.
 module Site.Templates.Pages.Work
 
-open Giraffe.ViewEngine
+open Falco.Markup
 open Site.Domain.Composer
 open Site.Domain.Performer
 open Site.Domain.Recording
@@ -12,53 +12,56 @@ open Site.Templates.Helpers
 open Site.Templates.Partials
 
 let private performerTitle (performer: Performer) : XmlNode =
-    div [ _class "card__title" ] [
-        span [] [
-            str $"""{performer.firstName |> Option.defaultValue ""} {performer.lastName} """
+    Elem.div [ Attr.class' "card__title" ] [
+        Elem.span [] [
+            Text.raw $"""{performer.firstName |> Option.defaultValue ""} {performer.lastName} """
         ]
         if performer.instrument.IsSome then
-            span [ _class "card__instrument" ] [
-                str performer.instrument.Value
+            Elem.span [ Attr.class' "card__instrument" ] [
+                Text.raw performer.instrument.Value
             ]
     ]
 
 let private performerSubtitle (recording: Recording) : XmlNode =
-    div [ _class "card__subtitle" ] [
+    Elem.div [ Attr.class' "card__subtitle" ] [
         if recording.label.IsSome then
-            span [] [ str recording.label.Value ]
-            span [ _class "vertical-separator" ] []
-        if recording.yearStart.IsSome || recording.yearFinish.IsSome then
-            span [] [
-                str (formatYearsRangeLoose recording.yearStart recording.yearFinish)
+            Elem.span [] [
+                Text.raw recording.label.Value
             ]
 
-            span [ _class "vertical-separator" ] []
-        span [] [
-            recording.length |> Some |> formatWorkLength |> str
+            Elem.span [ Attr.class' "vertical-separator" ] []
+        if recording.yearStart.IsSome || recording.yearFinish.IsSome then
+            Elem.span [] [
+                Text.raw (formatYearsRangeLoose recording.yearStart recording.yearFinish)
+            ]
+
+            Elem.span [ Attr.class' "vertical-separator" ] []
+        Elem.span [] [
+            recording.length |> Some |> formatWorkLength |> Text.raw
         ]
     ]
 
 let private streamerCard (streamer: Streamer) : XmlNode =
-    div [ _class "card__streamer-el" ] [
-        a [ _href $"{streamer.prefix}{streamer.link}" ] [
-            img [ _src $"/img/{streamer.icon}"
-                  _height "24"
-                  _width "24"
-                  _alt "Streaming service logo" ]
+    Elem.div [ Attr.class' "card__streamer-el" ] [
+        Elem.a [ Attr.href $"{streamer.prefix}{streamer.link}" ] [
+            Elem.img [ Attr.src $"/img/{streamer.icon}"
+                       Attr.height "24"
+                       Attr.width "24"
+                       Attr.alt "Streaming service logo" ]
         ]
     ]
 
 let private recordingCard (recording: Recording) =
-    div [ _class "card illustrated" ] [
-        img [ _class "cover"
-              _src $"{coversUrl}{recording.coverName}"
-              _alt "Cover" ]
-        div [] [
+    Elem.div [ Attr.class' "card illustrated" ] [
+        Elem.img [ Attr.class' "cover"
+                   Attr.src $"{coversUrl}{recording.coverName}"
+                   Attr.alt "Cover" ]
+        Elem.div [] [
             for performer in recording.performers do
                 performerTitle performer
             performerSubtitle recording
 
-            div [ _class "card__streamers" ] [
+            Elem.div [ Attr.class' "card__streamers" ] [
                 for streamer in recording.streamers do
                     streamerCard streamer
             ]
@@ -66,41 +69,46 @@ let private recordingCard (recording: Recording) =
     ]
 
 let private workTitle (work: Work) : XmlNode list =
-    [ str work.title
+    [ Text.raw work.title
       if work.no.IsSome then
-          str $" No. {work.no.Value}"
+          Text.raw $" No. {work.no.Value}"
       if work.catalogueName.IsSome && work.catalogueNumber.IsSome then
-          str $""", {work.catalogueName.Value} {work.catalogueNumber.Value}{work.cataloguePostfix |> Option.defaultValue ""}"""
+          Text.raw $""", {work.catalogueName.Value} {work.catalogueNumber.Value}{work.cataloguePostfix |> Option.defaultValue ""}"""
       if work.nickname.IsSome then
-          str $": {work.nickname.Value}" ]
+          Text.raw $": {work.nickname.Value}" ]
 
 let private workSubtitle (composer: Composer) (work: Work) : XmlNode =
-    div [ _class "header-subtitle" ] [
-        span [] [
-            a [ _href $"/composer/{composer.slug}" ] [
-                str $"{composer.firstName} {composer.lastName}"
+    Elem.div [ Attr.class' "header-subtitle" ] [
+        Elem.span [] [
+            Elem.a [ Attr.href $"/composer/{composer.slug}" ] [
+                Text.raw $"{composer.firstName} {composer.lastName}"
             ]
-            str ", "
+            Text.raw ", "
         ]
-        span [] [
-            str (formatYearsRangeLoose work.yearStart work.yearFinish)
+        Elem.span [] [
+            Text.raw (formatYearsRangeLoose work.yearStart work.yearFinish)
         ]
     ]
 
 let private workPage (composer: Composer) (work: Work) (recordings: Recording list) (childWorks: Work list) : XmlNode list =
-    [ h1 [] (workTitle work)
+    [ Elem.h1 [] (workTitle work)
       workSubtitle composer work
       if childWorks.Length > 0 then
-          h2 [] [ str "Individual Works" ]
-          hr []
+          Elem.h2 [] [
+              Text.raw "Individual Works"
+          ]
 
-          div [ _class "card-list" ] [
+          Elem.hr []
+
+          Elem.div [ Attr.class' "card-list" ] [
               for work in childWorks do
                   workCard work
           ]
-      h2 [] [ str "Recommended Recordings" ]
-      hr []
-      div [ _class "card-list full-width" ] [
+      Elem.h2 [] [
+          Text.raw "Recommended Recordings"
+      ]
+      Elem.hr []
+      Elem.div [ Attr.class' "card-list full-width" ] [
           for recording in recordings do
               recordingCard recording
       ] ]

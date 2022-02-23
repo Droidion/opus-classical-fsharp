@@ -1,13 +1,13 @@
 /// HTML for Error page.
 module Site.Templates.Pages.Error
 
-open Giraffe.ViewEngine
+open Falco.Markup
 open Site.Templates
 
 let private errorPage (pageTitle: string) : XmlNode list =
-    [ h1 [] [ str pageTitle ]
-      p [] [
-          str "Error happened. I am sorry."
+    [ Elem.h1 [] [ Text.raw pageTitle ]
+      Elem.p [] [
+          Text.raw "Error happened. I am sorry."
       ] ]
 
 let view: XmlNode =
