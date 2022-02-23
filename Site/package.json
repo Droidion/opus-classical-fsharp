@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "sass": "sass --style=compressed Sass/site.sass static/bundle.css",
+    "sass": "sass --style=compressed Sass/site.sass wwwroot/bundle.css",
     "build": "rollup --config rollup.config.js"
   },
   "author": "",

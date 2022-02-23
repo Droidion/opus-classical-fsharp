@@ -2,7 +2,6 @@
 module Site.Domain.Composer
 
 open FSharp.Json
-open Giraffe
 open Microsoft.AspNetCore.Http
 open Site.Postgres
 open Site.Redis

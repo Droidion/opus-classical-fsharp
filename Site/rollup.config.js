@@ -10,7 +10,7 @@ import brotli from "rollup-plugin-brotli";
 export default {
     input: 'Scripts/main.ts',
     output: {
-        file: 'static/bundle.js',
+        file: 'wwwroot/bundle.js',
         format: 'es',
         sourcemap: true,
     },
@@ -26,10 +26,10 @@ export default {
         typescript(),
         terser(),
         gzipPlugin({
-            additionalFiles: ['static/bundle.css']
+            additionalFiles: ['wwwroot/bundle.css']
         }),
         brotli({
-            additional: ['static/bundle.css']
+            additional: ['wwwroot/bundle.css']
         })
     ],
 };

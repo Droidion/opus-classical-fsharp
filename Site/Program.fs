@@ -1,61 +1,38 @@
 ﻿open Microsoft.AspNetCore.Builder
-open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.StaticFiles
-open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Primitives
-open Saturn
 open Sentry
 open Site
-open Site.Templates
 open System
-open System.IO
+open Falco.HostBuilder
+open Falco.Extensions
+open Site.Controllers
 
-type private CacheControl =
-    | NoCacheControl
-    | CacheControl of string
-
-let private port = Environment.GetEnvironmentVariable("Port")
-
-let private useStaticFiles cache (app: IApplicationBuilder) =
-    match cache with
-    | NoCacheControl -> app.UseStaticFiles()
-    | CacheControl value ->
-        let handler (ctx: StaticFileResponseContext) =
-            ctx.Context.Response.Headers.Add("Cache-Control", StringValues(value))
-
-        let action = System.Action<StaticFileResponseContext>(handler)
-        app.UseStaticFiles(StaticFileOptions(OnPrepareResponse = action))
-
-let private setWebRootPath path (builder: IWebHostBuilder) =
-    let p = Path.Combine(Directory.GetCurrentDirectory(), path)
-    builder.UseWebRoot(p)
-
-/// Saturn app
-let private app =
-    application {
-        use_router Router.topRouter
-        url $"http://0.0.0.0:{port}"
-        app_config (useStaticFiles (CacheControl "public, max-age=604800"))
-        webhost_config (setWebRootPath "static")
-        use_gzip
-        memory_cache
-        error_handler (fun _ _ -> pipeline { render_html Pages.Error.view })
-
-        app_config
-            (fun app ->
-                let env = Environment.getWebHostEnvironment app
-
-                if (env.IsDevelopment()) then
-                    app.UseDeveloperExceptionPage()
-                else
-                    app)
-
-    }
+/// Middleware that adds caching header to static assets
+let private staticFilesMiddleware (app: IApplicationBuilder) : IApplicationBuilder =
+    app.UseStaticFiles(
+        StaticFileOptions(
+            OnPrepareResponse =
+                System.Action<StaticFileResponseContext>(fun ctx -> ctx.Context.Response.Headers.Add("Cache-Control", StringValues("public, max-age=604800")))
+        )
+    )
 
 [<EntryPoint>]
-let main _ =
+let main args =
     use __ =
         SentrySdk.Init(Environment.GetEnvironmentVariable("SentryDsn"))
 
-    run app
+    webHost args {
+        use_ifnot FalcoExtensions.IsDevelopment HstsBuilderExtensions.UseHsts
+        use_compression
+        use_middleware staticFilesMiddleware
+        add_antiforgery
+
+        use_if FalcoExtensions.IsDevelopment DeveloperExceptionPageExtensions.UseDeveloperExceptionPage
+        use_ifnot FalcoExtensions.IsDevelopment (FalcoExtensions.UseFalcoExceptionHandler exceptionController)
+        not_found notFoundController
+
+        endpoints Router.endpoints
+    }
+
     0

@@ -1,7 +1,7 @@
 /// HTML for index page.
 module Site.Templates.Pages.Index
 
-open Giraffe.ViewEngine
+open Falco.Markup
 open Site.Domain.Composer
 open Site.Domain.Period
 open Site.Templates
@@ -14,39 +14,39 @@ let private composerCard (composer: Composer) =
         else
             "disabled"
 
-    div [ _class $"card {composerDisabled}" ] [
-        div [] [
-            span [] [ str $"{composer.lastName}, " ]
-            span [ _class "card__light-text" ] [
-                str composer.firstName
+    Elem.div [ Attr.class' $"card {composerDisabled}" ] [
+        Elem.div [] [
+            Elem.span [] [ Text.raw $"{composer.lastName}, " ]
+            Elem.span [ Attr.class' "card__light-text" ] [
+                Text.raw composer.firstName
             ]
         ]
-        div [ _class "card__subtitle" ] [
-            span [] [
-                composer.countries |> String.concat ", " |> str
+        Elem.div [ Attr.class' "card__subtitle" ] [
+            Elem.span [] [
+                composer.countries |> String.concat ", " |> Text.raw
             ]
-            span [ _class "vertical-separator" ] []
-            span [] [
-                formatYearsRangeStrict composer.yearBorn composer.yearDied |> str
+            Elem.span [ Attr.class' "vertical-separator" ] []
+            Elem.span [] [
+                formatYearsRangeStrict composer.yearBorn composer.yearDied |> Text.raw
             ]
         ]
     ]
 
 let private periodTitle (period: Period): XmlNode =
-    h2 [] [
+    Elem.h2 [] [
         let yearEnd =
             match period.yearEnd with
             | Some y -> string y
             | None -> ""
 
-        str $"{period.name}, {period.yearStart}–{yearEnd}"
+        Text.raw $"{period.name}, {period.yearStart}–{yearEnd}"
     ]
 
 let private periodComposers (period: Period): XmlNode =
-    div [ _class "card-list" ] [
+    Elem.div [ Attr.class' "card-list" ] [
         for composer in period.composers do
             if composer.enabled then
-                a [ _href $"/composer/{composer.slug}" ] [
+                Elem.a [ Attr.href $"/composer/{composer.slug}" ] [
                     composerCard composer
                 ]
             else
@@ -54,10 +54,10 @@ let private periodComposers (period: Period): XmlNode =
     ]
 
 let private indexPage (pageTitle: string) (periods: Period list): XmlNode list =
-    [ h1 [] [ str pageTitle ]
+    [ Elem.h1 [] [ Text.raw pageTitle ]
       for period in periods do
           periodTitle period
-          hr []
+          Elem.hr []
           periodComposers period ]
 
 let view (periods: Period list): XmlNode =

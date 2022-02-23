@@ -1,10 +1,12 @@
 /// HTML for Not Found page.
 module Site.Templates.Pages.NotFound
 
-open Giraffe.ViewEngine
+open Falco.Markup
 open Site.Templates
 
-let private notFoundPage (pageTitle: string) : XmlNode list = [ h1 [] [ str pageTitle ]; p [] [ str "Page not found." ] ]
+let private notFoundPage (pageTitle: string) : XmlNode list =
+    [ Elem.h1 [] [ Text.raw pageTitle ]
+      Elem.p [] [ Text.raw "Page not found." ] ]
 
 let view: XmlNode =
     let pageTitle = "Not Found"

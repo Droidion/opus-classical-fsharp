@@ -34,4 +34,4 @@ Desktop.ini
 
 node_modules
 
-Site/static/bundle.*
+Site/wwwroot/bundle.*
