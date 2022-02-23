@@ -16,8 +16,8 @@ let private computeFileHash (path: string) : string =
     |> BitConverter.ToString
     |> String.replace "-" ""
 
-let private cssHash = computeFileHash "static/bundle.css"
-let private jsHash = computeFileHash "static/bundle.js"
+let private cssHash = computeFileHash "wwwroot/bundle.css"
+let private jsHash = computeFileHash "wwwroot/bundle.js"
 let private logsId = Environment.GetEnvironmentVariable("UmamiId")
 
 let private headerLogo: XmlNode =

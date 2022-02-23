@@ -8,5 +8,5 @@
   },
 
   "include": ["Scripts/**/*"],
-  "exclude": ["node_modules/*", "__sapper__/*", "static/*"],
+  "exclude": ["node_modules/*", "__sapper__/*", "wwwroot/*"],
 }

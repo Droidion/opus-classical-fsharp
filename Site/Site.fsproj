@@ -9,10 +9,10 @@
 
     <ItemGroup>
       
-      <Content Include="static\**">
+      <Content Include="wwwroot\**">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
-        <Content Include="static\robots.txt">
+        <Content Include="wwwroot\robots.txt">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <None Include="Sass\_blocks.sass" />
