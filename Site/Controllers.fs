@@ -1,10 +1,9 @@
-/// Saturn controllers.
+/// Falco controllers.
 module Site.Controllers
 
 open FSharp.Json
 open Falco
 open Microsoft.AspNetCore.Http
-open Saturn
 open Site.Domain.Composer
 open Site.Domain.ComposerSearchResult
 open Site.Domain.Period
@@ -12,12 +11,14 @@ open Site.Domain.Recording
 open Site.Domain.Work
 open Site.Templates.Pages
 
-let headers =
+/// Response headers for adding to all responses.
+let private headers =
     [
         ("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
         ("Content-Security-Policy", "default-src 'none'; manifest-src 'self'; connect-src 'self' https://logs.opusclassical.net; script-src 'self' https://logs.opusclassical.net; style-src 'self'; img-src 'self' https://static.zunh.dev")
         ("Referrer-Policy", "no-referrer")
         ("Permissions-Policy", "geolocation=(), microphone=()")
+        ("Cache-Control", "private, max-age=0")
     ]
 
 /// Index page controller.
@@ -81,10 +82,12 @@ let searchController: HttpHandler =
 
     Response.withHeaders headers >> Request.mapQuery routeMap Response.ofJson
 
+/// Error page controller.
 let exceptionController: HttpHandler =
     let html = Error.view
     Response.withHeaders headers >> Response.ofHtml html
     
+/// Page not found controller
 let notFoundController: HttpHandler =
     let html = NotFound.view
     Response.withHeaders headers >> Response.ofHtml html

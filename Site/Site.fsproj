@@ -63,8 +63,7 @@
         <PackageReference Include="Legivel" Version="0.4.6" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Npgsql.FSharp" Version="4.1.0" />
-        <PackageReference Include="Saturn" Version="0.15.0" />
-        <PackageReference Include="Sentry" Version="3.13.0" />
+        <PackageReference Include="Sentry" Version="3.14.1" />
         <PackageReference Include="StackExchange.Redis" Version="2.2.88" />
         <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
         <PackageReference Update="FSharp.Core" Version="6.0.3" />

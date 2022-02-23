@@ -2,7 +2,6 @@
 module Site.Domain.Period
 
 open FSharp.Json
-open Giraffe
 open Site.Domain.Composer
 open Site.Postgres
 open Site.Redis
