@@ -40,6 +40,7 @@ let private app =
         use_gzip
         memory_cache
         error_handler (fun _ _ -> pipeline { render_html Pages.Error.view })
+
         app_config
             (fun app ->
                 let env = Environment.getWebHostEnvironment app

@@ -77,4 +77,4 @@ let getWorks (id: int) : Async<Work list> =
 
 /// Returns child works by its parent id
 let getChildWorks (idParent: int) : Async<Work list> =
-    query<Work>(childWorks, [ "Id", Sql.int idParent ] |> Some, mapper)
+    query<Work> (childWorks, [ "Id", Sql.int idParent ] |> Some, mapper)

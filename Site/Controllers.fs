@@ -10,7 +10,6 @@ open Site.Domain.ComposerSearchResult
 open Site.Domain.Period
 open Site.Domain.Recording
 open Site.Domain.Work
-open Site.Helpers
 open Site.Templates.Pages
 
 /// Index page controller.
@@ -72,7 +71,7 @@ let searchController =
     let handler (ctx: HttpContext) =
         match ctx.Request.Query.TryGetValue "q" with
         | true, x ->
-            searchComposers(x.ToString(), 5)
+            searchComposers (x.ToString(), 5)
             |> Async.RunSynchronously
             |> Controller.json ctx
         | _ ->

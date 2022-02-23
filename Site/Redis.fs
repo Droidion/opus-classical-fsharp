@@ -6,25 +6,27 @@ open StackExchange.Redis
 open System
 
 type RedisExpiration = { Soon: TimeSpan; Long: TimeSpan }
-let expire : RedisExpiration = { Soon = TimeSpan(0, 1, 0); Long = TimeSpan(1, 0, 0) }
+let expire: RedisExpiration = { Soon = TimeSpan(0, 1, 0); Long = TimeSpan(1, 0, 0) }
 
 /// Connection pool.
-let private redisPool : ConnectionMultiplexer option =
+let private redisPool: ConnectionMultiplexer option =
     try
         let pool =
             ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("RedisConnectionString"))
 
         Some pool
-    with ex -> exToSentry ex "Problem with creating Redis connection pool"
+    with
+    | ex -> exToSentry ex "Problem with creating Redis connection pool"
 
 /// Single DB connection.
-let private redisConn : IDatabase option =
+let private redisConn: IDatabase option =
     match redisPool with
     | Some r ->
         try
             let db = r.GetDatabase()
             Some db
-        with ex -> exToSentry ex "Problem with opening Redis database"
+        with
+        | ex -> exToSentry ex "Problem with opening Redis database"
     | None -> None
 
 /// Save key-value to Redis.

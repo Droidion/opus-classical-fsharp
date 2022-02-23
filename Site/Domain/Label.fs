@@ -2,7 +2,4 @@
 module Site.Domain.Label
 
 /// Music Label, like Sony or EMI
-type Label = {
-    id: int
-    name: string
-}
+type Label = { id: int; name: string }

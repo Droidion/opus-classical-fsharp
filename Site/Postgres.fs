@@ -28,5 +28,5 @@ let query<'a> (sql: string, parameters: (string * SqlValue) list option, mapper:
         SentrySdk.CaptureException(ex) |> ignore
         raise ex
 
-/// Maps Postgres response to F# type for the case when single cell with JSON is returned. 
+/// Maps Postgres response to F# type for the case when single cell with JSON is returned.
 let jsonMapper (read: RowReader) : string = read.text "json"

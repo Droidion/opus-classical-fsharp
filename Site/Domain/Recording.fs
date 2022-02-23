@@ -20,6 +20,4 @@ type Recording =
 let listRecordings (workId: int) : Async<string list> =
     let sql = "SELECT recordings_by_work(@WorkId) AS json"
     let parameters = [ "WorkId", Sql.int workId ] |> Some
-    query(sql, parameters, jsonMapper)
-    
-
+    query (sql, parameters, jsonMapper)

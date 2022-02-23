@@ -31,5 +31,4 @@ let searchComposers (searchQuery: string, limit: int) : Async<ComposerSearchResu
           "Limit", Sql.int limit ]
         |> Some
 
-    query<ComposerSearchResult>(searchComposersByLastName, parameters, mapper)
-    
+    query<ComposerSearchResult> (searchComposersByLastName, parameters, mapper)

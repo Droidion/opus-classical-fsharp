@@ -37,7 +37,7 @@ let formatYearsRangeLoose (startYear: int option) (finishYear: int option) : str
     | Some start, Some finish when centuryEqual start finish -> $"{start}–{(string finish).[2..3]}"
     | Some start, Some finish -> $"{start}–{finish}"
     | _, _ -> ""
-    
+
 /// Formats minutes into a string with hours and minutes, like "2h 35m"
 let formatWorkLength (lengthInMinutes: int option) : string =
     let length =
