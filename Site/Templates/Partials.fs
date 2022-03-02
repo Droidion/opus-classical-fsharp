@@ -9,35 +9,27 @@ let private title (work: Work) : XmlNode =
     Elem.div [] [
         Elem.span [] [ Text.raw work.title ]
         if work.no.IsSome then
-            Elem.span [] [ Text.raw $" No. {work.no.Value}" ]
-        if work.nickname.IsSome then
-            Elem.tag "cite" [] [
-                Text.raw $" {work.nickname.Value}"
+            Elem.span [] [
+                Text.raw $" No. {work.no.Value}"
             ]
+        if work.nickname.IsSome then
+            Elem.tag "cite" [] [ Text.raw $" {work.nickname.Value}" ]
         if work.key.IsSome then
-            Elem.span [] [ Text.raw $" in {work.key.Value}" ]
+            Elem.span [] [
+                Text.raw $" in {work.key.Value}"
+            ]
     ]
 
 let private subtitle (work: Work) : XmlNode =
+    let subtitle =
+        [ formatCatalogueName (work.catalogueName, work.yearFinish)
+          formatYearsRangeLoose work.yearStart work.yearFinish
+          work.averageMinutes |> formatWorkLength ]
+        |> Seq.filter (fun x -> x <> "")
+        |> String.concat "<span class=\"vertical-separator\"></span>"
+
     Elem.div [ Attr.class' "card__subtitle" ] [
-        if work.catalogueName.IsSome && work.catalogueNumber.IsSome then
-            Elem.span [] [
-                Text.raw $"{work.catalogueName.Value} {work.catalogueNumber.Value}"
-                if work.cataloguePostfix.IsSome then
-                    Text.raw work.cataloguePostfix.Value
-            ]
-
-            Elem.span [ Attr.class' "vertical-separator" ] []
-        if work.yearStart.IsSome || work.yearFinish.IsSome then
-            Elem.span [] [
-                Text.raw (formatYearsRangeLoose work.yearStart work.yearFinish)
-            ]
-
-            Elem.span [ Attr.class' "vertical-separator" ] []
-        if work.averageMinutes.IsSome then
-            Elem.span [] [
-                work.averageMinutes |> formatWorkLength |> Text.raw
-            ]
+        Text.raw subtitle
     ]
 
 
