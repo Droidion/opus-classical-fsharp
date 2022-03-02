@@ -78,16 +78,17 @@ let private workTitle (work: Work) : XmlNode list =
           Text.raw $": {work.nickname.Value}" ]
 
 let private workSubtitle (composer: Composer) (work: Work) : XmlNode =
+    let yearsComposed = formatYearsRangeLoose work.yearStart work.yearFinish
     Elem.div [ Attr.class' "header-subtitle" ] [
         Elem.span [] [
             Elem.a [ Attr.href $"/composer/{composer.slug}" ] [
                 Text.raw $"{composer.firstName} {composer.lastName}"
             ]
-            Text.raw ", "
         ]
-        Elem.span [] [
-            Text.raw (formatYearsRangeLoose work.yearStart work.yearFinish)
-        ]
+        if yearsComposed <> "" then 
+            Elem.span [] [
+                Text.raw (", " + formatYearsRangeLoose work.yearStart work.yearFinish)
+            ]
     ]
 
 let private workPage (composer: Composer) (work: Work) (recordings: Recording list) (childWorks: Work list) : XmlNode list =
