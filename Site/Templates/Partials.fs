@@ -22,7 +22,7 @@ let private title (work: Work) : XmlNode =
 
 let private subtitle (work: Work) : XmlNode =
     let subtitle =
-        [ formatCatalogueName (work.catalogueName, work.yearFinish)
+        [ formatCatalogueName (work.catalogueName, work.catalogueNumber)
           formatYearsRangeLoose work.yearStart work.yearFinish
           work.averageMinutes |> formatWorkLength ]
         |> Seq.filter (fun x -> x <> "")
