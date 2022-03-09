@@ -6,6 +6,9 @@ open Site.Domain.Composer
 open Site.Postgres
 open Site.Redis
 
+/// Redis key for caching main page content
+let redisKey = "opusclassical:periods"
+
 /// Period when composer lived and worked, e.g. Late Baroque or Romanticism.
 type Period =
     { id: int
@@ -17,8 +20,6 @@ type Period =
 
 /// Returns all periods
 let listPeriods () : Period list =
-    let redisKey = "opusclassical:periods"
-
     match retrieveRedis redisKey with
     | Some c -> Json.deserialize<Period list> c
     | None ->
