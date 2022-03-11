@@ -23,8 +23,10 @@ let private headers =
 
 /// Index page controller.
 let periodsController: HttpHandler =
-    let html = listPeriods () |> Index.view
-    Response.withHeaders headers >> Response.ofHtml html
+    let routeMap (_: RouteCollectionReader) =
+        listPeriods() |> Index.view
+    
+    Response.withHeaders headers >> Request.mapRoute routeMap Response.ofHtml
 
 /// Composer page controller.
 let composerController: HttpHandler =
@@ -68,8 +70,7 @@ let workController: HttpHandler =
 
 /// About page controller.
 let aboutController: HttpHandler =
-    let html = About.view
-    Response.withHeaders headers >> Response.ofHtml html
+    Response.withHeaders headers >> Response.ofHtml About.view
 
 /// Search API controller.
 let searchController: HttpHandler =
@@ -84,10 +85,8 @@ let searchController: HttpHandler =
 
 /// Error page controller.
 let exceptionController: HttpHandler =
-    let html = Error.view
-    Response.withHeaders headers >> Response.ofHtml html
+    Response.withHeaders headers >> Response.ofHtml Error.view
     
 /// Page not found controller
 let notFoundController: HttpHandler =
-    let html = NotFound.view
-    Response.withHeaders headers >> Response.ofHtml html
+    Response.withHeaders headers >> Response.ofHtml NotFound.view
