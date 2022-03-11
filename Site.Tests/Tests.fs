@@ -67,6 +67,12 @@ let formatYearsRangeLoose_HandlesProblemsGracefully () =
         .ShouldBe "1234"
 
 [<Fact>]
+let formatCatalogueName_FormatsAsExpected () =
+    (formatCatalogueName (Some "Foo", Some 10, Some "bar")).ShouldBe "Foo 10bar"
+    (formatCatalogueName (Some "Foo", Some 10, None)).ShouldBe "Foo 10"
+    (formatCatalogueName (None, None, None)).ShouldBe ""
+
+[<Fact>]
 let formatWorkLength_FormatsAsExpected () =
     (formatWorkLength (Some 1)).ShouldBe "1m"
     (formatWorkLength (Some 30)).ShouldBe "30m"

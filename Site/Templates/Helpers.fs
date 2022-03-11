@@ -39,9 +39,10 @@ let formatYearsRangeLoose (startYear: int option) (finishYear: int option) : str
     | _, _ -> ""
 
 /// Formats catalogue name and number, e.g. "BWV 1034" for Bach's Flute Sonata No. 1
-let formatCatalogueName (catalogueName: string option, catalogueNumber: int option) : string =
+let formatCatalogueName (catalogueName: string option, catalogueNumber: int option, cataloguePostfix: string option) : string =
+    let postfix = cataloguePostfix |> Option.defaultValue ""
     match (catalogueName, catalogueNumber) with
-    | Some name, Some number -> $"{name} {number}"
+    | Some name, Some number -> $"{name} {number}{postfix}"
     | _, _ -> "" 
 
 /// Formats minutes into a string with hours and minutes, like "2h 35m"
