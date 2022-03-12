@@ -57,6 +57,13 @@ let private header: XmlNode =
 
 let private footer: XmlNode =
     Elem.footer [] [
+        Elem.a [ Attr.title "Buy me a coffee"
+                 Attr.href "https://www.buymeacoffee.com/zunh" ] [
+            Elem.img [ Attr.alt "Buy me a coffee"
+                       Attr.class' "buy-coffee-button"
+                       Attr.src "/img/bmc-button.svg" ]
+        ]
+        
         Elem.a [ Attr.title "Github repository"
                  Attr.href "https://github.com/Droidion/composers" ] [
             Elem.img [ Attr.alt "Github repository logo"
@@ -65,12 +72,20 @@ let private footer: XmlNode =
         ]
     ]
 
-let private _meta (name: string) (content: string) : XmlNode = Elem.meta [ Attr.name name; Attr.content content ]
+let private _meta (name: string) (content: string) : XmlNode =
+    Elem.meta [ Attr.name name
+                Attr.content content ]
 
 let private iconLink (rel: string) (iconType: string) (sizes: string) (href: string) : XmlNode =
-    Elem.link [ Attr.rel rel; Attr.type' iconType; Attr.create "sizes" sizes; Attr.href href ]
+    Elem.link [ Attr.rel rel
+                Attr.type' iconType
+                Attr.create "sizes" sizes
+                Attr.href href ]
 
-let private maskLink (rel: string) (href: string) (color: string) : XmlNode = Elem.link [ Attr.rel rel; Attr.href href; Attr.create "color" color ]
+let private maskLink (rel: string) (href: string) (color: string) : XmlNode =
+    Elem.link [ Attr.rel rel
+                Attr.href href
+                Attr.create "color" color ]
 
 let private headContent (pageTitle: string) (pageDescription: string) : XmlNode list =
     [ Elem.title [] [
@@ -86,10 +101,17 @@ let private headContent (pageTitle: string) (pageDescription: string) : XmlNode 
       iconLink "icon" "image/png" "16x16" "/favicon-16x16.png"
       maskLink "mask-icon" "/safari-pinned-tab.svg" "#fff"
       maskLink "mask-icon" "safari-pinned-tab.svg" "#5bbad5"
-      Elem.link [ Attr.rel "manifest"; Attr.href "/site.webmanifest" ]
-      Elem.link [ Attr.rel "stylesheet"; Attr.href $"/bundle.css?v={cssHash}" ]
-      Elem.script [ Attr.createBool "async"; Attr.createBool "defer"; Attr.create "data-website-id" logsId; Attr.src "https://logs.opusclassical.net/umami.js" ] []
-      Elem.script [ Attr.src $"/bundle.js?v={jsHash}"; Attr.type' "module"; Attr.createBool "defer" ] [] ]
+      Elem.link [ Attr.rel "manifest"
+                  Attr.href "/site.webmanifest" ]
+      Elem.link [ Attr.rel "stylesheet"
+                  Attr.href $"/bundle.css?v={cssHash}" ]
+      Elem.script [ Attr.createBool "async"
+                    Attr.createBool "defer"
+                    Attr.create "data-website-id" logsId
+                    Attr.src "https://logs.opusclassical.net/umami.js" ] []
+      Elem.script [ Attr.src $"/bundle.js?v={jsHash}"
+                    Attr.type' "module"
+                    Attr.createBool "defer" ] [] ]
 
 /// Renders HTML
 let view (pageTitle: string, pageDescription: string) (content: XmlNode list) : XmlNode =

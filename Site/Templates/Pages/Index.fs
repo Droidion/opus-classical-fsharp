@@ -16,7 +16,9 @@ let private composerCard (composer: Composer) =
 
     Elem.div [ Attr.class' $"card {composerDisabled}" ] [
         Elem.div [] [
-            Elem.span [] [ Text.raw $"{composer.lastName}, " ]
+            Elem.span [] [
+                Text.raw $"{composer.lastName}, "
+            ]
             Elem.span [ Attr.class' "card__light-text" ] [
                 Text.raw composer.firstName
             ]
@@ -32,7 +34,7 @@ let private composerCard (composer: Composer) =
         ]
     ]
 
-let private periodTitle (period: Period): XmlNode =
+let private periodTitle (period: Period) : XmlNode =
     Elem.h2 [] [
         let yearEnd =
             match period.yearEnd with
@@ -42,7 +44,7 @@ let private periodTitle (period: Period): XmlNode =
         Text.raw $"{period.name}, {period.yearStart}–{yearEnd}"
     ]
 
-let private periodComposers (period: Period): XmlNode =
+let private periodComposers (period: Period) : XmlNode =
     Elem.div [ Attr.class' "card-list" ] [
         for composer in period.composers do
             if composer.enabled then
@@ -53,14 +55,14 @@ let private periodComposers (period: Period): XmlNode =
                 composerCard composer
     ]
 
-let private indexPage (pageTitle: string) (periods: Period list): XmlNode list =
+let private indexPage (pageTitle: string) (periods: Period list) : XmlNode list =
     [ Elem.h1 [] [ Text.raw pageTitle ]
       for period in periods do
           periodTitle period
           Elem.hr []
           periodComposers period ]
 
-let view (periods: Period list): XmlNode =
+let view (periods: Period list) : XmlNode =
     let pageTitle = "Composers"
     let pageDescription = "List of classical music composers grouped by periods."
     indexPage pageTitle periods |> App.view (pageTitle, pageDescription)

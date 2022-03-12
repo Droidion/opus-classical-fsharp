@@ -27,10 +27,8 @@ let listPeriods () : Period list =
         let parameters = None
 
         let json =
-            query (sql, parameters, jsonMapper)
-            |> Async.RunSynchronously
+            query (sql, parameters, jsonMapper) |> Async.RunSynchronously
 
-        storeRedis (redisKey, json.Head, expire.Long)
-        |> ignore
+        storeRedis (redisKey, json.Head, expire.Long) |> ignore
 
         json.Head |> Json.deserialize<Period list>

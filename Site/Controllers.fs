@@ -13,20 +13,19 @@ open Site.Templates.Pages
 
 /// Response headers for adding to all responses.
 let private headers =
-    [
-        ("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
-        ("Content-Security-Policy", "default-src 'none'; manifest-src 'self'; connect-src 'self' https://logs.opusclassical.net; script-src 'self' https://logs.opusclassical.net; style-src 'self'; img-src 'self' https://static.zunh.dev")
-        ("Referrer-Policy", "no-referrer")
-        ("Permissions-Policy", "geolocation=(), microphone=()")
-        ("Cache-Control", "private, max-age=0")
-    ]
+    [ ("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
+      ("Content-Security-Policy",
+       "default-src 'none'; manifest-src 'self'; connect-src 'self' https://logs.opusclassical.net; script-src 'self' https://logs.opusclassical.net; style-src 'self'; img-src 'self' https://static.zunh.dev")
+      ("Referrer-Policy", "no-referrer")
+      ("Permissions-Policy", "geolocation=(), microphone=()")
+      ("Cache-Control", "private, max-age=0") ]
 
 /// Index page controller.
 let periodsController: HttpHandler =
-    let routeMap (_: RouteCollectionReader) =
-        listPeriods() |> Index.view
-    
-    Response.withHeaders headers >> Request.mapRoute routeMap Response.ofHtml
+    let routeMap (_: RouteCollectionReader) = listPeriods () |> Index.view
+
+    Response.withHeaders headers
+    >> Request.mapRoute routeMap Response.ofHtml
 
 /// Composer page controller.
 let composerController: HttpHandler =
@@ -38,7 +37,8 @@ let composerController: HttpHandler =
         | Some c -> Composer.view c
         | None -> NotFound.view
 
-    Response.withHeaders headers >> Request.mapRoute routeMap Response.ofHtml
+    Response.withHeaders headers
+    >> Request.mapRoute routeMap Response.ofHtml
 
 /// Work page controller.
 let workController: HttpHandler =
@@ -66,27 +66,27 @@ let workController: HttpHandler =
         | Some c, work when work.Length >= 1 -> Work.view c (List.head work) recordings childWorks
         | _, _ -> NotFound.view
 
-    Response.withHeaders headers >> Request.mapRoute routeMap Response.ofHtml
+    Response.withHeaders headers
+    >> Request.mapRoute routeMap Response.ofHtml
 
 /// About page controller.
-let aboutController: HttpHandler =
-    Response.withHeaders headers >> Response.ofHtml About.view
+let aboutController: HttpHandler = Response.withHeaders headers >> Response.ofHtml About.view
 
 /// Search API controller.
 let searchController: HttpHandler =
-    let routeMap (query : QueryCollectionReader) =
+    let routeMap (query: QueryCollectionReader) =
         let query = query.TryGet "q"
 
         match query with
         | Some q -> searchComposers (q, 5) |> Async.RunSynchronously
         | None -> []
 
-    Response.withHeaders headers >> Request.mapQuery routeMap Response.ofJson
+    Response.withHeaders headers
+    >> Request.mapQuery routeMap Response.ofJson
 
 /// Error page controller.
-let exceptionController: HttpHandler =
-    Response.withHeaders headers >> Response.ofHtml Error.view
-    
+let exceptionController: HttpHandler = Response.withHeaders headers >> Response.ofHtml Error.view
+
 /// Page not found controller
 let notFoundController: HttpHandler =
     Response.withHeaders headers >> Response.ofHtml NotFound.view

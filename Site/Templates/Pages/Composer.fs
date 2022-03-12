@@ -34,7 +34,7 @@ let private composerHeaderSubtitle (composer: Composer) : XmlNode =
             ]
     ]
 
-let private works (composer: Composer) (genre: Genre): XmlNode =
+let private works (composer: Composer) (genre: Genre) : XmlNode =
     Elem.div [ Attr.class' "card-list" ] [
         for work in genre.works do
             Elem.a [ Attr.href $"/composer/{composer.slug}/work/{work.id}" ] [

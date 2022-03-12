@@ -43,7 +43,8 @@ let private performerSubtitle (recording: Recording) : XmlNode =
 
 let private streamerCard (streamer: Streamer) : XmlNode =
     Elem.div [ Attr.class' "card__streamer-el" ] [
-        Elem.a [ Attr.href $"{streamer.prefix}{streamer.link}" ] [
+        Elem.a [ Attr.href $"{streamer.prefix}{streamer.link}"
+                 Attr.class' $"umami--streamer-click--{streamer.prefix}{streamer.link}" ] [
             Elem.img [ Attr.src $"/img/{streamer.icon}"
                        Attr.height "24"
                        Attr.width "24"
@@ -79,13 +80,14 @@ let private workTitle (work: Work) : XmlNode list =
 
 let private workSubtitle (composer: Composer) (work: Work) : XmlNode =
     let yearsComposed = formatYearsRangeLoose work.yearStart work.yearFinish
+
     Elem.div [ Attr.class' "header-subtitle" ] [
         Elem.span [] [
             Elem.a [ Attr.href $"/composer/{composer.slug}" ] [
                 Text.raw $"{composer.firstName} {composer.lastName}"
             ]
         ]
-        if yearsComposed <> "" then 
+        if yearsComposed <> "" then
             Elem.span [] [
                 Text.raw (", " + formatYearsRangeLoose work.yearStart work.yearFinish)
             ]
