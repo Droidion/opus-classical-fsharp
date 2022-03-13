@@ -42,9 +42,10 @@ let private performerSubtitle (recording: Recording) : XmlNode =
     ]
 
 let private streamerCard (streamer: Streamer) : XmlNode =
+    let loggedClick = streamer.name + "-" + streamer.link.Replace("/", "-")
     Elem.div [ Attr.class' "card__streamer-el" ] [
         Elem.a [ Attr.href $"{streamer.prefix}{streamer.link}"
-                 Attr.class' $"umami--streamer-click--{streamer.prefix}{streamer.link}" ] [
+                 Attr.class' $"umami--click--{loggedClick}" ] [
             Elem.img [ Attr.src $"/img/{streamer.icon}"
                        Attr.height "24"
                        Attr.width "24"
