@@ -42,7 +42,7 @@ let private performerSubtitle (recording: Recording) : XmlNode =
     ]
 
 let private streamerCard (streamer: Streamer) : XmlNode =
-    let loggedClick = streamer.name.Replace(" ", "_") + "_" + streamer.link.Replace("/", "_")
+    let loggedClick = streamer.name.Replace(" ", "_")
     Elem.div [ Attr.class' "card__streamer-el" ] [
         Elem.a [ Attr.href $"{streamer.prefix}{streamer.link}"
                  Attr.class' $"umami--click--{loggedClick}" ] [
