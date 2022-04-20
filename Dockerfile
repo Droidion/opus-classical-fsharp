@@ -12,7 +12,7 @@ RUN npm run sass
 RUN npm run build
 
 # Build .NET app
-FROM mcr.microsoft.com/dotnet/sdk:6.0.102-alpine3.14-amd64 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:6.0.202-alpine3.14-amd64 AS build-env
 WORKDIR /DockerSource
 COPY *.sln .
 COPY Site/*.fsproj ./Site/
@@ -25,7 +25,7 @@ COPY --from=build-node /usr/src/app/wwwroot/bundle.css /DockerOutput/Site/wwwroo
 COPY --from=build-node /usr/src/app/wwwroot/bundle.js /DockerOutput/Site/wwwroot/bundle.js
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0.2-alpine3.14-amd64
+FROM mcr.microsoft.com/dotnet/aspnet:6.0.4-alpine3.14-amd64
 WORKDIR /DockerOutput/Site
 COPY --from=build-env /DockerOutput/Site ./
 ENTRYPOINT ["dotnet", "Site.dll"]
