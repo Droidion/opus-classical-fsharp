@@ -62,11 +62,11 @@
         <PackageReference Include="FSharpPlus" Version="1.2.4" />
         <PackageReference Include="Legivel" Version="0.4.6" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="Npgsql.FSharp" Version="4.2.0" />
-        <PackageReference Include="Sentry" Version="3.17.1" />
-        <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
+        <PackageReference Include="Npgsql.FSharp" Version="5.1.0" />
+        <PackageReference Include="Sentry" Version="3.18.0" />
+        <PackageReference Include="StackExchange.Redis" Version="2.6.45" />
         <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
-        <PackageReference Update="FSharp.Core" Version="6.0.4" />
+        <PackageReference Update="FSharp.Core" Version="6.0.5" />
     </ItemGroup>
 
 </Project>
