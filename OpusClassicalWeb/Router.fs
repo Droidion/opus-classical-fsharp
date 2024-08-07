@@ -5,7 +5,11 @@ open Giraffe.ViewEngine
 open OpusClassicalWeb.Database
 
 let indexView =
-    let countries = getAllCountries()
+    let countries = 
+        match getAllCountries() with
+        | Ok countriesList -> countriesList
+        | Error _ -> []
+
     html [] [
         head [] [
             title [] [ str "Giraffe Sample" ]
