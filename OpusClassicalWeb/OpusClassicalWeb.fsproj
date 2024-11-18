@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Environment.fs" />
+        <Compile Include="Models.fs" />
+        <Compile Include="Views.fs" />
+        <Compile Include="Database.fs" />
+        <Compile Include="Handlers.fs" />
+        <Compile Include="Program.fs"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+      <Content Include="Dockerfile" />
+      <Content Include=".env" />
+      <Content Include=".gitignore" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="DotNetEnv" Version="3.1.1" />
+      <PackageReference Include="Falco" Version="4.0.6" />
+      <PackageReference Include="Npgsql.FSharp" Version="5.7.0" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,6 @@
+﻿services:
+  opusclassicalweb:
+    image: opusclassicalweb
+    build:
+      context: .
+      dockerfile: OpusClassicalWeb/Dockerfile

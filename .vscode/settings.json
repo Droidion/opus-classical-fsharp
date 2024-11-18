@@ -1,0 +1,10 @@
+{
+    "FSharp.suggestGitignore": false,
+    "FSharp.inlayHints.parameterNames": true,
+    "FSharp.inlayHints.typeAnnotations": true,
+    "FSharp.smartIndent": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.inlayHints.enabled": "on",
+    "files.trimTrailingWhitespace": true
+}

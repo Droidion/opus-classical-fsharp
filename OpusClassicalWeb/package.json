@@ -1,0 +1,12 @@
+{
+  "name": "opusclassical",
+  "type": "module",
+  "scripts": {
+    "build:css:watch": "tailwindcss -i ./styles/input.css -o ./wwwroot/css/output.css --watch",
+    "build:css": "tailwindcss -i ./styles/input.css -o ./wwwroot/css/output.css"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "tailwindcss": "^3.4.15"
+  }
+}
