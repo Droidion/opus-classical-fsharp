@@ -124,7 +124,7 @@
   /* 2 */
   border-style: solid;
   /* 2 */
-  border-color: #e5e7eb;
+  border-color: currentColor;
   /* 2 */
 }
 
@@ -552,4 +552,259 @@ video {
 
 [hidden]:where(:not([hidden="until-found"])) {
   display: none;
+}
+
+html {
+  font-size: 18px;
+}
+
+body {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --tw-text-opacity: 1;
+  color: rgb(55 55 55 / var(--tw-text-opacity, 1));
+}
+
+body:where([data-theme="dark"], [data-theme="dark"] *) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(26 26 26 / var(--tw-bg-opacity, 1));
+  color: rgb(255 255 255 / 0.8);
+}
+
+h1,
+  h2 {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-weight: 500;
+}
+
+h1 {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+@media (min-width: 1280px) {
+  h1 {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}
+
+h2 {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  --tw-text-opacity: 1;
+  color: rgb(126 85 3 / var(--tw-text-opacity, 1));
+}
+
+h2:where([data-theme="dark"], [data-theme="dark"] *) {
+  --tw-text-opacity: 1;
+  color: rgb(202 162 119 / var(--tw-text-opacity, 1));
+}
+
+hr {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  height: 1px;
+  border-style: none;
+  --tw-bg-opacity: 1;
+  background-color: rgb(126 85 3 / var(--tw-bg-opacity, 1));
+}
+
+hr:where([data-theme="dark"], [data-theme="dark"] *) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(202 162 119 / var(--tw-bg-opacity, 1));
+}
+
+p {
+  margin-top: 1rem;
+}
+
+a:hover {
+  text-decoration-line: underline;
+}
+
+.icon {
+  fill: #373737;
+}
+
+.icon:where([data-theme="dark"], [data-theme="dark"] *) {
+  fill: rgb(255 255 255 / 0.8);
+}
+
+.top-0 {
+  top: 0px;
+}
+
+.z-10 {
+  z-index: 10;
+}
+
+.mx-3 {
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.grid {
+  display: grid;
+}
+
+.h-16 {
+  height: 4rem;
+}
+
+.h-8 {
+  height: 2rem;
+}
+
+.h-9 {
+  height: 2.25rem;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.w-9 {
+  width: 2.25rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.max-w-screen-xl {
+  max-width: 1280px;
+}
+
+.grid-rows-\[auto_1fr_auto\] {
+  grid-template-rows: auto 1fr auto;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-items-center {
+  justify-items: center;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.bg-black\/20 {
+  background-color: rgb(0 0 0 / 0.2);
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.pb-4 {
+  padding-bottom: 1rem;
+}
+
+.font-serif {
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.hover\:no-underline:hover {
+  text-decoration-line: none;
+}
+
+@media (min-width: 1280px) {
+  .xl\:sticky {
+    position: sticky;
+  }
+
+  .xl\:ml-4 {
+    margin-left: 1rem;
+  }
+
+  .xl\:h-16 {
+    height: 4rem;
+  }
+
+  .xl\:h-24 {
+    height: 6rem;
+  }
+
+  .xl\:w-16 {
+    width: 4rem;
+  }
+
+  .xl\:bg-white {
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  }
+
+  .xl\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+
+  .xl\:text-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+}
+
+.dark\:bg-mineshaft:where([data-theme="dark"], [data-theme="dark"] *) {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 55 55 / var(--tw-bg-opacity, 1));
+}
+
+@media (min-width: 1280px) {
+  .dark\:xl\:bg-codgray:where([data-theme="dark"], [data-theme="dark"] *) {
+    --tw-bg-opacity: 1;
+    background-color: rgb(26 26 26 / var(--tw-bg-opacity, 1));
+  }
 }
