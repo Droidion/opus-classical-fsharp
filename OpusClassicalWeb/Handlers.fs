@@ -7,4 +7,5 @@ open OpusClassicalWeb.Database
 let homeHandler: HttpHandler =
     fun ctx ->
         let periods = getAllPeriods ()
-        Response.ofHtml (rootLayout periods) ctx
+        let html = rootLayout ("Opus Classical") (homePage periods)
+        Response.ofHtml html ctx
