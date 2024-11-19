@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['Views.fs'],
+  content: ['*.fs'],
   darkMode: ['selector', '[data-theme="dark"]'],
   theme: {
     colors: {

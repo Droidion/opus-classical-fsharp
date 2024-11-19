@@ -655,6 +655,10 @@ a:hover {
   background-color: rgb(255 255 255 / 0.2);
 }
 
+.pointer-events-none {
+  pointer-events: none;
+}
+
 .top-0 {
   top: 0px;
 }
@@ -676,6 +680,10 @@ a:hover {
   margin-left: 0.5rem;
 }
 
+.mr-4 {
+  margin-right: 1rem;
+}
+
 .mr-6 {
   margin-right: 1.5rem;
 }
@@ -688,16 +696,56 @@ a:hover {
   display: grid;
 }
 
+.hidden {
+  display: none;
+}
+
+.h-0 {
+  height: 0px;
+}
+
 .h-16 {
   height: 4rem;
+}
+
+.h-4 {
+  height: 1rem;
+}
+
+.h-6 {
+  height: 1.5rem;
 }
 
 .h-8 {
   height: 2rem;
 }
 
+.h-9 {
+  height: 2.25rem;
+}
+
 .min-h-screen {
   min-height: 100vh;
+}
+
+.w-0 {
+  width: 0px;
+}
+
+.w-12 {
+  width: 3rem;
+}
+
+.w-4 {
+  width: 1rem;
+}
+
+.w-6 {
+  width: 1.5rem;
+}
+
+.w-9 {
+  width: 2.25rem;
 }
 
 .w-full {
@@ -706,6 +754,10 @@ a:hover {
 
 .max-w-screen-xl {
   max-width: 1280px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .grid-rows-\[auto_1fr_auto\] {
@@ -738,6 +790,10 @@ a:hover {
 
 .overflow-auto {
   overflow: auto;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }
 
 .whitespace-nowrap {
@@ -779,6 +835,29 @@ a:hover {
   font-weight: 500;
 }
 
+.text-cinnamon {
+  --tw-text-opacity: 1;
+  color: rgb(126 85 3 / var(--tw-text-opacity, 1));
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.duration-150 {
+  transition-duration: 150ms;
+}
+
+.hover\:scale-125:hover {
+  --tw-scale-x: 1.25;
+  --tw-scale-y: 1.25;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
 .hover\:no-underline:hover {
   text-decoration-line: none;
 }
@@ -792,8 +871,32 @@ a:hover {
     margin-left: 1rem;
   }
 
+  .xl\:h-10 {
+    height: 2.5rem;
+  }
+
+  .xl\:h-16 {
+    height: 4rem;
+  }
+
   .xl\:h-24 {
     height: 6rem;
+  }
+
+  .xl\:h-5 {
+    height: 1.25rem;
+  }
+
+  .xl\:w-10 {
+    width: 2.5rem;
+  }
+
+  .xl\:w-16 {
+    width: 4rem;
+  }
+
+  .xl\:w-5 {
+    width: 1.25rem;
   }
 
   .xl\:bg-white {
@@ -812,9 +915,22 @@ a:hover {
   }
 }
 
+.dark\:flex:where([data-theme="dark"], [data-theme="dark"] *) {
+  display: flex;
+}
+
+.dark\:hidden:where([data-theme="dark"], [data-theme="dark"] *) {
+  display: none;
+}
+
 .dark\:bg-mineshaft:where([data-theme="dark"], [data-theme="dark"] *) {
   --tw-bg-opacity: 1;
   background-color: rgb(55 55 55 / var(--tw-bg-opacity, 1));
+}
+
+.dark\:text-lazer:where([data-theme="dark"], [data-theme="dark"] *) {
+  --tw-text-opacity: 1;
+  color: rgb(202 162 119 / var(--tw-text-opacity, 1));
 }
 
 @media (min-width: 1280px) {

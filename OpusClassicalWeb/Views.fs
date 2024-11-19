@@ -5,6 +5,10 @@ open OpusClassicalWeb.Models
 open OpusClassicalWeb.Svg
 open OpusClassicalWeb.Helpers
 
+module Attr =
+    let ariaLabelledBy = Attr.create "aria-labelledby"
+    let ariaLabel = Attr.create "aria-label"
+
 let footer: XmlNode =
     Elem.footer
         [ Attr.class'
@@ -28,6 +32,22 @@ let footer: XmlNode =
                 Attr.href "https://github.com/Droidion/opus-classical-fsharp" ]
               [ githubIcon ] ]
 
+let themeSwitcher: XmlNode =
+    Elem.div
+        [ Attr.id "theme-switch"; Attr.class' "text-cinnamon dark:text-lazer flex" ]
+        [ Elem.input
+              [ Attr.id "theme-toggle"
+                Attr.type' "checkbox"
+                Attr.name "theme-toggle"
+                Attr.ariaLabelledBy "switch-label"
+                Attr.class' "pointer-events-none h-0 w-0 opacity-0" ]
+          Elem.label
+              [ Attr.id "switch-label"
+                Attr.for' "theme-toggle"
+                Attr.ariaLabel "Switch between dark and light mode"
+                Attr.class'
+                    "flex h-6 w-6 cursor-pointer items-center justify-center overflow-hidden duration-150 hover:scale-125 xl:h-10 xl:w-10" ]
+              [ darkModeSwitcherIcon; lightModeSwitcherIcon ] ]
 
 let header: XmlNode =
     Elem.header
@@ -47,7 +67,7 @@ let header: XmlNode =
                                 [ Attr.class' "text-xs xl:text-base" ]
                                 [ Text.raw "Catalogue for streaming classical music" ] ] ] ]
 
-          Elem.nav [ Attr.class' "flex items-center menu" ] [ Text.raw "TODO" ] ]
+          Elem.nav [ Attr.class' "flex items-center menu" ] [ Elem.div [ Attr.class' "mr-4" ] [ themeSwitcher ] ] ]
 
 let rootLayout (title: string) (content: XmlNode list) : XmlNode =
     Elem.html
@@ -103,6 +123,8 @@ let rootLayout (title: string) (content: XmlNode list) : XmlNode =
                           [ Attr.class' "main flex flex-col w-full max-w-screen-xl overflow-auto px-4 pb-4" ]
                           content
                       footer ] ] ]
+
+
 
 let private composerCard (composer: Composer) : XmlNode =
     Elem.a
