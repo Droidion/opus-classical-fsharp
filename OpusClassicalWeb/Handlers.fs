@@ -4,8 +4,11 @@ open Falco
 open OpusClassicalWeb.Views
 open OpusClassicalWeb.Database
 
-let homeHandler: HttpHandler =
+let composersHandler: HttpHandler =
     fun ctx ->
-        let periods = getAllPeriods ()
-        let html = rootLayout ("Opus Classical") (homePage periods)
+        let periodsWithComposers = getPeriodsWithComposers ()
+
+        let html =
+            rootLayout "Composers | Opus Classical" (composersPage periodsWithComposers)
+
         Response.ofHtml html ctx

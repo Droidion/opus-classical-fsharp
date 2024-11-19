@@ -4,22 +4,20 @@ open Falco.HostBuilder
 open Microsoft.Extensions.Logging
 open OpusClassicalWeb.Handlers
 
-let configureLogging (log : ILoggingBuilder) : ILoggingBuilder =
+let configureLogging (log: ILoggingBuilder) : ILoggingBuilder =
     log.ClearProviders() |> ignore
     log.AddConsole() |> ignore
     log
 
-let router : HttpEndpoint list =
-    [
-        get "/" homeHandler
-    ]
+let router: HttpEndpoint list = [ get "/" composersHandler ]
 
 [<EntryPoint>]
-let main (args : string array) : int =
+let main (args: string array) : int =
     webHost args {
         add_antiforgery
         use_static_files
         logging configureLogging
         endpoints router
     }
+
     0

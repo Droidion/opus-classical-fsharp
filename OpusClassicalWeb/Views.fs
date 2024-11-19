@@ -103,6 +103,13 @@ let rootLayout (title: string) (content: XmlNode list) : XmlNode =
                           content
                       footer ] ] ]
 
-let homePage (periods: Period list) : XmlNode list =
+let private periodBlock (periodWithComposers: PeriodWithComposers) : XmlNode list =
+    [ Elem.h2 [] [ Text.raw periodWithComposers.Period.Name ]
+      yield!
+          periodWithComposers.Composers
+          |> List.map (fun composer -> Elem.div [] [ Text.raw composer.LastName ]) ]
+
+
+let composersPage (periodsWithComposers: PeriodWithComposers list) : XmlNode list =
     [ Elem.h1 [] [ Text.raw "Sample App" ]
-      Elem.ul [] (periods |> List.map (fun period -> Elem.li [] [ Text.raw period.Name ])) ]
+      yield! periodsWithComposers |> List.map periodBlock |> List.concat ]
