@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OpusClassicalWeb", "OpusClassicalWeb\OpusClassicalWeb.fsproj", "{A744BA7B-8891-4F99-9D1E-D1AE73EA4526}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{50CDEB8C-BA58-4FD4-AFEA-AE5737741B40}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
 	EndProjectSection
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "OpusClassicalWeb.Tests", "OpusClassicalWeb.Tests\OpusClassicalWeb.Tests.fsproj", "{40DEF0A8-D853-425C-AF4E-75D69A3F9C79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,5 +20,9 @@ Global
 		{A744BA7B-8891-4F99-9D1E-D1AE73EA4526}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A744BA7B-8891-4F99-9D1E-D1AE73EA4526}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A744BA7B-8891-4F99-9D1E-D1AE73EA4526}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40DEF0A8-D853-425C-AF4E-75D69A3F9C79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40DEF0A8-D853-425C-AF4E-75D69A3F9C79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40DEF0A8-D853-425C-AF4E-75D69A3F9C79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40DEF0A8-D853-425C-AF4E-75D69A3F9C79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

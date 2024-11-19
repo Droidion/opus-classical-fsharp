@@ -17,3 +17,7 @@ Install static assets build chain packages `bun i`.
 Build static assets in watch mode `bun run build:css:watch`.
 
 Run the web app in watch mode in other terminal tab `dotnet watch run --no-hot-reload --environment Development`.
+
+## How to test
+
+Run tests `dotnet test`.

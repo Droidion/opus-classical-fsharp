@@ -4,6 +4,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Helpers.fs" />
     <Compile Include="Environment.fs" />
     <Compile Include="Models.fs" />
     <Compile Include="Svg.fs" />
