@@ -12,7 +12,7 @@ let private periodMapper (read: RowReader) : Period =
       Slug = read.string "slug" }
 
 let private allPeriodsQuery =
-    "SELECT id, name, year_start, year_end, slug FROM periods"
+    "SELECT id, name, year_start, year_end, slug FROM periods ORDER BY year_start"
 
 let getAllPeriods () : Period list =
     connectionString

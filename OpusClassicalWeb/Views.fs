@@ -3,6 +3,7 @@ module OpusClassicalWeb.Views
 open Falco.Markup
 open OpusClassicalWeb.Models
 open OpusClassicalWeb.Svg
+open OpusClassicalWeb.Helpers
 
 let footer: XmlNode =
     Elem.footer
@@ -103,13 +104,34 @@ let rootLayout (title: string) (content: XmlNode list) : XmlNode =
                           content
                       footer ] ] ]
 
+let private composerCard (composer: Composer) : XmlNode =
+    Elem.a
+        [ Attr.href $"/composer/{composer.Slug}" ]
+        [ Elem.div
+              [ Attr.class' "mb-3 mr-6" ]
+              [ Elem.div
+                    []
+                    [ Elem.span [] [ Text.raw $"{composer.LastName}, " ]
+                      Elem.span [ Attr.class' "font-light" ] [ Text.raw composer.FirstName ] ]
+                Elem.div
+                    [ Attr.class' "text-xs font-light whitespace-nowrap" ]
+                    [ Elem.span [] [ Text.raw composer.Countries ]
+                      Elem.span [ Attr.class' "vertical-separator" ] []
+                      Elem.span [] [ Text.raw (formatYearsRangeString (Some composer.YearBorn) composer.YearDied) ] ] ] ]
+
+let private periodHeader (period: Period) : XmlNode =
+    Elem.h2
+        []
+        [ Elem.span [] [ Text.raw period.Name ]
+          Elem.span [] [ Text.raw " " ]
+          Elem.span [] [ Text.raw (formatYearsRangeString (Some period.YearStart) period.YearEnd) ] ]
+
 let private periodBlock (periodWithComposers: PeriodWithComposers) : XmlNode list =
-    [ Elem.h2 [] [ Text.raw periodWithComposers.Period.Name ]
-      yield!
-          periodWithComposers.Composers
-          |> List.map (fun composer -> Elem.div [] [ Text.raw composer.LastName ]) ]
+    [ periodHeader periodWithComposers.Period
+      Elem.hr []
+      Elem.div [ Attr.class' "flex flex-wrap" ] (periodWithComposers.Composers |> List.map composerCard) ]
 
 
 let composersPage (periodsWithComposers: PeriodWithComposers list) : XmlNode list =
-    [ Elem.h1 [] [ Text.raw "Sample App" ]
+    [ Elem.h1 [] [ Text.raw "Composers" ]
       yield! periodsWithComposers |> List.map periodBlock |> List.concat ]
