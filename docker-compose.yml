@@ -1,0 +1,24 @@
+services:
+  opus-classical-fsharp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 4020
+    networks:
+      - dokploy-network
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - PUBLIC_IMAGES_URL=${PUBLIC_IMAGES_URL}
+      - ASPNETCORE_URLS=${ASPNETCORE_URLS}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.opusclassicalfsharp.rule=Host(`fsharp.opusclassical.net`)
+      - traefik.http.services.opusclassicalfsharp.loadbalancer.server.port=9000
+      - traefik.http.routers.opusclassicalfsharp.entrypoints=websecure
+      - traefik.http.routers.opusclassicalfsharp.tls.certResolver=letsencrypt
+
+networks:
+  dokploy-network:
+    external: true
